@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>CookFusion — Admin</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<style>
+  :root {
+    --green: #1E3A2B; --sage: #7A9A75; --orange: #E89D5E;
+    --bg: #F3F4EF; --card: #FFFFFF; --text: #1C1C1E;
+    --muted: #7C8379; --border: #E2E6DB; --danger: #D9534F;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); }
+  h1, h2, .brand { font-family: Georgia, 'Times New Roman', serif; }
+  button { cursor: pointer; font-size: 14px; border: none; border-radius: 10px; padding: 10px 16px; font-weight: 600; }
+  input, textarea, select { font-size: 14px; border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; width: 100%; background: #fff; color: var(--text); }
+  input:focus, textarea:focus, select:focus { outline: 2px solid var(--sage); border-color: transparent; }
+  label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); margin: 14px 0 5px; text-transform: uppercase; letter-spacing: .5px; }
+
+  /* Login */
+  #login-view { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
+  .login-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px; width: 100%; max-width: 380px; box-shadow: 0 10px 30px rgba(30,58,43,.08); }
+  .login-card h1 { font-size: 24px; color: var(--green); text-align: center; }
+  .login-card .sub { text-align: center; color: var(--muted); font-size: 13px; margin: 6px 0 10px; }
+  .btn-primary { background: var(--green); color: #fff; width: 100%; margin-top: 20px; padding: 13px; }
+  .btn-primary:hover { background: #2A4F3B; }
+  .error-box { display: none; background: #FBE9E7; color: #B3352E; border-radius: 10px; padding: 10px 12px; font-size: 13px; margin-top: 14px; }
+
+  /* Layout */
+  #app-view { display: none; min-height: 100vh; }
+  .layout { display: flex; min-height: 100vh; }
+  aside { width: 220px; background: var(--green); color: #fff; padding: 24px 14px; display: flex; flex-direction: column; flex-shrink: 0; }
+  aside .brand { font-size: 20px; text-align: center; margin-bottom: 6px; }
+  aside .brand-sub { text-align: center; font-size: 11px; opacity: .6; margin-bottom: 26px; letter-spacing: 1px; text-transform: uppercase; }
+  .nav-btn { background: transparent; color: #fff; text-align: left; padding: 12px 14px; border-radius: 12px; margin-bottom: 6px; font-weight: 500; width: 100%; opacity: .75; }
+  .nav-btn:hover { background: rgba(255,255,255,.08); opacity: 1; }
+  .nav-btn.active { background: var(--sage); opacity: 1; font-weight: 700; }
+  .signout { margin-top: auto; background: rgba(255,255,255,.1); color: #fff; }
+  main { flex: 1; padding: 32px clamp(16px, 4vw, 48px); max-width: 1200px; }
+  .page-title { font-size: 26px; color: var(--green); margin-bottom: 4px; }
+  .page-sub { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+
+  /* Cards / tables */
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 26px; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 18px; }
+  .stat-card .num { font-size: 28px; font-weight: 800; color: var(--green); }
+  .stat-card .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); padding: 12px 16px; border-bottom: 1px solid var(--border); background: #FAFBF8; }
+  td { padding: 10px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  tr:last-child td { border-bottom: none; }
+  .thumb { width: 46px; height: 46px; border-radius: 10px; object-fit: cover; background: var(--border); }
+  .avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; background: var(--border); }
+  .toolbar { display: flex; gap: 12px; margin-bottom: 18px; }
+  .toolbar input { max-width: 320px; }
+  .btn-add { background: var(--orange); color: #fff; white-space: nowrap; }
+  .btn-add:hover { filter: brightness(1.05); }
+  .btn-icon { background: var(--bg); padding: 7px 12px; margin-left: 6px; font-size: 13px; }
+  .btn-icon.danger { color: var(--danger); }
+  .btn-icon:hover { background: var(--border); }
+  .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 8px; background: #EAF1E7; color: var(--sage); }
+  .badge.admin { background: #FFF4E5; color: var(--orange); }
+  .empty { padding: 40px; text-align: center; color: var(--muted); }
+
+  /* Modal */
+  #modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20,30,24,.5); z-index: 50; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 40px 16px; }
+  .modal { background: var(--card); border-radius: 20px; padding: 28px; width: 100%; max-width: 640px; }
+  .modal h2 { color: var(--green); margin-bottom: 4px; }
+  .modal .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
+  .modal-actions { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; }
+  .btn-cancel { background: var(--bg); color: var(--text); }
+  #img-preview { width: 100%; height: 160px; object-fit: cover; border-radius: 12px; margin-top: 8px; display: none; background: var(--border); }
+
+  /* Push */
+  .push-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 26px; max-width: 560px; }
+  .result-box { display: none; margin-top: 18px; padding: 14px; border-radius: 12px; background: #EAF1E7; color: var(--green); font-size: 14px; }
+  .spinner { display: none; margin-left: 8px; }
+  @media (max-width: 760px) {
+    .layout { flex-direction: column; }
+    aside { width: 100%; flex-direction: row; align-items: center; gap: 6px; padding: 12px; }
+    aside .brand, aside .brand-sub { display: none; }
+    .signout { margin-top: 0; margin-left: auto; width: auto; }
+    .nav-btn { width: auto; margin-bottom: 0; }
+    .grid-2 { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ЛОГИН -->
+<div id="login-view">
+  <div class="login-card">
+    <h1>🍳 CookFusion</h1>
+    <div class="sub">Admin Panel</div>
+    <label>Email</label>
+    <input id="login-email" type="email" autocomplete="username" placeholder="admin@email.com">
+    <label>Password</label>
+    <input id="login-password" type="password" autocomplete="current-password" placeholder="••••••••">
+    <button class="btn-primary" id="login-btn" onclick="signIn()">Sign In</button>
+    <div class="error-box" id="login-error"></div>
+  </div>
+</div>
+
+<!-- ПАНЕЛЬ -->
+<div id="app-view">
+  <div class="layout">
+    <aside>
+      <div class="brand">🍳 CookFusion</div>
+      <div class="brand-sub">Admin Panel</div>
+      <button class="nav-btn active" data-tab="dashboard" onclick="showTab('dashboard')">📊 Dashboard</button>
+      <button class="nav-btn" data-tab="recipes" onclick="showTab('recipes')">🥘 Recipes</button>
+      <button class="nav-btn" data-tab="push" onclick="showTab('push')">📣 Push</button>
+      <button class="signout" onclick="signOut()">Sign out</button>
+    </aside>
+
+    <main>
+      <!-- DASHBOARD -->
+      <section id="tab-dashboard">
+        <h1 class="page-title">Dashboard</h1>
+        <p class="page-sub">Users and overall activity</p>
+        <div class="stats-row">
+          <div class="stat-card"><div class="num" id="stat-users">—</div><div class="lbl">Users</div></div>
+          <div class="stat-card"><div class="num" id="stat-recipes">—</div><div class="lbl">Recipes in feed</div></div>
+          <div class="stat-card"><div class="num" id="stat-favorites">—</div><div class="lbl">Saved recipes</div></div>
+          <div class="stat-card"><div class="num" id="stat-push">—</div><div class="lbl">Push-enabled devices</div></div>
+        </div>
+        <div class="panel">
+          <table>
+            <thead><tr><th></th><th>Name</th><th>Cooked</th><th>Shopping items</th><th>Family</th><th>Push</th><th>Role</th></tr></thead>
+            <tbody id="users-tbody"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- RECIPES -->
+      <section id="tab-recipes" style="display:none">
+        <h1 class="page-title">Recipes</h1>
+        <p class="page-sub">Content of the app feed</p>
+        <div class="toolbar">
+          <input id="recipe-search" placeholder="Search by title…" oninput="debouncedLoadRecipes()">
+          <button class="btn-add" onclick="openRecipeModal()">+ Add recipe</button>
+        </div>
+        <div class="panel">
+          <table>
+            <thead><tr><th></th><th>Title</th><th>Time</th><th>Difficulty</th><th>Kcal</th><th>Rating</th><th style="width:150px"></th></tr></thead>
+            <tbody id="recipes-tbody"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- PUSH -->
+      <section id="tab-push" style="display:none">
+        <h1 class="page-title">Push broadcast</h1>
+        <p class="page-sub">Send a notification to every user who allowed push notifications</p>
+        <div class="push-card">
+          <label>Title</label>
+          <input id="push-title" maxlength="80" placeholder="Dinner idea inside 🍝">
+          <label>Message</label>
+          <textarea id="push-message" rows="4" maxlength="200" placeholder="Open CookFusion and let the AI chef surprise you tonight!"></textarea>
+          <button class="btn-primary" id="push-btn" onclick="sendPush()">Send to all users</button>
+          <div class="result-box" id="push-result"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<!-- МОДАЛКА РЕЦЕПТА -->
+<div id="modal-overlay">
+  <div class="modal">
+    <h2 id="modal-title">Add recipe</h2>
+    <input type="hidden" id="r-id">
+    <label>Title</label>
+    <input id="r-title" placeholder="Creamy Mushroom Risotto">
+    <label>Image URL</label>
+    <input id="r-image" placeholder="https://…" oninput="previewImage()">
+    <img id="img-preview" alt="">
+    <div class="grid-2">
+      <div><label>Time</label><input id="r-time" placeholder="30 min"></div>
+      <div><label>Difficulty</label>
+        <select id="r-difficulty"><option>Easy</option><option>Medium</option><option>Hard</option></select>
+      </div>
+      <div><label>Calories</label><input id="r-calories" type="number" placeholder="450"></div>
+      <div><label>Rating (1–5)</label><input id="r-rating" type="number" step="0.1" min="1" max="5" placeholder="4.7"></div>
+    </div>
+    <label>Ingredients — one per line: <span style="text-transform:none">Name | amount</span></label>
+    <textarea id="r-ingredients" rows="5" placeholder="Arborio rice | 300 g&#10;Mushrooms | 400 g&#10;Parmesan | 80 g"></textarea>
+    <div class="hint">Optional. If empty, the app generates ingredients with AI on demand.</div>
+    <label>Steps — one per line</label>
+    <textarea id="r-steps" rows="5" placeholder="Sauté mushrooms until golden.&#10;Add rice and stir for 2 minutes."></textarea>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeRecipeModal()">Cancel</button>
+      <button class="btn-primary" style="width:auto; margin:0" id="save-recipe-btn" onclick="saveRecipe()">Save recipe</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SUPABASE_URL = 'https://vimdtngoecdhkliixgit.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_gPDI3LlWFukfehmKPcIYTw_nYsv5xVU';
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+// ---------- AUTH ----------
+async function init() {
+  const { data: { session } } = await db.auth.getSession();
+  if (session) await enterApp(session.user);
+}
+
+async function signIn() {
+  const btn = $('login-btn');
+  btn.disabled = true; btn.textContent = 'Signing in…';
+  hideError();
+  const { data, error } = await db.auth.signInWithPassword({
+    email: $('login-email').value.trim(),
+    password: $('login-password').value,
+  });
+  btn.disabled = false; btn.textContent = 'Sign In';
+  if (error) return showError(error.message);
+  await enterApp(data.user);
+}
+
+async function enterApp(user) {
+  const { data: profile } = await db.from('profiles').select('is_admin').eq('id', user.id).single();
+  if (!profile?.is_admin) {
+    await db.auth.signOut();
+    return showError('This account has no admin access.');
+  }
+  $('login-view').style.display = 'none';
+  $('app-view').style.display = 'block';
+  loadDashboard();
+  loadRecipes();
+}
+
+async function signOut() {
+  await db.auth.signOut();
+  location.reload();
+}
+
+function showError(msg) { const e = $('login-error'); e.textContent = msg; e.style.display = 'block'; }
+function hideError() { $('login-error').style.display = 'none'; }
+$('login-password').addEventListener('keydown', (e) => { if (e.key === 'Enter') signIn(); });
+
+// ---------- TABS ----------
+function showTab(name) {
+  for (const t of ['dashboard', 'recipes', 'push']) {
+    $('tab-' + t).style.display = t === name ? 'block' : 'none';
+  }
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
+  if (name === 'dashboard') loadDashboard();
+}
+
+// ---------- DASHBOARD ----------
+async function loadDashboard() {
+  const [{ count: usersCount }, { count: recipesCount }, { count: favCount }] = await Promise.all([
+    db.from('profiles').select('id', { count: 'exact', head: true }),
+    db.from('recipes').select('id', { count: 'exact', head: true }),
+    db.from('favorites').select('id', { count: 'exact', head: true }),
+  ]);
+  $('stat-users').textContent = usersCount ?? 0;
+  $('stat-recipes').textContent = recipesCount ?? 0;
+  $('stat-favorites').textContent = favCount ?? 0;
+
+  const { data: users } = await db
+    .from('profiles')
+    .select('full_name, avatar_url, cooked_history, shopping_list, family_members, push_token, is_admin')
+    .limit(500);
+
+  const pushCount = (users ?? []).filter(u => u.push_token).length;
+  $('stat-push').textContent = pushCount;
+
+  const tbody = $('users-tbody');
+  if (!users || users.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="7" class="empty">No users yet</td></tr>';
+    return;
+  }
+  tbody.innerHTML = users.map(u => `
+    <tr>
+      <td><img class="avatar" src="${esc(u.avatar_url || '')}" onerror="this.style.visibility='hidden'"></td>
+      <td><b>${esc(u.full_name || 'No name')}</b></td>
+      <td>${(u.cooked_history || []).length}</td>
+      <td>${(u.shopping_list || []).length}</td>
+      <td>${(u.family_members || []).length}</td>
+      <td>${u.push_token ? '<span class="badge">on</span>' : '—'}</td>
+      <td>${u.is_admin ? '<span class="badge admin">admin</span>' : 'user'}</td>
+    </tr>`).join('');
+}
+
+// ---------- RECIPES ----------
+let searchTimer = null;
+function debouncedLoadRecipes() {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(loadRecipes, 350);
+}
+
+async function loadRecipes() {
+  const q = $('recipe-search').value.trim();
+  let query = db.from('recipes')
+    .select('id, title, image, time, difficulty, rating, calories, ingredients, steps')
+    .order('id', { ascending: false })
+    .limit(200);
+  if (q) query = query.ilike('title', '%' + q + '%');
+  const { data, error } = await query;
+
+  const tbody = $('recipes-tbody');
+  if (error) { tbody.innerHTML = `<tr><td colspan="7" class="empty">${esc(error.message)}</td></tr>`; return; }
+  if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="empty">Nothing found</td></tr>'; return; }
+
+  window._recipes = Object.fromEntries(data.map(r => [r.id, r]));
+  tbody.innerHTML = data.map(r => `
+    <tr>
+      <td><img class="thumb" src="${esc(r.image || '')}" onerror="this.style.visibility='hidden'"></td>
+      <td><b>${esc(r.title)}</b></td>
+      <td>${esc(r.time || '—')}</td>
+      <td>${esc(r.difficulty || '—')}</td>
+      <td>${esc(r.calories ?? '—')}</td>
+      <td>${esc(r.rating ?? '—')}</td>
+      <td style="text-align:right">
+        <button class="btn-icon" onclick="openRecipeModal('${r.id}')">Edit</button>
+        <button class="btn-icon danger" onclick="deleteRecipe('${r.id}', this)">Delete</button>
+      </td>
+    </tr>`).join('');
+}
+
+function openRecipeModal(id) {
+  const r = id ? window._recipes?.[id] : null;
+  $('modal-title').textContent = r ? 'Edit recipe' : 'Add recipe';
+  $('r-id').value = r?.id ?? '';
+  $('r-title').value = r?.title ?? '';
+  $('r-image').value = r?.image ?? '';
+  $('r-time').value = r?.time ?? '';
+  $('r-difficulty').value = r?.difficulty ?? 'Easy';
+  $('r-calories').value = r?.calories ?? '';
+  $('r-rating').value = r?.rating ?? '';
+  $('r-ingredients').value = (r?.ingredients || []).map(i => `${i.name} | ${i.amount ?? ''}`).join('\n');
+  $('r-steps').value = (r?.steps || []).map(s => s.text).join('\n');
+  previewImage();
+  $('modal-overlay').style.display = 'flex';
+}
+function closeRecipeModal() { $('modal-overlay').style.display = 'none'; }
+function previewImage() {
+  const url = $('r-image').value.trim();
+  const img = $('img-preview');
+  img.style.display = url ? 'block' : 'none';
+  if (url) img.src = url;
+}
+
+function parseIngredients(text) {
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  if (!lines.length) return null;
+  return lines.map((l, i) => {
+    const [name, amount] = l.split('|').map(p => p.trim());
+    return { id: String(i + 1), name: name || l, amount: amount || '' };
+  });
+}
+function parseSteps(text) {
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  if (!lines.length) return null;
+  return lines.map((l, i) => ({ id: String(i + 1), text: l }));
+}
+
+async function saveRecipe() {
+  const title = $('r-title').value.trim();
+  if (!title) return alert('Title is required');
+  const btn = $('save-recipe-btn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+
+  const row = {
+    title,
+    image: $('r-image').value.trim() || null,
+    time: $('r-time').value.trim() || null,
+    difficulty: $('r-difficulty').value,
+    calories: $('r-calories').value ? Number($('r-calories').value) : null,
+    rating: $('r-rating').value ? Number($('r-rating').value) : null,
+    ingredients: parseIngredients($('r-ingredients').value),
+    steps: parseSteps($('r-steps').value),
+  };
+
+  const id = $('r-id').value;
+  const { error } = id
+    ? await db.from('recipes').update(row).eq('id', id)
+    : await db.from('recipes').insert(row);
+
+  btn.disabled = false; btn.textContent = 'Save recipe';
+  if (error) return alert('Save failed: ' + error.message);
+  closeRecipeModal();
+  loadRecipes();
+}
+
+async function deleteRecipe(id, btn) {
+  if (!confirm('Delete this recipe? This cannot be undone.')) return;
+  btn.disabled = true;
+  const { error } = await db.from('recipes').delete().eq('id', id);
+  btn.disabled = false;
+  if (error) return alert('Delete failed: ' + error.message);
+  loadRecipes();
+}
+
+// ---------- PUSH ----------
+async function sendPush() {
+  const title = $('push-title').value.trim();
+  const message = $('push-message').value.trim();
+  if (!title || !message) return alert('Fill in both title and message');
+  if (!confirm(`Send "${title}" to ALL users?`)) return;
+
+  const btn = $('push-btn');
+  btn.disabled = true; btn.textContent = 'Sending…';
+  const { data, error } = await db.functions.invoke('admin-push', { body: { title, message } });
+  btn.disabled = false; btn.textContent = 'Send to all users';
+
+  const box = $('push-result');
+  box.style.display = 'block';
+  if (error || data?.error) {
+    box.style.background = '#FBE9E7'; box.style.color = '#B3352E';
+    box.textContent = 'Failed: ' + (error?.message || data?.error);
+  } else {
+    box.style.background = '#EAF1E7'; box.style.color = 'var(--green)';
+    box.textContent = data.info
+      ? data.info
+      : `Delivered to Expo: ${data.sent} sent, ${data.failed} failed (of ${data.total} devices).`;
+    $('push-title').value = ''; $('push-message').value = '';
+  }
+}
+
+init();
+</script>
+</body>
+</html>
