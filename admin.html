@@ -179,6 +179,12 @@
   .tag span { color: var(--muted); font-weight: 500; }
   .tag.on { background: var(--sage); border-color: transparent; color: #fff; }
   .tag.on span { color: rgba(255,255,255,.7); }
+  .warn-box {
+    background: #FBEFE2; border-left: 3px solid var(--warn); border-radius: 0 10px 10px 0;
+    padding: 12px 14px; font-size: 13px; line-height: 1.55; color: #7A5418;
+    margin-bottom: 18px; max-width: 860px;
+  }
+
   .audience {
     background: var(--soft); border: 1px solid var(--border); border-radius: 12px;
     padding: 13px; font-size: 13.5px; margin-top: 16px; line-height: 1.5;
@@ -511,6 +517,7 @@
         <h1 class="page-title">Push</h1>
         <p class="page-sub">Send a notification to everyone, to a segment, to people with a tag, or to named people</p>
         <div class="help">Pick the audience first and check the number before you write anything. A notification cannot be recalled once it is sent.</div>
+        <div id="push-stale" class="warn-box" style="display:none"></div>
 
         <div class="charts">
           <div class="chart-card">
@@ -712,6 +719,12 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&
  * верный способ что-нибудь сломать.
  */
 const RU = {
+  'This went to':
+    'Ушло на',
+  'devices, not':
+    'устройств вместо',
+  'The push function still running on the server is the old one, which ignores the audience and sends to everyone. Redeploy admin-push before sending anything else.':
+    'На сервере работает старая версия функции: она не понимает аудиторию и шлёт всем подряд. Передеплойте admin-push, прежде чем отправлять что-то ещё.',
   'Moderation queue':
     'Очередь модерации',
   'Runs in batches so nothing times out. Steps are never sent to the model — only the title and ingredient list — which keeps the cost at roughly':
@@ -2685,6 +2698,16 @@ async function sendPush() {
     box.textContent = data.info || `Delivered to Expo: ${data.sent} sent, ${data.failed} failed (of ${data.total} devices).`;
     $('push-title').value = ''; $('push-message').value = '';
     loadPushLog();
+
+    // Старая версия функции фильтр не понимает и шлёт всем подряд.
+    // Заметно по тому, что получателей больше, чем в выбранной аудитории.
+    if (typeof data.total === 'number' && data.total > n) {
+      const w = $('push-stale');
+      w.style.display = 'block';
+      w.innerHTML = `<b>This went to ${data.total} devices, not ${n}.</b>
+        The push function still running on the server is the old one, which ignores the
+        audience and sends to everyone. Redeploy admin-push before sending anything else.`;
+    }
   }
 }
 
