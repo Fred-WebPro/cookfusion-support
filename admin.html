@@ -482,7 +482,7 @@ async function runEnrich(dryRun) {
   $('enrich-stop').textContent = 'Stop';
 
   let done = 0, cost = 0, startRemaining = null;
-  let offset = 0, emptyStreak = 0;
+  let offset = 0, emptyStreak = 0, stopReason = '';
 
   try {
     do {
@@ -509,7 +509,9 @@ async function runEnrich(dryRun) {
 
       done += data.processed || 0;
       cost += data.costUsd || 0;
-      if (startRemaining === null) startRemaining = (data.remaining || 0) + (data.processed || 0);
+      if (startRemaining === null && typeof data.remaining === 'number') {
+        startRemaining = data.remaining + (data.processed || 0);
+      }
 
       if (data.sample) {
         $('enrich-sample').style.display = 'block';
@@ -525,7 +527,8 @@ async function runEnrich(dryRun) {
       const slow = data.elapsedMs > 45000 ? ` · slow (${Math.round(data.elapsedMs / 1000)}s)` : '';
       box.textContent = dryRun
         ? `Test run: ${data.processed} recipes, $${cost.toFixed(4)} spent. Nothing was saved.`
-        : `${done} done, ${data.remaining} left · $${cost.toFixed(3)} spent${warn}${slow}`
+        : `${done} done${typeof data.remaining === 'number' ? `, ~${data.remaining} left` : ''}`
+          + ` · $${cost.toFixed(3)} spent${warn}${slow}`
           + (emptyStreak ? ` · skipping a stuck batch (${emptyStreak}/3)` : '');
 
       // Причина сбоя должна быть видна сразу, а не в консоли: без неё
@@ -535,7 +538,9 @@ async function runEnrich(dryRun) {
         $('enrich-sample').textContent = 'Last problem: ' + data.firstFailure;
       }
 
-      if (dryRun || data.remaining === 0) break;
+      // Останавливаемся по признаку done, а не по счётчику: счётчик может
+      // не прийти из-за таймаута, и это не означает, что работа закончена
+      if (dryRun || data.done) break;
 
       // Порция ничего не дала — не считаем это концом работы, а перешагиваем
       // через неё. Раньше цикл здесь молча останавливался, и прогон замирал
@@ -544,8 +549,8 @@ async function runEnrich(dryRun) {
         emptyStreak++;
         offset += limit;
         if (emptyStreak >= 3) {
-          box.textContent = `Stopped after ${done} recipes: three batches in a row produced nothing.`
-            + (data.firstFailure ? ` Last reason: ${data.firstFailure}` : '');
+          stopReason = `three batches in a row produced nothing`
+            + (data.firstFailure ? `: ${data.firstFailure}` : '');
           break;
         }
       } else {
@@ -559,7 +564,9 @@ async function runEnrich(dryRun) {
     if (!dryRun) {
       box.textContent = enrichStop
         ? `Stopped. ${done} recipes enriched, $${cost.toFixed(3)} spent.`
-        : `Finished. ${done} recipes enriched, $${cost.toFixed(3)} spent.`;
+        : stopReason
+          ? `Stopped after ${done} recipes — ${stopReason}`
+          : `Finished. ${done} recipes enriched, $${cost.toFixed(3)} spent.`;
     }
   } catch (e) {
     box.style.background = '#FBE9E7';
