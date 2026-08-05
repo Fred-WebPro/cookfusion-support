@@ -42,7 +42,9 @@
   .nav-btn { background: transparent; color: #fff; text-align: left; padding: 11px 13px; border-radius: 11px; margin-bottom: 3px; font-weight: 500; width: 100%; opacity: .72; font-size: 13.5px; display: flex; align-items: center; }
   .nav-btn:hover { background: rgba(255,255,255,.08); opacity: 1; }
   .nav-btn.active { background: var(--sage); opacity: 1; font-weight: 700; }
-  .signout { margin-top: auto; background: rgba(255,255,255,.1); color: #fff; }
+  .refresh { margin-top: auto; margin-bottom: 6px; background: rgba(255,255,255,.08); color: #fff; font-size: 13px; }
+  .refresh:hover { background: rgba(255,255,255,.16); }
+  .signout { background: rgba(255,255,255,.1); color: #fff; }
   main { flex: 1; padding: 30px clamp(16px, 3vw, 40px); max-width: 1400px; min-width: 0; }
   .page-title { font-size: 26px; color: var(--green); margin-bottom: 4px; }
   .page-sub { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
@@ -59,8 +61,20 @@
   .stat-card.bad .num { color: var(--danger); }
 
   /* Графики */
-  .charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; margin-bottom: 20px; }
-  .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 15px; padding: 18px; }
+  /* 400px, а не 300: при трёх колонках таблицы внутри карточек не
+     помещались и выглядели поломанными */
+  .charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  .charts.full { grid-template-columns: 1fr; }
+  .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 15px; padding: 18px; min-width: 0; }
+
+  /* Таблица внутри карточки: тянем до её краёв, иначе шапка висит в
+     воздухе, а отступы удваиваются */
+  .chart-card table { margin: 0 -18px -18px; width: calc(100% + 36px); }
+  .chart-card table th { padding-left: 18px; padding-right: 18px; }
+  .chart-card table td { padding-left: 18px; padding-right: 18px; }
+  .chart-card table tr:last-child td { border-bottom: none; }
+  .card-scroll { overflow-x: auto; margin: 0 -18px -18px; }
+  .card-scroll table { margin: 0; width: 100%; }
   .chart-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
   .chart-title { font-size: 13px; font-weight: 700; color: var(--text); }
   .chart-total { font-size: 13px; color: var(--muted); }
@@ -91,6 +105,7 @@
   .btn-icon { background: var(--bg); padding: 6px 11px; font-size: 12.5px; }
   .btn-icon:hover:not(:disabled) { background: var(--border); }
   .btn-icon.danger { color: var(--danger); }
+  td select { min-width: 106px; padding: 5px 8px; font-size: 12.5px; }
   .btn-ghost { background: transparent; color: var(--muted); padding: 6px 10px; font-size: 12.5px; }
 
   .badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: 7px; background: #EAF1E7; color: #4A6E48; white-space: nowrap; }
@@ -142,10 +157,11 @@
 
   /* Распределения и воронка */
   .dist { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; font-size: 13px; }
-  .dist-name { width: 130px; flex-shrink: 0; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .dist-bar { flex: 1; height: 9px; background: var(--bg); border-radius: 5px; overflow: hidden; }
+  .dist-name { flex: 0 1 130px; min-width: 70px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dist-bar { flex: 1 1 60px; height: 9px; background: var(--bg); border-radius: 5px; overflow: hidden; }
   .dist-bar i { display: block; height: 100%; background: var(--sage); border-radius: 5px; }
-  .dist-n { width: 96px; text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+  .dist.wide .dist-name { flex: 0 1 210px; }
+  .dist-n { min-width: 66px; text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; flex-shrink: 0; white-space: nowrap; }
 
   /* Активность по дням */
   .heat { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
@@ -153,9 +169,9 @@
   .heat .cell.on { background: var(--sage); }
 
   /* Здоровье каталога */
-  .health-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+  .health-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 12px; }
   .health-row { background: var(--card); border: 1px solid var(--border); border-radius: 13px; padding: 15px; display: flex; align-items: center; gap: 12px; }
-  .health-row .n { font-size: 21px; font-weight: 800; font-family: Georgia, serif; min-width: 62px; }
+  .health-row .n { font-size: 21px; font-weight: 800; font-family: Georgia, serif; min-width: 76px; flex-shrink: 0; }
   .health-row .t { font-size: 12.5px; color: var(--muted); line-height: 1.4; }
   .health-row.ok .n { color: var(--sage); }
   .health-row.warn .n { color: var(--warn); }
@@ -166,7 +182,8 @@
     .layout { flex-direction: column; }
     aside { width: 100%; height: auto; position: static; flex-direction: row; align-items: center; gap: 4px; padding: 10px; overflow-x: auto; }
     aside .brand, aside .brand-sub { display: none; }
-    .signout { margin-top: 0; margin-left: auto; width: auto; }
+    .refresh { margin-top: 0; margin-bottom: 0; margin-left: auto; width: auto; }
+    .signout { margin-top: 0; width: auto; }
     .nav-btn { width: auto; margin-bottom: 0; white-space: nowrap; }
     .grid-2, .grid-3, .mod-cols { grid-template-columns: 1fr; }
     .mod-top { flex-direction: column; }
@@ -208,6 +225,7 @@
       <button class="nav-btn" data-tab="comments" onclick="showTab('comments')">Comments</button>
       <button class="nav-btn" data-tab="push" onclick="showTab('push')">Push</button>
       <button class="nav-btn" data-tab="enrich" onclick="showTab('enrich')">Enrich</button>
+      <button class="refresh" onclick="reloadTab()">Refresh</button>
       <button class="signout" onclick="signOut()">Sign out</button>
     </aside>
 
@@ -625,29 +643,52 @@ const LOADERS = {
   comments: loadComments,
 };
 
-function showTab(name) {
+/**
+ * Когда вкладка загружалась в последний раз.
+ *
+ * Раньше каждое переключение перезапрашивало всё заново, включая
+ * возврат на вкладку, открытую пять секунд назад. Данные админки не
+ * меняются ежесекундно — минуты хватает, а кнопка обновления рядом.
+ */
+const loadedAt = {};
+const FRESH_MS = 60000;
+
+function showTab(name, force) {
   document.querySelectorAll('main section[id^="tab-"]').forEach(s => {
     s.style.display = s.id === 'tab-' + name ? 'block' : 'none';
   });
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
-  LOADERS[name]?.();
+
+  if (!LOADERS[name]) return;
+  if (!force && Date.now() - (loadedAt[name] || 0) < FRESH_MS) return;
+  loadedAt[name] = Date.now();
+  LOADERS[name]();
 }
 
-/** Счётчики в меню: сколько всего ждёт решения, видно не заходя во вкладку */
+function reloadTab() {
+  const active = document.querySelector('.nav-btn.active')?.dataset.tab;
+  if (active) showTab(active, true);
+  refreshBadges();
+}
+
+/**
+ * Счётчики в меню.
+ *
+ * Считает база, тремя count(*). До этого панель тянула сюда всю очередь
+ * модерации целиком — с ингредиентами и шагами каждого рецепта — и
+ * брала от ответа только длину.
+ */
 async function refreshBadges() {
   const setBadge = (id, n) => {
     const el = $(id);
     el.textContent = n || '';
     el.className = n ? 'nav-badge on' : 'nav-badge';
   };
-  const [mod, apps, subs] = await Promise.all([
-    db.rpc('moderation_queue').then(r => r.data?.length || 0, () => 0),
-    db.rpc('applications_queue').then(r => r.data?.length || 0, () => 0),
-    db.rpc('admin_submissions').then(r => r.data?.length || 0, () => 0),
-  ]);
-  setBadge('mod-badge', mod);
-  setBadge('app-badge', apps);
-  setBadge('sub-badge', subs);
+  const { data } = await db.rpc('admin_badges');
+  if (!data) return;
+  setBadge('mod-badge', data.moderation);
+  setBadge('app-badge', data.applications);
+  setBadge('sub-badge', data.submissions);
 }
 
 // ---------- СВОДКА ----------
@@ -655,7 +696,6 @@ async function loadDashboard() {
   const days = parseInt($('ov-days').value, 10) || 30;
   const d = await call('admin_overview', { p_days: days }, 'ov-body');
   if (!d) return;
-  refreshBadges();
 
   const u = d.users || {}, r = d.recipes || {}, e = d.engagement || {},
         c = d.creators || {}, p = d.production || {}, s = d.series || {};
@@ -724,12 +764,16 @@ async function loadDashboard() {
 
     <div class="charts">
       <div class="chart-card">
-        <div class="chart-title" style="margin-bottom:10px">Most viewed recipes</div>
-        <table>${top || '<tr><td class="empty">Nobody has opened a recipe yet</td></tr>'}</table>
+        <div class="chart-title" style="margin-bottom:14px">Most viewed recipes</div>
+        <div class="card-scroll"><table>
+          <tbody>${top || '<tr><td class="empty">Nobody has opened a recipe yet</td></tr>'}</tbody>
+        </table></div>
       </div>
       <div class="chart-card">
-        <div class="chart-title" style="margin-bottom:10px">Published by cuisine</div>
-        <table>${cuisines || '<tr><td class="empty">No data</td></tr>'}</table>
+        <div class="chart-title" style="margin-bottom:14px">Published by cuisine</div>
+        <div class="card-scroll"><table>
+          <tbody>${cuisines || '<tr><td class="empty">No data</td></tr>'}</tbody>
+        </table></div>
       </div>
     </div>`;
 
@@ -816,18 +860,18 @@ async function loadAnalytics() {
 
     <h2 class="sub-head">Do they come back</h2>
     <div class="chart-card">
-      <div class="chart-title" style="margin-bottom:10px">Retention by signup week</div>
-      <table>
+      <div class="chart-title" style="margin-bottom:14px">Retention by signup week</div>
+      <div class="card-scroll"><table>
         <thead><tr><th>Cohort</th><th class="num-cell">People</th><th class="num-cell">Day 1</th><th class="num-cell">Week 1</th><th class="num-cell">Month 1</th></tr></thead>
         <tbody>${cohorts || '<tr><td colspan="5" class="empty">No cohorts yet</td></tr>'}</tbody>
-      </table>
+      </table></div>
     </div>
 
     <h2 class="sub-head">How far they get</h2>
     <div class="chart-card">
       ${funnelSteps.map(([label, n]) => `
-        <div class="dist">
-          <span class="dist-name" style="width:190px">${label}</span>
+        <div class="dist wide">
+          <span class="dist-name">${label}</span>
           <span class="dist-bar"><i style="width:${Math.min(100, (n || 0) / base * 100)}%"></i></span>
           <span class="dist-n">${num(n)} · ${Math.round((n || 0) / base * 100)}%</span>
         </div>`).join('')}
@@ -844,21 +888,21 @@ async function loadAnalytics() {
     <div class="charts">
       <div class="chart-card">
         <div class="chart-title" style="margin-bottom:10px">Where people stop</div>
-        <table>
+        <div class="card-scroll"><table>
           <thead><tr><th>Step they were on</th><th class="num-cell">Times</th></tr></thead>
           <tbody>${drops || '<tr><td colspan="2" class="empty">Nobody has abandoned a recipe yet</td></tr>'}</tbody>
-        </table>
+        </table></div>
       </div>
       <div class="chart-card">
         <div class="chart-title" style="margin-bottom:10px">How deep people go</div>
-        <table>
+        <div class="card-scroll"><table><tbody>
           <tr><td>Cooked 5 or more</td><td class="num-cell">${num(dp.power)}</td></tr>
           <tr><td>Cooked 2 to 4</td><td class="num-cell">${num(dp.regular)}</td></tr>
           <tr><td>Cooked once</td><td class="num-cell">${num(dp.tried)}</td></tr>
           <tr><td>Never cooked</td><td class="num-cell">${num(dp.never)}</td></tr>
           <tr><td>Cooks per user, average</td><td class="num-cell">${dp.cooks_per_user ?? '—'}</td></tr>
           <tr><td>Saves per user, average</td><td class="num-cell">${dp.saves_per_user ?? '—'}</td></tr>
-        </table>
+        </tbody></table></div>
       </div>
     </div>
 
@@ -876,19 +920,19 @@ async function loadAnalytics() {
     <div class="charts">
       <div class="chart-card">
         <div class="chart-title" style="margin-bottom:10px">Actions</div>
-        <table>
+        <div class="card-scroll"><table>
           <thead><tr><th>Event</th><th class="num-cell">Times</th><th class="num-cell">People</th></tr></thead>
           <tbody>${events || `<tr><td colspan="3" class="empty">
             No events recorded yet. Tracking starts once a build with the new
             app code is installed — nothing is invented for the meantime.</td></tr>`}</tbody>
-        </table>
+        </table></div>
       </div>
       <div class="chart-card">
         <div class="chart-title" style="margin-bottom:10px">What they search for</div>
-        <table>
+        <div class="card-scroll"><table>
           <thead><tr><th>Query</th><th class="num-cell">Times</th></tr></thead>
           <tbody>${searches || '<tr><td colspan="2" class="empty">No searches recorded yet</td></tr>'}</tbody>
-        </table>
+        </table></div>
       </div>
     </div>
 
@@ -1191,7 +1235,6 @@ async function loadModeration() {
     return;
   }
   const queue = data || [];
-  refreshBadges();
 
   if (!queue.length) {
     box.innerHTML = '<div class="empty">Nothing waiting. Recipes creators submit land here.</div>';
@@ -1246,6 +1289,7 @@ async function decide(id, approve) {
   const { error } = await db.rpc('moderate_recipe', { p_recipe_id: id, p_approve: approve, p_reason: reason });
   if (error) return alert('Failed: ' + error.message);
   $('mod-' + id)?.remove();
+  refreshBadges();
   loadModeration();
 }
 
@@ -1455,7 +1499,6 @@ async function loadCreators() {
         </div>
       </div>`).join('');
   }
-  refreshBadges();
 
   const tbody = $('c-tbody');
   const { data: list, error } = await db.rpc('creators_list');
@@ -1493,6 +1536,7 @@ async function decideApp(userId, approve, quota) {
     p_user_id: userId, p_approve: approve, p_reason: reason, p_quota: quota,
   });
   if (error) return alert('Failed: ' + error.message);
+  refreshBadges();
   loadCreators();
 }
 
@@ -1550,7 +1594,6 @@ async function loadProduction() {
       </div>`).join('')
       : '<div class="empty">Nothing waiting to be checked.</div>';
   }
-  refreshBadges();
 
   const tbody = $('p-tbody');
   const weeks = await call('admin_production', {}, tbody, 8);
@@ -1582,6 +1625,7 @@ async function reviewDish(id, approve) {
   const { error } = await db.rpc('review_dish', { p_item_id: id, p_approve: approve, p_reason: reason });
   if (error) return alert('Failed: ' + error.message);
   $('sub-' + id)?.remove();
+  refreshBadges();
   loadProduction();
 }
 
