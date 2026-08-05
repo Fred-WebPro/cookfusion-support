@@ -76,6 +76,30 @@
   .btn-cancel { background: var(--bg); color: var(--text); }
   #img-preview { width: 100%; height: 160px; object-fit: cover; border-radius: 12px; margin-top: 8px; display: none; background: var(--border); }
 
+  /* Moderation */
+  .sub-head { font-size: 17px; color: var(--green); margin: 26px 0 12px; }
+  .mod-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 16px; }
+  .mod-top { display: flex; gap: 16px; padding: 16px; }
+  .mod-photo { width: 160px; height: 120px; object-fit: cover; border-radius: 12px; background: var(--border); flex-shrink: 0; }
+  .mod-title { font-size: 17px; font-weight: 700; color: var(--text); }
+  .mod-desc { color: var(--muted); font-size: 13.5px; margin-top: 6px; line-height: 1.5; }
+  .mod-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+  .mod-chip { background: var(--bg); border-radius: 8px; padding: 4px 10px; font-size: 12px; color: var(--muted); }
+  .mod-author { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 13px; color: var(--muted); }
+  .mod-body { border-top: 1px solid var(--border); padding: 16px; display: none; }
+  .mod-body.open { display: block; }
+  .mod-cols { display: grid; grid-template-columns: 1fr 1.4fr; gap: 24px; }
+  .mod-cols h4 { font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin-bottom: 8px; }
+  .mod-cols li { font-size: 13.5px; margin-bottom: 6px; line-height: 1.5; }
+  .mod-actions { display: flex; gap: 10px; padding: 14px 16px; border-top: 1px solid var(--border); background: #FAFBF8; }
+  .btn-approve { background: var(--sage); color: #fff; }
+  .btn-reject { background: #FBE9E7; color: #B3352E; }
+  .btn-toggle { background: var(--bg); color: var(--text); margin-left: auto; }
+  .nav-badge { display: none; background: var(--orange); color: #fff; border-radius: 9px; padding: 1px 7px; font-size: 11px; margin-left: 6px; }
+  .nav-badge.on { display: inline-block; }
+  .app-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 18px; margin-bottom: 12px; }
+  .app-about { font-size: 13.5px; line-height: 1.55; color: var(--text); margin: 8px 0 12px; white-space: pre-wrap; }
+
   /* Push */
   .push-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 26px; max-width: 560px; }
   .result-box { display: none; margin-top: 18px; padding: 14px; border-radius: 12px; background: #EAF1E7; color: var(--green); font-size: 14px; }
@@ -115,6 +139,8 @@
       <button class="nav-btn active" data-tab="dashboard" onclick="showTab('dashboard')">📊 Dashboard</button>
       <button class="nav-btn" data-tab="recipes" onclick="showTab('recipes')">🥘 Recipes</button>
       <button class="nav-btn" data-tab="push" onclick="showTab('push')">📣 Push</button>
+      <button class="nav-btn" data-tab="moderation" onclick="showTab('moderation')">🧑‍🍳 Moderation<span id="mod-badge" class="nav-badge"></span></button>
+      <button class="nav-btn" data-tab="creators" onclick="showTab('creators')">👥 Creators</button>
       <button class="nav-btn" data-tab="enrich" onclick="showTab('enrich')">✨ Enrich</button>
       <button class="signout" onclick="signOut()">Sign out</button>
     </aside>
@@ -168,6 +194,30 @@
         </div>
       </section>
 
+      <!-- MODERATION -->
+      <section id="tab-moderation" style="display:none">
+        <h1 class="page-title">Moderation queue</h1>
+        <p class="page-sub">Recipes creators sent for review — approve to publish, or send back with a reason</p>
+        <div id="mod-list"><div class="empty">Loading…</div></div>
+      </section>
+
+      <!-- CREATORS -->
+      <section id="tab-creators" style="display:none">
+        <h1 class="page-title">Creators</h1>
+        <p class="page-sub">Applications, active creators and assignments</p>
+
+        <h2 class="sub-head">Applications</h2>
+        <div id="app-list"><div class="empty">Loading…</div></div>
+
+        <h2 class="sub-head">Active creators</h2>
+        <div class="panel">
+          <table>
+            <thead><tr><th></th><th>Name</th><th>Country</th><th>Quota</th><th>Published</th><th>Views</th><th>Pending</th><th></th></tr></thead>
+            <tbody id="creators-tbody"><tr><td colspan="8" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
       <!-- ENRICH -->
       <section id="tab-enrich" style="display:none">
         <h1 class="page-title">Enrich recipes</h1>
@@ -196,6 +246,25 @@
         </div>
       </section>
     </main>
+  </div>
+</div>
+
+<!-- МОДАЛКА ЗАДАНИЯ -->
+<div id="assign-overlay" style="display:none;position:fixed;inset:0;background:rgba(20,30,24,.5);z-index:60;align-items:center;justify-content:center;padding:20px">
+  <div class="modal" style="max-width:520px">
+    <h2>New assignment</h2>
+    <div class="hint" id="assign-for"></div>
+    <label>Brief — what to cook and how to shoot it</label>
+    <textarea id="assign-brief" rows="5" placeholder="Pasta with Barilla penne and Heinz tomato sauce. Hands and packaging visible in at least two shots."></textarea>
+    <div class="grid-2">
+      <div><label>Payout, USD</label><input id="assign-payout" type="number" step="0.5" placeholder="12"></div>
+      <div><label>Due date</label><input id="assign-due" type="date"></div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeAssign()">Cancel</button>
+      <button class="btn-primary" style="width:auto;margin:0" onclick="sendAssign()">Send assignment</button>
+    </div>
+    <div class="error-box" id="assign-error"></div>
   </div>
 </div>
 
@@ -286,10 +355,13 @@ function showTab(name) {
   });
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
   if (name === 'dashboard') loadDashboard();
+  if (name === 'moderation') loadModeration();
+  if (name === 'creators') loadCreators();
 }
 
 // ---------- DASHBOARD ----------
 async function loadDashboard() {
+  loadModeration().catch(() => {});   // заодно обновляем счётчик в меню
   const [{ count: usersCount }, { count: recipesCount }, { count: favCount }] = await Promise.all([
     db.from('profiles').select('id', { count: 'exact', head: true }),
     db.from('recipes').select('id', { count: 'exact', head: true }),
@@ -578,6 +650,174 @@ async function runEnrich(dryRun) {
     $('enrich-stop').style.display = 'none';
   }
 }
+
+// ---------- MODERATION ----------
+let modQueue = [];
+
+async function loadModeration() {
+  const box = $('mod-list');
+  const { data, error } = await db.rpc('moderation_queue');
+  if (error) {
+    box.innerHTML = '<div class="empty">Run moderation.sql in Supabase to switch the queue on.<br><small>' + error.message + '</small></div>';
+    return;
+  }
+  modQueue = data || [];
+
+  const badge = $('mod-badge');
+  badge.textContent = modQueue.length;
+  badge.className = modQueue.length ? 'nav-badge on' : 'nav-badge';
+
+  if (!modQueue.length) {
+    box.innerHTML = '<div class="empty">Nothing waiting. Recipes creators submit land here.</div>';
+    return;
+  }
+
+  box.innerHTML = modQueue.map((r, i) => {
+    const ing = (r.ingredients || []).map(x => '<li>' + esc(x.amount || '') + ' — ' + esc(x.name || '') + '</li>').join('');
+    const steps = (r.steps || []).map((x, n) => '<li><b>' + (n + 1) + '.</b> ' + esc(x.text || '') + '</li>').join('');
+    return `
+      <div class="mod-card" id="mod-${r.id}">
+        <div class="mod-top">
+          <img class="mod-photo" src="${esc(r.image || '')}" alt="">
+          <div style="flex:1">
+            <div class="mod-title">${esc(r.title || 'Untitled')}</div>
+            <div class="mod-desc">${esc(r.description || 'No description')}</div>
+            <div class="mod-meta">
+              <span class="mod-chip">${r.servings || '?'} servings</span>
+              <span class="mod-chip">${r.time_minutes || '?'} min</span>
+              <span class="mod-chip">${(r.ingredients || []).length} ingredients</span>
+              <span class="mod-chip">${(r.steps || []).length} steps</span>
+              ${r.cuisine ? '<span class="mod-chip">' + esc(r.cuisine) + '</span>' : ''}
+              ${r.assignment_id ? '<span class="mod-chip">assignment #' + r.assignment_id + '</span>' : ''}
+            </div>
+            <div class="mod-author">
+              <img class="avatar" style="width:26px;height:26px" src="${esc(r.author_avatar || '')}" alt="">
+              ${esc(r.author_name)} · ${new Date(r.created_at).toLocaleDateString()}
+            </div>
+          </div>
+        </div>
+        <div class="mod-body" id="body-${r.id}">
+          <div class="mod-cols">
+            <div><h4>Ingredients</h4><ul>${ing || '<li>—</li>'}</ul></div>
+            <div><h4>Steps</h4><ol style="padding-left:0;list-style:none">${steps || '<li>—</li>'}</ol></div>
+          </div>
+        </div>
+        <div class="mod-actions">
+          <button class="btn-approve" onclick="decide(${r.id}, true)">Approve & publish</button>
+          <button class="btn-reject" onclick="decide(${r.id}, false)">Send back</button>
+          <button class="btn-toggle" onclick="document.getElementById('body-${r.id}').classList.toggle('open')">Full recipe</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+async function decide(id, approve) {
+  let reason = null;
+  if (!approve) {
+    reason = prompt('What should the creator fix?');
+    if (reason === null) return;
+  } else if (!confirm('Publish this recipe?')) return;
+
+  const { error } = await db.rpc('moderate_recipe', {
+    p_recipe_id: id, p_approve: approve, p_reason: reason,
+  });
+  if (error) { alert('Failed: ' + error.message); return; }
+  document.getElementById('mod-' + id)?.remove();
+  loadModeration();
+}
+
+// ---------- CREATORS ----------
+async function loadCreators() {
+  const { data: apps, error: appErr } = await db.rpc('applications_queue');
+  const box = $('app-list');
+  if (appErr) {
+    box.innerHTML = '<div class="empty">Run moderation.sql to switch this on.</div>';
+  } else if (!apps || !apps.length) {
+    box.innerHTML = '<div class="empty">No applications waiting.</div>';
+  } else {
+    box.innerHTML = apps.map(a => `
+      <div class="app-card">
+        <div style="display:flex;align-items:center;gap:10px">
+          <img class="avatar" src="${esc(a.avatar || '')}" alt="">
+          <div>
+            <b>${esc(a.name)}</b>
+            <div style="font-size:12px;color:var(--muted)">${esc(a.country || '')} · ${new Date(a.created_at).toLocaleDateString()}</div>
+          </div>
+        </div>
+        <div class="app-about">${esc(a.about || '')}</div>
+        ${(a.sample_links || []).map(l => '<a href="' + esc(l) + '" target="_blank" rel="noopener" style="font-size:12.5px;margin-right:10px">' + esc(l) + '</a>').join('')}
+        <div style="display:flex;gap:10px;margin-top:14px">
+          <button class="btn-approve" onclick="decideApp('${a.user_id}', true)">Approve as creator</button>
+          <button class="btn-reject" onclick="decideApp('${a.user_id}', false)">Decline</button>
+        </div>
+      </div>`).join('');
+  }
+
+  const { data: list, error } = await db.rpc('creators_list');
+  const tbody = $('creators-tbody');
+  if (error || !list || !list.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="empty">No creators yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.map(c => `
+    <tr>
+      <td><img class="avatar" src="${esc(c.avatar || '')}" alt=""></td>
+      <td><b>${esc(c.name)}</b></td>
+      <td>${esc(c.country || '—')}</td>
+      <td>${c.weekly_quota || 0}/week</td>
+      <td>${c.total_recipes || 0}</td>
+      <td>${c.total_views || 0}</td>
+      <td>${c.pending ? '<span class="badge admin">' + c.pending + '</span>' : '—'}</td>
+      <td><button class="btn-icon" onclick="openAssign('${c.user_id}', '${esc(c.name)}')">Assign</button></td>
+    </tr>`).join('');
+}
+
+async function decideApp(userId, approve) {
+  let reason = null;
+  if (!approve) {
+    reason = prompt('Why not?');
+    if (reason === null) return;
+  } else if (!confirm('Approve this person as a creator with a 21/week quota?')) return;
+
+  const { error } = await db.rpc('decide_application', {
+    p_user_id: userId, p_approve: approve, p_reason: reason, p_quota: 21,
+  });
+  if (error) { alert('Failed: ' + error.message); return; }
+  loadCreators();
+}
+
+let assignTarget = null;
+function openAssign(userId, name) {
+  assignTarget = userId;
+  $('assign-for').textContent = 'For ' + name;
+  $('assign-brief').value = '';
+  $('assign-payout').value = '';
+  $('assign-due').value = '';
+  $('assign-error').style.display = 'none';
+  $('assign-overlay').style.display = 'flex';
+}
+function closeAssign() { $('assign-overlay').style.display = 'none'; }
+
+async function sendAssign() {
+  const brief = $('assign-brief').value.trim();
+  if (brief.length < 15) { alert('Write a brief the creator can actually follow.'); return; }
+
+  const { error } = await db.rpc('assign_task', {
+    p_creator_id: assignTarget,
+    p_brief: brief,
+    p_payout: parseFloat($('assign-payout').value) || null,
+    p_due: $('assign-due').value || null,
+  });
+  if (error) {
+    const box = $('assign-error');
+    box.style.display = 'block';
+    box.textContent = error.message;
+    return;
+  }
+  closeAssign();
+  alert('Assignment sent — it shows up in their studio.');
+}
+
 
 init();
 </script>
