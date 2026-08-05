@@ -222,6 +222,7 @@
       <button class="nav-btn" data-tab="recipes" onclick="showTab('recipes')">Recipes</button>
       <button class="nav-btn" data-tab="health" onclick="showTab('health')">Catalogue health</button>
       <button class="nav-btn" data-tab="moderation" onclick="showTab('moderation')">Moderation<span id="mod-badge" class="nav-badge"></span></button>
+      <button class="nav-btn" data-tab="reports" onclick="showTab('reports')">Reports<span id="rep-badge" class="nav-badge"></span></button>
       <button class="nav-btn" data-tab="users" onclick="showTab('users')">Users</button>
       <button class="nav-btn" data-tab="creators" onclick="showTab('creators')">Creators<span id="app-badge" class="nav-badge"></span></button>
       <button class="nav-btn" data-tab="production" onclick="showTab('production')">Production<span id="sub-badge" class="nav-badge"></span></button>
@@ -343,6 +344,13 @@
         <h1 class="page-title">Moderation queue</h1>
         <p class="page-sub">Recipes creators sent for review — approve to publish, or send back with a reason</p>
         <div id="mod-list"><div class="empty">Loading…</div></div>
+      </section>
+
+      <!-- ЖАЛОБЫ -->
+      <section id="tab-reports" style="display:none">
+        <h1 class="page-title">Reports</h1>
+        <p class="page-sub">What people flagged in the app</p>
+        <div id="rp-body"><div class="empty">Loading…</div></div>
       </section>
 
       <!-- ПОЛЬЗОВАТЕЛИ -->
@@ -694,7 +702,7 @@ const LOADERS = {
   health: loadHealth, moderation: loadModeration, users: loadUsers,
   creators: loadCreators, production: loadProduction, orders: loadOrders,
   warehouses: loadWarehouses, partners: loadPartners, banners: loadBanners,
-  settings: loadSettings, comments: loadComments,
+  settings: loadSettings, comments: loadComments, reports: loadReports,
 };
 
 /**
@@ -741,6 +749,7 @@ async function refreshBadges() {
   const { data } = await db.rpc('admin_badges');
   if (!data) return;
   setBadge('mod-badge', data.moderation);
+  setBadge('rep-badge', data.reports);
   setBadge('app-badge', data.applications);
   setBadge('sub-badge', data.submissions);
 }
@@ -1062,6 +1071,44 @@ async function loadOrders() {
     </div>`;
 }
 
+// ---------- ЖАЛОБЫ ----------
+async function loadReports() {
+  const rows = await call('admin_reports', {}, 'rp-body');
+  if (!rows) return;
+  if (!rows.length) {
+    $('rp-body').innerHTML = '<div class="empty">Nothing flagged. Reports people send from the app land here.</div>';
+    return;
+  }
+  $('rp-body').innerHTML = rows.map(r => `
+    <div class="mod-card" id="rep-${r.id}">
+      <div class="mod-top">
+        ${r.recipe_image ? `<img class="mod-photo" src="${esc(r.recipe_image)}" alt="">` : ''}
+        <div style="flex:1;min-width:0">
+          <div class="mod-title">${esc(r.reason)}</div>
+          ${r.details ? `<div class="mod-desc">${esc(r.details)}</div>` : ''}
+          <div class="mod-meta">
+            ${r.recipe_title ? `<span class="mod-chip">${esc(r.recipe_title)}</span>` : ''}
+            ${r.reported_user ? `<span class="mod-chip">about ${esc(r.reported_user)}</span>` : ''}
+          </div>
+          <div class="mod-author">${esc(r.reporter)} · ${dayShort(r.created_at)}</div>
+        </div>
+      </div>
+      <div class="mod-actions">
+        <button class="btn-reject" onclick="handleReport(${r.id}, 'actioned')">Content removed</button>
+        <button class="btn-approve" onclick="handleReport(${r.id}, 'dismissed')">Nothing wrong</button>
+        <button class="btn-toggle" onclick="handleReport(${r.id}, 'reviewed')">Looked at it</button>
+      </div>
+    </div>`).join('');
+}
+
+async function handleReport(id, action) {
+  const { error } = await db.rpc('admin_handle_report', { p_id: id, p_action: action });
+  if (error) return alert('Failed: ' + error.message);
+  $('rep-' + id)?.remove();
+  refreshBadges();
+  loadReports();
+}
+
 // ---------- СКЛАДЫ, ПАРТНЁРЫ, БАННЕРЫ ----------
 /**
  * Один редактор на все три справочника.
@@ -1086,7 +1133,7 @@ const FORMS = {
     fields: [
       { k: 'name', l: 'Name', req: true },
       { k: 'kind', l: 'Kind', type: 'select', opts: ['brand', 'retailer', 'delivery', 'media', 'other'] },
-      { k: 'status', l: 'Status', type: 'select', opts: ['lead', 'talking', 'active', 'paused', 'ended'] },
+      { k: 'status', l: 'Status', type: 'select', opts: ['lead', 'negotiation', 'active', 'paused', 'ended'] },
       { k: 'deal_usd', l: 'Deal, USD', type: 'number' },
       { k: 'website', l: 'Website' }, { k: 'logo_url', l: 'Logo URL' },
       { k: 'contact_name', l: 'Contact name' }, { k: 'contact_email', l: 'Contact email' },
@@ -1100,11 +1147,12 @@ const FORMS = {
     fields: [
       { k: 'title', l: 'Title', req: true },
       { k: 'subtitle', l: 'Subtitle' },
-      { k: 'image_url', l: 'Image URL', wide: true },
-      { k: 'placement', l: 'Placement', type: 'select', opts: ['feed_top', 'feed_middle', 'search', 'plan', 'profile'] },
+      { k: 'image_url', l: 'Image URL', req: true, wide: true },
+      { k: 'cta_label', l: 'Button text' },
+      { k: 'placement', l: 'Placement', type: 'select', opts: ['feed_top', 'feed_middle', 'plan', 'profile', 'scan'] },
+      { k: 'action_type', l: 'Opens', type: 'select', opts: ['none', 'recipe', 'category', 'url', 'shelf'] },
+      { k: 'action_value', l: 'Recipe id, category or URL', wide: true },
       { k: 'priority', l: 'Priority', type: 'number' },
-      { k: 'recipe_id', l: 'Opens recipe id', type: 'number' },
-      { k: 'action_url', l: 'Or opens a link' },
       { k: 'partner_id', l: 'Partner id', type: 'number' },
       { k: 'accent', l: 'Accent colour' },
       { k: 'starts_at', l: 'Starts', type: 'date' }, { k: 'ends_at', l: 'Ends', type: 'date' },
