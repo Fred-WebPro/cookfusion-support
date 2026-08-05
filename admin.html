@@ -42,7 +42,14 @@
   .nav-btn { background: transparent; color: #fff; text-align: left; padding: 11px 13px; border-radius: 11px; margin-bottom: 3px; font-weight: 500; width: 100%; opacity: .72; font-size: 13.5px; display: flex; align-items: center; }
   .nav-btn:hover { background: rgba(255,255,255,.08); opacity: 1; }
   .nav-btn.active { background: var(--sage); opacity: 1; font-weight: 700; }
-  .refresh { margin-top: auto; margin-bottom: 6px; background: rgba(255,255,255,.08); color: #fff; font-size: 13px; }
+  .lang { display: flex; gap: 4px; margin-top: auto; margin-bottom: 8px; }
+  .lang button {
+    flex: 1; background: rgba(255,255,255,.08); color: rgba(255,255,255,.6);
+    font-size: 12px; font-weight: 800; padding: 7px;
+  }
+  .lang button.on { background: var(--sage); color: #fff; }
+
+  .refresh { margin-top: 0; margin-bottom: 6px; background: rgba(255,255,255,.08); color: #fff; font-size: 13px; }
   .refresh:hover { background: rgba(255,255,255,.16); }
   .signout { background: rgba(255,255,255,.1); color: #fff; }
   main { flex: 1; padding: 30px clamp(16px, 3vw, 40px); max-width: 1400px; min-width: 0; }
@@ -159,6 +166,24 @@
   .form-grid label { margin-top: 12px; }
   #form-delete { margin-right: auto; }
 
+  .help {
+    background: #EDF1E9; border-left: 3px solid var(--sage); border-radius: 0 10px 10px 0;
+    padding: 11px 14px; font-size: 13px; line-height: 1.55; color: #46523F;
+    margin: -8px 0 20px; max-width: 860px;
+  }
+  .tag-row { display: flex; flex-wrap: wrap; gap: 7px; }
+  .tag {
+    background: var(--bg); border: 1px solid var(--border); border-radius: 9px;
+    padding: 5px 10px; font-size: 12.5px; font-weight: 600; color: var(--text);
+  }
+  .tag span { color: var(--muted); font-weight: 500; }
+  .tag.on { background: var(--sage); border-color: transparent; color: #fff; }
+  .tag.on span { color: rgba(255,255,255,.7); }
+  .audience {
+    background: var(--soft); border: 1px solid var(--border); border-radius: 12px;
+    padding: 13px; font-size: 13.5px; margin-top: 16px; line-height: 1.5;
+  }
+
   /* Распределения и воронка */
   .dist { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; font-size: 13px; }
   .dist-name { flex: 0 1 130px; min-width: 70px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -234,6 +259,10 @@
       <button class="nav-btn" data-tab="comments" onclick="showTab('comments')">Comments</button>
       <button class="nav-btn" data-tab="push" onclick="showTab('push')">Push</button>
       <button class="nav-btn" data-tab="enrich" onclick="showTab('enrich')">Enrich</button>
+      <div class="lang">
+        <button id="lang-en" onclick="setLang('en')">EN</button>
+        <button id="lang-ru" onclick="setLang('ru')">RU</button>
+      </div>
       <button class="refresh" onclick="reloadTab()">Refresh</button>
       <button class="signout" onclick="signOut()">Sign out</button>
     </aside>
@@ -250,6 +279,7 @@
             <option value="90">last 90 days</option>
           </select>
         </p>
+        <div class="help">The state of everything in one screen. Numbers first, charts after. Nothing here is editable — it is where you look before deciding what to do.</div>
         <div id="ov-body"><div class="empty">Loading…</div></div>
       </section>
 
@@ -264,6 +294,7 @@
             <option value="90">last 90 days</option>
           </select>
         </p>
+        <div class="help">Whether people come back and how far they get. Retention answers "is this working", the funnel answers "where do we lose them", the cooking numbers answer "are the recipes actually usable".</div>
         <div id="an-body"><div class="empty">Loading…</div></div>
       </section>
 
@@ -271,6 +302,7 @@
       <section id="tab-orders" style="display:none">
         <h1 class="page-title">Orders</h1>
         <p class="page-sub">Product shipments to workers, by warehouse</p>
+        <div class="help">Products shipped to workers so they can cook their week.</div>
         <div id="or-body"><div class="empty">Loading…</div></div>
       </section>
 
@@ -278,6 +310,7 @@
       <section id="tab-recipes" style="display:none">
         <h1 class="page-title">Recipes</h1>
         <p class="page-sub">The whole catalogue with filters, bulk actions and a working editor</p>
+        <div class="help">The whole catalogue. Filter by what is missing, fix in the editor, or select several and publish, hide or pin them at once.</div>
         <div class="toolbar">
           <input type="search" id="r-search" placeholder="Search by title…" oninput="debounce(loadRecipes)">
           <select id="r-status" onchange="resetPage(); loadRecipes()">
@@ -336,6 +369,7 @@
       <section id="tab-health" style="display:none">
         <h1 class="page-title">Catalogue health</h1>
         <p class="page-sub">What is missing from published recipes. The app hides shelves it cannot fill honestly, so these gaps are why the catalogue looks smaller than it is.</p>
+        <div class="help">What is missing from published recipes. The app hides a shelf it cannot fill honestly, so these gaps are why the catalogue looks smaller than it is. Every row jumps to the affected recipes.</div>
         <div id="health-body"><div class="empty">Loading…</div></div>
       </section>
 
@@ -343,6 +377,7 @@
       <section id="tab-moderation" style="display:none">
         <h1 class="page-title">Moderation queue</h1>
         <p class="page-sub">Recipes creators sent for review — approve to publish, or send back with a reason</p>
+        <div class="help">Recipes creators submitted, waiting for a decision. Approving publishes them into the app immediately.</div>
         <div id="mod-list"><div class="empty">Loading…</div></div>
       </section>
 
@@ -350,6 +385,7 @@
       <section id="tab-reports" style="display:none">
         <h1 class="page-title">Reports</h1>
         <p class="page-sub">What people flagged in the app</p>
+        <div class="help">What people flagged from inside the app — a recipe or another person. Empty is good.</div>
         <div id="rp-body"><div class="empty">Loading…</div></div>
       </section>
 
@@ -357,6 +393,7 @@
       <section id="tab-users" style="display:none">
         <h1 class="page-title">Users</h1>
         <p class="page-sub">Everyone registered, with what they actually do in the app</p>
+        <div class="help">Everyone registered. Open a person to see what they actually do, change their role, or tag them for a push.</div>
         <div id="roles-row" class="stats-row"></div>
         <div class="toolbar">
           <input type="search" id="u-search" placeholder="Search by name or handle…" oninput="debounce(loadUsers)">
@@ -389,6 +426,7 @@
       <section id="tab-creators" style="display:none">
         <h1 class="page-title">Creators</h1>
         <p class="page-sub">Applications, active authors and assignments</p>
+        <div class="help">Applications to become an author, and everyone already publishing. Approving as an author means free publishing paid on views; as a worker means 21 dishes a week on contract.</div>
 
         <h2 class="sub-head">Applications</h2>
         <div id="app-list"><div class="empty">Loading…</div></div>
@@ -406,6 +444,7 @@
       <section id="tab-production" style="display:none">
         <h1 class="page-title">Production</h1>
         <p class="page-sub">Worker weeks and dishes waiting to be checked</p>
+        <div class="help">Only for workers on contract. Dishes they cooked and submitted, waiting to be checked — approving writes their photo and measured time onto the recipe.</div>
 
         <h2 class="sub-head">Submitted dishes</h2>
         <div id="sub-list"><div class="empty">Loading…</div></div>
@@ -423,6 +462,7 @@
       <section id="tab-warehouses" style="display:none">
         <h1 class="page-title">Warehouses</h1>
         <p class="page-sub">Where the products go out from. Workers order against these.</p>
+        <div class="help">Where those products ship from. A worker orders against one of these.</div>
         <div class="toolbar"><button class="btn-add" onclick="openWarehouse(null)">Add warehouse</button></div>
         <div id="wh-body"><div class="empty">Loading…</div></div>
       </section>
@@ -431,6 +471,7 @@
       <section id="tab-partners" style="display:none">
         <h1 class="page-title">Partners</h1>
         <p class="page-sub">Brands, retailers and delivery services — from first contact to a running deal</p>
+        <div class="help">Brands, shops and delivery services — from first contact to a signed deal. This is where the money will come from.</div>
         <div class="toolbar"><button class="btn-add" onclick="openPartner(null)">Add partner</button></div>
         <div id="pt-body"><div class="empty">Loading…</div></div>
       </section>
@@ -439,6 +480,7 @@
       <section id="tab-banners" style="display:none">
         <h1 class="page-title">Banners</h1>
         <p class="page-sub">Promo slots inside the app, with impressions and clicks counted per banner</p>
+        <div class="help">Promo slots inside the app. A banner shows only while it is live and inside its dates; impressions and clicks are counted so you can report to a partner.</div>
         <div class="toolbar"><button class="btn-add" onclick="openBanner(null)">Add banner</button></div>
         <div id="bn-body"><div class="empty">Loading…</div></div>
       </section>
@@ -447,6 +489,7 @@
       <section id="tab-settings" style="display:none">
         <h1 class="page-title">Ranking and settings</h1>
         <p class="page-sub">How the feed decides what to show first. Change the weights, then recalculate.</p>
+        <div class="help">How the feed decides what to show first. Change a weight, then recalculate — nothing moves until you do.</div>
         <div id="st-body"><div class="empty">Loading…</div></div>
       </section>
 
@@ -454,6 +497,7 @@
       <section id="tab-comments" style="display:none">
         <h1 class="page-title">Comments</h1>
         <p class="page-sub">Latest comments across the whole app — hide anything that does not belong</p>
+        <div class="help">Everything people wrote under recipes, newest first. Hide anything that does not belong.</div>
         <div class="panel">
           <table>
             <thead><tr><th style="width:44px"></th><th>Author</th><th>Comment</th><th>Recipe</th><th>When</th><th></th></tr></thead>
@@ -464,16 +508,62 @@
 
       <!-- ПУШИ -->
       <section id="tab-push" style="display:none">
-        <h1 class="page-title">Push broadcast</h1>
-        <p class="page-sub">Goes to every user who allowed notifications</p>
-        <div class="form-card">
-          <div id="push-reach" class="note" style="margin-bottom:6px"></div>
-          <label>Title</label>
-          <input id="push-title" maxlength="80" placeholder="Dinner idea inside">
-          <label>Message</label>
-          <textarea id="push-message" rows="4" maxlength="200" placeholder="Open CookFusion and let the AI chef surprise you tonight."></textarea>
-          <button class="btn-primary btn-block" id="push-btn" onclick="sendPush()">Send to all users</button>
-          <div class="result-box" id="push-result"></div>
+        <h1 class="page-title">Push</h1>
+        <p class="page-sub">Send a notification to everyone, to a segment, to people with a tag, or to named people</p>
+        <div class="help">Pick the audience first and check the number before you write anything. A notification cannot be recalled once it is sent.</div>
+
+        <div class="charts">
+          <div class="chart-card">
+            <div class="chart-title" style="margin-bottom:12px">Who gets it</div>
+
+            <label>Segment</label>
+            <select id="pf-segment" onchange="previewAudience()">
+              <option value="all">Everyone</option>
+              <option value="new_week">Joined this week</option>
+              <option value="not_onboarded">Never finished onboarding</option>
+              <option value="never_cooked">Never cooked anything</option>
+              <option value="cooked_once">Cooked exactly once</option>
+              <option value="regulars">Cooked five times or more</option>
+              <option value="inactive_30">Not seen for 30 days</option>
+              <option value="has_family">Set up a household</option>
+              <option value="creators">Authors</option>
+              <option value="workers">Workers on contract</option>
+            </select>
+
+            <label>Tags — any of these</label>
+            <div id="pf-tags" class="tag-row"></div>
+
+            <label>Language</label>
+            <select id="pf-locale" onchange="previewAudience()">
+              <option value="">Any</option>
+              <option value="en">English</option>
+              <option value="ru">Russian</option>
+            </select>
+
+            <label>Named people — one user id per line</label>
+            <textarea id="pf-users" rows="2" placeholder="Leave empty unless you mean specific accounts" oninput="debounce(previewAudience)"></textarea>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-title" style="margin-bottom:12px">What they get</div>
+            <label>Title</label>
+            <input id="push-title" maxlength="80" placeholder="Dinner idea inside">
+            <label>Message</label>
+            <textarea id="push-message" rows="4" maxlength="200" placeholder="Open CookFusion and let the AI chef surprise you tonight."></textarea>
+
+            <div id="audience-box" class="audience">Counting…</div>
+
+            <button class="btn-primary btn-block" id="push-btn" onclick="sendPush()">Send</button>
+            <div class="result-box" id="push-result"></div>
+          </div>
+        </div>
+
+        <h2 class="sub-head">Already sent</h2>
+        <div class="panel">
+          <table>
+            <thead><tr><th>Title</th><th>Message</th><th>Audience</th><th class="num-cell">Reached</th><th class="num-cell">Failed</th><th>When</th></tr></thead>
+            <tbody id="pl-tbody"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
+          </table>
         </div>
       </section>
 
@@ -481,6 +571,7 @@
       <section id="tab-enrich" style="display:none">
         <h1 class="page-title">Enrich recipes</h1>
         <p class="page-sub">Fills description, calories, macros, real servings, cuisine and meal type using the AI model</p>
+        <div class="help">Fills in description, calories, macros, servings, cuisine and meal type with the AI model for recipes that lack them.</div>
         <div class="form-card">
           <p class="note" style="margin-bottom:14px">
             Runs in batches so nothing times out. Steps are never sent to the model —
@@ -608,6 +699,437 @@ const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/**
+ * Русский перевод панели.
+ *
+ * Ключ — английский оригинал, ровно как он написан в разметке. Строки,
+ * которых здесь нет, остаются английскими: это заметно, но лучше, чем
+ * пустое место.
+ *
+ * Переводим не по вызовам в коде, а по готовой странице: разметка и
+ * шаблоны собраны в трёх сотнях мест, и обернуть каждое вручную —
+ * верный способ что-нибудь сломать.
+ */
+const RU = {
+  'Moderation queue':
+    'Очередь модерации',
+  'Runs in batches so nothing times out. Steps are never sent to the model — only the title and ingredient list — which keeps the cost at roughly':
+    'Идёт порциями, чтобы ничего не отваливалось по времени. Шаги в модель не отправляются — только название и список ингредиентов, — за счёт этого стоимость держится около',
+  'Safe to stop and resume: already processed recipes are skipped.':
+    'Можно останавливать и продолжать: уже обработанные рецепты пропускаются.',
+  'score = views_weight · ln(1 + views) + rating_weight · rating + recency_weight · freshness + pinned_boost if pinned.':
+    'вес = вес_просмотров · ln(1 + просмотры) + вес_оценки · оценка + вес_свежести · свежесть + надбавка за закрепление.',
+  'What is missing from published recipes. The app hides shelves it cannot fill honestly, so these gaps are why the catalogue looks smaller than it is.':
+    'Чего не хватает опубликованным рецептам. Приложение прячет полки, которые не может наполнить честно, — отсюда и ощущение, что каталог меньше, чем он есть.',
+  'Product shipments to workers, by warehouse':
+    'Отправки продуктов работникам, по складам',
+  'Where the products go out from. Workers order against these.':
+    'Откуда уезжают продукты. Работники заказывают с этих складов.',
+  'Brands, retailers and delivery services — from first contact to a running deal':
+    'Бренды, сети и службы доставки — от первого контакта до действующего договора',
+  'Promo slots inside the app, with impressions and clicks counted per banner':
+    'Рекламные места внутри приложения, с подсчётом показов и кликов по каждому баннеру',
+  'How the feed decides what to show first. Change the weights, then recalculate.':
+    'Как лента решает, что показать первым. Поменяйте веса и пересчитайте.',
+  'Ranking and settings':
+    'Ранжирование и настройки',
+  'Enrich recipes':
+    'Обогащение рецептов',
+  'Warehouse':
+    'Склад',
+  'Week':
+    'Неделя',
+  'No name':
+    'Без имени',
+  'Nothing has been shipped yet. Shipments appear when a worker orders the products for their week.':
+    'Пока ничего не отправляли. Отправки появляются, когда работник заказывает продукты на свою неделю.',
+  'No warehouses set up yet.':
+    'Складов пока нет.',
+  'No warehouses yet. Add the first one — workers order their products against it.':
+    'Складов пока нет. Добавьте первый — с него работники будут заказывать продукты.',
+  'No partners yet. Add the first brand or retailer you are talking to.':
+    'Партнёров пока нет. Добавьте первый бренд или сеть, с которыми ведёте переговоры.',
+  'No banners yet. A banner shows up in the app only while it is live and inside its dates.':
+    'Баннеров пока нет. Баннер появляется в приложении, только пока он включён и попадает в свои даты.',
+  'score = views_weight · ln(1 + views) + rating_weight · rating + recency_weight · freshness + pinned_boost if pinned.':
+    'вес = вес_просмотров · ln(1 + просмотры) + вес_оценки · оценка + вес_свежести · свежесть + надбавка за закрепление.',
+  'Changing a weight does nothing until you recalculate — the score is stored on each recipe, because sorting 13,501 rows by a formula on every request would be slow.':
+    'Изменение веса ничего не даёт до пересчёта: вес хранится на каждом рецепте, потому что сортировать 13 501 строку по формуле на каждый запрос слишком медленно.',
+  'Runs in batches so nothing times out. Steps are never sent to the model — only the title and ingredient list — which keeps the cost at roughly':
+    'Идёт порциями, чтобы ничего не отваливалось по времени. Шаги в модель не отправляются — только название и список ингредиентов, — за счёт этого стоимость держится около',
+  'per 1000 recipes':
+    'за 1000 рецептов',
+  '. Safe to stop and resume: already processed recipes are skipped.':
+    '. Можно останавливать и продолжать: уже обработанные рецепты пропускаются.',
+  'Comments and reviews':
+    'Комментарии и отзывы',
+  'Author':
+    'Автор',
+  'No comments yet':
+    'Комментариев пока нет',
+  'Could not count:':
+    'Не удалось посчитать:',
+  'and others':
+    'и другие',
+  'Nobody matches.':
+    'Никто не подходит.',
+  'Either no one fits these conditions, or the people who do have notifications turned off.':
+    'Либо под эти условия никто не попадает, либо у подходящих людей выключены уведомления.',
+  // Вход и каркас
+  'CookFusion': 'CookFusion', 'Admin panel': 'Админ-панель',
+  'Sign in': 'Войти', 'Signing in…': 'Входим…', 'Sign out': 'Выйти',
+  'Refresh': 'Обновить', 'Password': 'Пароль',
+  'This account has no admin access.': 'У этого аккаунта нет доступа к панели.',
+
+  // Меню
+  'Dashboard': 'Сводка', 'Analytics': 'Аналитика', 'Recipes': 'Рецепты',
+  'Catalogue health': 'Состояние каталога', 'Moderation': 'Модерация',
+  'Reports': 'Жалобы', 'Users': 'Пользователи', 'Creators': 'Авторы',
+  'Production': 'Производство', 'Orders': 'Заказы', 'Warehouses': 'Склады',
+  'Partners': 'Партнёры', 'Banners': 'Баннеры', 'Ranking': 'Ранжирование',
+  'Comments': 'Комментарии', 'Push': 'Пуши', 'Enrich': 'Обогащение',
+
+  // Общее
+  'Cancel': 'Отмена', 'Save': 'Сохранить', 'Saving…': 'Сохраняем…',
+  'Close': 'Закрыть', 'Delete': 'Удалить', 'Edit': 'Изменить', 'Open': 'Открыть',
+  'Clear': 'Сбросить', 'Show': 'Показать', 'Loading…': 'Загружаем…',
+  'Previous': 'Назад', 'Next': 'Вперёд', 'Send': 'Отправить', 'Sending…': 'Отправляем…',
+  'No data': 'Нет данных', 'Nothing here yet': 'Пока пусто',
+  'Name': 'Название', 'Status': 'Состояние', 'When': 'Когда', 'Where': 'Где',
+  'Title': 'Заголовок', 'Message': 'Текст', 'Kind': 'Вид', 'Contact': 'Контакт',
+  'Since': 'С какого времени', 'Value': 'Значение', 'Setting': 'Настройка',
+  'Everyone': 'Все', 'Any': 'Любой', 'Yes': 'Да', 'No': 'Нет',
+  'Admins': 'Администраторы', 'Admin': 'Админ', 'Revoke admin': 'Снять права',
+  'Make admin': 'Дать права', 'User': 'Пользователь', 'Author': 'Автор',
+  'Worker': 'Работник', 'Authors': 'Авторы', 'Workers': 'Работники',
+
+  // Сводка
+  'Everything at a glance ·': 'Всё сразу ·',
+  'last 7 days': 'за 7 дней', 'last 30 days': 'за 30 дней', 'last 90 days': 'за 90 дней',
+  'The state of everything in one screen. Numbers first, charts after. Nothing here is editable — it is where you look before deciding what to do.':
+    'Состояние всего на одном экране. Сначала цифры, потом графики. Здесь ничего не меняется — сюда смотрят, чтобы решить, что делать дальше.',
+  'People': 'Люди', 'Catalogue': 'Каталог', 'Activity': 'Активность',
+  'Creators and production': 'Авторы и производство',
+  'Joined this week': 'Пришли за неделю', 'Active this week': 'Заходили за неделю',
+  'Push enabled': 'С уведомлениями', 'Finished onboarding': 'Прошли онбординг',
+  'Published': 'Опубликовано', 'In review': 'На проверке', 'With photo': 'С фото',
+  'Enriched': 'Обогащено', 'From creators': 'От авторов',
+  'Views, all time': 'Просмотров за всё время', 'Cooks finished': 'Готовок завершено',
+  'Saved recipes': 'Сохранений', 'Reviews': 'Отзывы', 'Follows': 'Подписки',
+  'New users per day': 'Новых пользователей в день',
+  'Recipe views per day': 'Просмотров рецептов в день',
+  'Cooks finished per day': 'Завершённых готовок в день',
+  'Most viewed recipes': 'Самые просматриваемые',
+  'Published by cuisine': 'Опубликовано по кухням',
+  'Active creators': 'Активных авторов', 'On contract': 'По договору',
+  'Applications waiting': 'Заявок ждёт', 'Open work weeks': 'Открытых недель',
+  'Dishes to check': 'Блюд на проверку', 'Dishes approved': 'Блюд принято',
+  'Loading charts…': 'Загружаем графики…',
+  'Nobody has opened a recipe yet': 'Рецепты ещё никто не открывал',
+  'Recipes': 'Рецептов',
+
+  // Аналитика
+  'Who comes back, how far they get, what they prefer ·':
+    'Кто возвращается, как далеко доходит, что предпочитает ·',
+  'Whether people come back and how far they get. Retention answers "is this working", the funnel answers "where do we lose them", the cooking numbers answer "are the recipes actually usable".':
+    'Возвращаются ли люди и как далеко доходят. Удержание отвечает на вопрос «работает ли это», воронка — «где мы их теряем», цифры готовки — «можно ли по этим рецептам вообще готовить».',
+  'Who is actually using it': 'Кто на самом деле пользуется',
+  'Active today': 'Сегодня', 'Active this month': 'За месяц',
+  'Daily of monthly': 'Дневных к месячным',
+  'above 20% means a daily habit': 'выше 20% — приложением пользуются каждый день',
+  'Active users per day': 'Активных в день',
+  'Do they come back': 'Возвращаются ли',
+  'Retention by signup week': 'Удержание по неделе регистрации',
+  'Cohort': 'Когорта', 'People': 'Человек', 'Day 1': '1-й день',
+  'Week 1': '1-я неделя', 'Month 1': '1-й месяц', 'No cohorts yet': 'Когорт пока нет',
+  'How far they get': 'Как далеко доходят',
+  'Registered': 'Зарегистрировались', 'Set up a household': 'Завели семью',
+  'Saved a recipe': 'Сохранили рецепт', 'Started cooking': 'Начали готовить',
+  'Finished cooking': 'Дошли до конца', 'Cooked more than once': 'Готовили больше раза',
+  'Left a review': 'Оставили отзыв',
+  'Behaviour while cooking': 'Поведение при готовке',
+  'Cooking sessions': 'Сессий готовки', 'Finished to the end': 'Доведено до конца',
+  'Closed halfway': 'Закрыли на полпути', 'Median minutes': 'Медиана, минут',
+  'Where people stop': 'Где останавливаются',
+  'Step they were on': 'На каком шаге', 'Times': 'Раз',
+  'Nobody has abandoned a recipe yet': 'Пока никто не бросал рецепт',
+  'How deep people go': 'Насколько вовлечены',
+  'Cooked 5 or more': 'Готовили 5 и больше', 'Cooked 2 to 4': 'Готовили от 2 до 4',
+  'Cooked once': 'Готовили один раз', 'Never cooked': 'Ни разу не готовили',
+  'Cooks per user, average': 'Готовок на человека, в среднем',
+  'Saves per user, average': 'Сохранений на человека, в среднем',
+  'What they prefer': 'Что предпочитают',
+  'Diet': 'Питание', 'Cooking level': 'Уровень', 'Allergies': 'Аллергии',
+  'Favourite cuisines': 'Любимые кухни', 'Household size': 'Размер семьи', 'Units': 'Единицы',
+  'Nobody has set an allergy yet': 'Аллергии пока никто не указал',
+  'Nobody has picked a cuisine yet': 'Кухни пока никто не выбрал',
+  'What they do': 'Что делают', 'Actions': 'Действия', 'Event': 'Событие',
+  'What they search for': 'Что ищут', 'Query': 'Запрос',
+  'No searches recorded yet': 'Поисковых запросов пока не записано',
+  'Money': 'Деньги',
+  'No purchases, subscriptions or prices exist in the database, so LTV and ARPU cannot be calculated. The retention and depth numbers above are what LTV will be built from once money starts flowing.':
+    'В базе нет ни покупок, ни подписок, ни цен, поэтому LTV и ARPU посчитать не из чего. Удержание и глубина вовлечения выше — это то, из чего LTV соберётся, когда появятся деньги.',
+
+  // Рецепты
+  'The whole catalogue with filters, bulk actions and a working editor':
+    'Весь каталог с фильтрами, групповыми действиями и работающим редактором',
+  'The whole catalogue. Filter by what is missing, fix in the editor, or select several and publish, hide or pin them at once.':
+    'Весь каталог. Отфильтруйте по тому, чего не хватает, поправьте в редакторе или выделите несколько и опубликуйте, скройте либо закрепите разом.',
+  'Search by title…': 'Поиск по названию…',
+  'Any status': 'Любое состояние', 'Any cuisine': 'Любая кухня', 'No filter': 'Без фильтра',
+  'Without photo': 'Без фото', 'Without description': 'Без описания',
+  'Without calories': 'Без калорий', 'Without steps': 'Без шагов',
+  'Not enriched': 'Не обогащены', 'Newest': 'Сначала новые',
+  'Most viewed': 'По просмотрам', 'Best rated': 'По оценке', 'By title': 'По названию',
+  'Add recipe': 'Добавить рецепт', 'Publish': 'Опубликовать', 'Hide': 'Скрыть',
+  'Pin': 'Закрепить', 'Unpin': 'Открепить', 'selected': 'выбрано',
+  'Time': 'Время', 'Kcal': 'Ккал', 'Steps': 'Шаги', 'Views': 'Просмотры',
+  'Rating': 'Оценка', 'Cuisine': 'Кухня', 'Draft': 'Черновик', 'Rejected': 'Отклонён',
+  'Nothing matches these filters': 'Под эти фильтры ничего не подходит',
+  'ingredients': 'ингредиентов', 'from a creator ·': 'от автора ·',
+  'no description ·': 'без описания ·', 'pinned': 'закреплён',
+  'Edit recipe': 'Изменить рецепт', 'Save recipe': 'Сохранить рецепт',
+  'Description': 'Описание', 'Image URL': 'Ссылка на картинку',
+  'Servings': 'Порции', 'Minutes': 'Минуты', 'Calories': 'Калории',
+  'Protein, g': 'Белки, г', 'Fat, g': 'Жиры, г', 'Carbs, g': 'Углеводы, г',
+  'Difficulty': 'Сложность', 'Easy': 'Просто', 'Medium': 'Средне', 'Hard': 'Сложно',
+  'Meal types — comma separated': 'Приёмы пищи — через запятую',
+  'Title is required': 'Нужен заголовок',
+
+  // Состояние каталога
+  'What is missing from published recipes. The app hides a shelf it cannot fill honestly, so these gaps are why the catalogue looks smaller than it is. Every row jumps to the affected recipes.':
+    'Чего не хватает опубликованным рецептам. Приложение прячет полку, которую не может наполнить честно, — поэтому каталог и выглядит меньше, чем он есть. Каждая строка открывает нужные рецепты.',
+  'Published recipes': 'Опубликованных рецептов',
+  'No photo — hidden from most shelves': 'Нет фото — не попадает на большинство полок',
+  'No description': 'Нет описания',
+  'No steps at all — cannot be cooked': 'Совсем нет шагов — готовить невозможно',
+  'Only one or two steps': 'Всего один-два шага', 'No ingredients': 'Нет ингредиентов',
+  'No calories': 'Нет калорий', 'No cooking time': 'Нет времени приготовления',
+  'No serving count': 'Не указаны порции',
+  'No cuisine — missing from country browsing': 'Нет кухни — не найти по странам',
+  'No meal type — missing from breakfast/lunch/dinner': 'Нет типа приёма пищи — не попадает в завтрак, обед и ужин',
+  'Never went through enrichment': 'Не проходил обогащение',
+  'Using a stock photo, not a real shot': 'Стоковое фото, а не настоящий снимок',
+  'Photo not verified by a worker': 'Фото не подтверждено работником',
+  'of published': 'от опубликованных',
+
+  // Модерация и жалобы
+  'Recipes creators sent for review — approve to publish, or send back with a reason':
+    'Рецепты, отправленные авторами на проверку — принять или вернуть с причиной',
+  'Recipes creators submitted, waiting for a decision. Approving publishes them into the app immediately.':
+    'Рецепты, которые авторы отправили на проверку. Принятие сразу публикует их в приложении.',
+  'Nothing waiting. Recipes creators submit land here.': 'Ничего не ждёт. Сюда попадает то, что присылают авторы.',
+  'Approve and publish': 'Принять и опубликовать', 'Send back': 'Вернуть',
+  'Full recipe': 'Рецепт целиком', 'Ingredients': 'Ингредиенты',
+  'What should the creator fix?': 'Что автору нужно исправить?',
+  'Publish this recipe?': 'Опубликовать этот рецепт?',
+  'What people flagged in the app': 'На что пожаловались из приложения',
+  'What people flagged from inside the app — a recipe or another person. Empty is good.':
+    'На что пожаловались прямо из приложения — на рецепт или на человека. Пусто — это хорошо.',
+  'Nothing flagged. Reports people send from the app land here.':
+    'Жалоб нет. Сюда попадает то, что присылают из приложения.',
+  'Content removed': 'Контент удалён', 'Nothing wrong': 'Нарушения нет',
+  'Looked at it': 'Посмотрел',
+
+  // Пользователи
+  'Everyone registered, with what they actually do in the app':
+    'Все зарегистрированные и то, что они реально делают',
+  'Everyone registered. Open a person to see what they actually do, change their role, or tag them for a push.':
+    'Все зарегистрированные. Откройте человека, чтобы увидеть, чем он занимается, сменить роль или поставить метку для рассылки.',
+  'Search by name or handle…': 'Поиск по имени или адресу…',
+  'Push enabled': 'С уведомлениями', 'Nobody matches': 'Никто не подходит',
+  'Plain users': 'Обычные пользователи', 'Paused creators': 'Авторы на паузе',
+  'Joined': 'Пришёл', 'Last seen': 'Был', 'Family': 'Семья', 'Cooked': 'Готовил',
+  'Saved': 'Сохранил', 'Role': 'Роль', 'Tags': 'Метки',
+  'Tags — your own labels, used to target a push': 'Метки — ваши ярлыки, по ним собирается рассылка',
+  'Preferences': 'Предпочтения', 'Recent cooking': 'Последние готовки',
+  'Recent actions': 'Последние действия', 'As a creator': 'В роли автора',
+  'Has not cooked anything yet': 'Ещё ничего не готовил',
+  'No tracked actions yet': 'Действий пока не записано',
+  'Started cooking, finished': 'Начал готовить, довёл до конца',
+  'Reviews left': 'Оставил отзывов', 'Following others': 'Подписан на',
+  'Actions recorded': 'Записано действий', 'Time spent cooking': 'Времени за готовкой',
+  'Notifications': 'Уведомления', 'Time zone': 'Часовой пояс', 'Account id': 'Идентификатор',
+  'Followers': 'Подписчики', 'finished': 'дошёл', 'stopped': 'бросил',
+
+  // Авторы и производство
+  'Applications, active authors and assignments': 'Заявки, действующие авторы и задания',
+  'Applications to become an author, and everyone already publishing. Approving as an author means free publishing paid on views; as a worker means 21 dishes a week on contract.':
+    'Заявки на авторство и те, кто уже публикует. Одобрить как автора — свободные публикации с оплатой за просмотры; как работника — 21 блюдо в неделю по договору.',
+  'Applications': 'Заявки', 'No applications waiting.': 'Заявок нет.',
+  'Approve as author': 'Одобрить как автора', 'Approve as worker': 'Одобрить как работника',
+  'Decline': 'Отказать', 'Why not?': 'Почему отказ?',
+  'No creators yet.': 'Авторов пока нет.', 'Country': 'Страна', 'Contract': 'Договор',
+  'Assign': 'Дать задание', 'New assignment': 'Новое задание',
+  'Send assignment': 'Отправить задание',
+  'Worker weeks and dishes waiting to be checked': 'Недели работников и блюда на проверке',
+  'Only for workers on contract. Dishes they cooked and submitted, waiting to be checked — approving writes their photo and measured time onto the recipe.':
+    'Только для работников по договору. Приготовленные и сданные блюда ждут проверки — принятие записывает их фото и замеренное время в рецепт.',
+  'Submitted dishes': 'Сданные блюда', 'Weeks': 'Недели',
+  'Nothing waiting to be checked.': 'На проверке ничего нет.',
+  'No work weeks yet.': 'Рабочих недель пока нет.',
+  'Approve — use this photo': 'Принять — взять это фото',
+  'Picked': 'Выбрано', 'Submitted': 'Сдано', 'Approved': 'Принято', 'Rejected': 'Отклонено',
+  'What should the worker redo?': 'Что работнику переделать?',
+
+  // Заказы, склады, партнёры, баннеры
+  'Products shipped to workers so they can cook their week.':
+    'Продукты, отправленные работникам на их неделю.',
+  'Shipments': 'Отправления', 'Tracking': 'Трек-номер', 'Created': 'Создано',
+  'Delivered': 'Доставлено', 'Dishes': 'Блюд',
+  'Where those products ship from. A worker orders against one of these.':
+    'Откуда эти продукты уезжают. Работник заказывает с одного из складов.',
+  'Add warehouse': 'Добавить склад', 'Manager': 'Ответственный',
+  'Manager contact': 'Контакт ответственного', 'Address': 'Адрес', 'City': 'Город',
+  'Active': 'Работает',
+  'Brands, shops and delivery services — from first contact to a signed deal. This is where the money will come from.':
+    'Бренды, магазины и службы доставки — от первого контакта до подписанного договора. Отсюда придут деньги.',
+  'Add partner': 'Добавить партнёра', 'Running deals': 'Действующих договоров',
+  'In talks': 'В переговорах', 'Value of running deals': 'Сумма действующих договоров',
+  'Deal': 'Договор', 'Deal, USD': 'Сумма, $', 'Website': 'Сайт',
+  'Contact name': 'Контактное лицо', 'Contact email': 'Почта', 'Contact phone': 'Телефон',
+  'Started': 'Начало', 'Ends': 'Конец', 'Notes': 'Заметки', 'Logo URL': 'Ссылка на логотип',
+  'Promo slots inside the app. A banner shows only while it is live and inside its dates; impressions and clicks are counted so you can report to a partner.':
+    'Рекламные места внутри приложения. Баннер показывается, только пока он включён и попадает в свои даты; показы и клики считаются, чтобы было чем отчитаться перед партнёром.',
+  'Add banner': 'Добавить баннер', 'Live now': 'Показывается сейчас',
+  'Impressions': 'Показы', 'Click rate': 'Доля кликов', 'Clicks': 'Клики',
+  'Banner': 'Баннер', 'Placement': 'Место', 'Partner': 'Партнёр',
+  'Priority': 'Приоритет', 'Runs': 'Период', 'Shown': 'Показов', 'State': 'Состояние',
+  'Subtitle': 'Подзаголовок', 'Button text': 'Текст кнопки', 'Opens': 'Открывает',
+  'Recipe id, category or URL': 'Идентификатор рецепта, категория или ссылка',
+  'Partner id': 'Идентификатор партнёра', 'Accent colour': 'Цвет оформления',
+  'Live': 'Включён', 'always': 'всегда', 'live': 'включён', 'off': 'выключен',
+
+  // Ранжирование
+  'How the feed decides what to show first. Change the weights, then recalculate.':
+    'Как лента решает, что показать первым. Поменяйте веса и пересчитайте.',
+  'How the feed decides what to show first. Change a weight, then recalculate — nothing moves until you do.':
+    'Как лента решает, что показать первым. Поменяйте вес и пересчитайте — без этого ничего не сдвинется.',
+  'How the score is built': 'Из чего складывается вес',
+  'Recalculate all recipes': 'Пересчитать все рецепты',
+  'Recalculating…': 'Пересчитываем…',
+  'How much views count. Applied to the logarithm of the view count, so a hit does not bury everything else.':
+    'Насколько важны просмотры. Берётся логарифм, чтобы один хит не задавил всё остальное.',
+  'How much the rating counts.': 'Насколько важна оценка.',
+  'How much being new counts. Fades to zero over 90 days.':
+    'Насколько важна новизна. Затухает до нуля за 90 дней.',
+  'What a pinned recipe gets added on top. Keep it far above everything else.':
+    'Надбавка закреплённому рецепту. Держите её сильно выше остальных значений.',
+  'Ratings below this many votes are ignored — one five-star vote is not a rating.':
+    'Оценки с меньшим числом голосов не учитываются — одна пятёрка это не рейтинг.',
+  'How many recipes go on one shelf in the app.': 'Сколько рецептов помещается на одну полку.',
+  'Whether banners are shown in the app at all.': 'Показывать ли баннеры в приложении вообще.',
+
+  // Комментарии
+  'Latest comments across the whole app — hide anything that does not belong':
+    'Последние комментарии по всему приложению — скройте всё лишнее',
+  'Everything people wrote under recipes, newest first. Hide anything that does not belong.':
+    'Всё, что люди написали под рецептами, начиная с новых. Скройте то, чему там не место.',
+  'No comments yet.': 'Комментариев пока нет.', 'Restore': 'Вернуть',
+  'Recipe': 'Рецепт', 'Comment': 'Комментарий',
+
+  // Пуши
+  'Send a notification to everyone, to a segment, to people with a tag, or to named people':
+    'Уведомление всем, сегменту, людям с меткой или конкретным людям',
+  'Notifications. Choose who gets it before you write it.':
+    'Уведомления. Сначала выберите, кому, потом пишите текст.',
+  'Pick the audience first and check the number before you write anything. A notification cannot be recalled once it is sent.':
+    'Сначала выберите аудиторию и посмотрите на число. Отправленное уведомление отозвать нельзя.',
+  'Who gets it': 'Кому уйдёт', 'What they get': 'Что получат',
+  'Segment': 'Сегмент', 'Language': 'Язык',
+  'Tags — any of these': 'Метки — любая из них',
+  'Named people — one user id per line': 'Конкретные люди — по одному идентификатору в строке',
+  'Leave empty unless you mean specific accounts': 'Оставьте пустым, если не имеете в виду конкретные аккаунты',
+  'Never finished onboarding': 'Не прошли онбординг',
+  'Never cooked anything': 'Ни разу не готовили',
+  'Cooked exactly once': 'Готовили ровно один раз',
+  'Cooked five times or more': 'Готовили пять раз и больше',
+  'Not seen for 30 days': 'Не заходили 30 дней',
+  'Workers on contract': 'Работники по договору',
+  'English': 'Английский', 'Russian': 'Русский',
+  'Counting…': 'Считаем…', 'Already sent': 'Уже отправлено', 'Audience': 'Аудитория',
+  'Reached': 'Дошло', 'Failed': 'Не дошло',
+  'Nothing has been sent yet.': 'Пока ничего не отправляли.',
+  'Fill in both title and message': 'Заполните и заголовок, и текст',
+  'Nobody matches this audience.': 'Под эту аудиторию никто не подходит.',
+  'No tags yet. Open a person in Users and give them one — a tag is just a label you invent, like beta or vip.':
+    'Меток пока нет. Откройте человека в разделе «Пользователи» и поставьте метку — это просто ярлык, который вы придумываете сами, например beta или vip.',
+
+  // Обогащение
+  'Fills description, calories, macros, real servings, cuisine and meal type using the AI model':
+    'Заполняет описание, калории, БЖУ, порции, кухню и тип приёма пищи через модель ИИ',
+  'Fills in description, calories, macros, servings, cuisine and meal type with the AI model for recipes that lack them.':
+    'Заполняет описание, калории, БЖУ, порции, кухню и тип приёма пищи у тех рецептов, где их нет.',
+  'Batch size': 'Размер порции', 'Test 10 recipes': 'Проверить на 10 рецептах',
+  'Enrich everything': 'Обогатить всё', 'Stop': 'Остановить', 'Stopping…': 'Останавливаем…',
+};
+
+let lang = localStorage.getItem('cf_admin_lang') || 'ru';
+
+const tr = (s) => (lang === 'ru' ? (RU[s] ?? s) : s);
+
+/**
+ * Переводит уже готовую страницу.
+ *
+ * Оригинал запоминается на самом узле, поэтому переключение языка
+ * работает в обе стороны, а повторный проход ничего не портит.
+ */
+function localize(root) {
+  if (lang !== 'ru' && !root.__wasRu) { /* всё равно проходим: надо вернуть английский */ }
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+  const nodes = [];
+  while (walker.nextNode()) nodes.push(walker.currentNode);
+
+  for (const n of nodes) {
+    const original = n.__en ?? n.nodeValue;
+    const raw = original.trim();
+    const key = raw.replace(/\s+/g, ' ');
+    if (!key) continue;
+    // Строки с числом внутри точным совпадением не берутся
+    const stepped = key.match(/^Step (\d+)$/);
+    if (stepped && lang === 'ru') {
+      n.__en = original;
+      n.nodeValue = original.replace(raw, 'Шаг ' + stepped[1]);
+      continue;
+    }
+    if (RU[key] === undefined) continue;
+    n.__en = original;
+    n.nodeValue = original.replace(raw, tr(key));
+  }
+
+  const withAttr = root.querySelectorAll?.('[placeholder], [title]') ?? [];
+  for (const el of withAttr) {
+    for (const attr of ['placeholder', 'title']) {
+      const v = el.getAttribute(attr);
+      if (!v) continue;
+      const original = el.dataset['en' + attr] ?? v;
+      if (RU[original.trim()] === undefined) continue;
+      el.dataset['en' + attr] = original;
+      el.setAttribute(attr, tr(original.trim()));
+    }
+  }
+}
+
+// Всё, что панель дорисовывает после загрузки, переводится тем же
+// проходом — иначе пришлось бы помнить о переводе в каждом месте
+new MutationObserver((muts) => {
+  for (const m of muts) {
+    for (const node of m.addedNodes) {
+      if (node.nodeType === 1) localize(node);
+      else if (node.nodeType === 3 && RU[node.nodeValue?.trim()] !== undefined) {
+        node.__en = node.nodeValue;
+        node.nodeValue = node.nodeValue.replace(node.nodeValue.trim(), tr(node.nodeValue.trim()));
+      }
+    }
+  }
+}).observe(document.body, { childList: true, subtree: true });
+
+function setLang(next) {
+  lang = next;
+  localStorage.setItem('cf_admin_lang', next);
+  location.reload();
+}
 const num = (n) => (Number(n) || 0).toLocaleString('en-US');
 const day = (d) => d ? new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '—';
 const dayShort = (d) => d ? new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: '2-digit' }) : '—';
@@ -703,6 +1225,7 @@ const LOADERS = {
   creators: loadCreators, production: loadProduction, orders: loadOrders,
   warehouses: loadWarehouses, partners: loadPartners, banners: loadBanners,
   settings: loadSettings, comments: loadComments, reports: loadReports,
+  push: loadPush,
 };
 
 /**
@@ -811,8 +1334,6 @@ async function loadDashboard() {
     </div>
 
     <div class="charts" id="ov-lists"></div>`;
-
-  $('push-reach').textContent = `${num(u.push)} of ${num(u.total)} users have notifications on.`;
 
   loadCharts(days);
 }
@@ -1837,8 +2358,28 @@ async function openUser(id) {
       <div class="stat-card"><div class="num">${num(c.followers)}</div><div class="lbl">Followers</div></div>
     </div>
 
+    <div class="panel" style="margin-top:6px"><table><tbody>
+      <tr><td>Started cooking, finished</td>
+          <td class="num-cell">${num(c.cooks_started)} → ${num(c.cooks_done)}${
+            c.cooks_started ? ` (${Math.round(c.cooks_done / c.cooks_started * 100)}%)` : ''}</td></tr>
+      <tr><td>Reviews left</td><td class="num-cell">${num(c.ratings)}</td></tr>
+      <tr><td>Following others</td><td class="num-cell">${num(c.following)}</td></tr>
+      <tr><td>Actions recorded</td><td class="num-cell">${num(c.events)}</td></tr>
+      <tr><td>Time spent cooking</td><td class="num-cell">${p.total_cook_minutes ? num(p.total_cook_minutes) + ' min' : '—'}</td></tr>
+      <tr><td>Notifications</td><td class="num-cell">${p.push ? 'on' : 'off'}</td></tr>
+      <tr><td>Finished onboarding</td><td class="num-cell">${p.onboarding_done ? 'yes' : 'no'}</td></tr>
+      <tr><td>Time zone</td><td class="num-cell">${esc(p.timezone || '—')}</td></tr>
+      <tr><td>Account id</td><td class="num-cell" style="font-size:11.5px">${esc(p.id)}</td></tr>
+    </tbody></table></div>
+
     <label>Активность за 90 дней</label>
     <div class="heat">${cells}</div>
+
+    <label>Tags — your own labels, used to target a push</label>
+    <div style="display:flex;gap:8px;align-items:center">
+      <input id="u-tags" value="${esc((p.tags || []).join(', '))}" placeholder="beta, vip, amsterdam">
+      <button class="btn-icon" onclick="saveTags('${p.id}')">Save</button>
+    </div>
 
     <label>Preferences</label>
     <div style="display:flex;flex-direction:column;gap:8px;font-size:13.5px">
@@ -1866,6 +2407,13 @@ async function openUser(id) {
     <div class="panel"><table>
       <tbody>${events || '<tr><td class="empty">No tracked actions yet</td></tr>'}</tbody>
     </table></div>`;
+}
+
+async function saveTags(id) {
+  const tags = $('u-tags').value.split(',').map(x => x.trim()).filter(Boolean);
+  const { error } = await db.rpc('admin_set_user_tags', { p_user_id: id, p_tags: tags });
+  if (error) return alert('Failed: ' + error.message);
+  openUser(id);
 }
 
 // ---------- КРЕАТОРЫ ----------
@@ -2053,16 +2601,79 @@ async function hideComment(id, hidden) {
 }
 
 // ---------- ПУШИ ----------
+let knownTags = [];
+
+/** Фильтр аудитории в том виде, в каком его понимает база */
+function pushFilter() {
+  const ids = $('pf-users').value.split('\n').map(x => x.trim()).filter(Boolean);
+  const tags = [...document.querySelectorAll('#pf-tags .tag.on')].map(el => el.dataset.tag);
+  return {
+    segment: $('pf-segment').value,
+    locale: $('pf-locale').value || undefined,
+    tags: tags.length ? tags : undefined,
+    user_ids: ids.length ? ids : undefined,
+    push_only: true,
+  };
+}
+
+async function loadPush() {
+  const tags = await call('admin_tags', {});
+  knownTags = tags || [];
+  $('pf-tags').innerHTML = knownTags.length
+    ? knownTags.map(t => `<button class="tag" data-tag="${esc(t.name)}" onclick="this.classList.toggle('on'); previewAudience()">${esc(t.name)} <span>${t.n}</span></button>`).join('')
+    : `<span class="note">No tags yet. Open a person in Users and give them one — a tag is just a label you invent, like beta or vip.</span>`;
+
+  previewAudience();
+  loadPushLog();
+}
+
+/** Сколько человек получит рассылку — до того, как её написали */
+async function previewAudience() {
+  const box = $('audience-box');
+  const { data, error } = await db.rpc('admin_audience', { p_filter: pushFilter() });
+  if (error) { box.textContent = 'Could not count: ' + error.message; return; }
+
+  const names = (data.sample || []).map(x => esc(x.name)).join(', ');
+  const share = data.with_push ? Math.round(data.count / data.with_push * 100) : 0;
+  box.innerHTML = data.count
+    ? `<b>${num(data.count)}</b> people will get this — ${share}% of everyone with notifications on
+       (${num(data.with_push)} of ${num(data.total)} registered).
+       <div class="note" style="margin-top:6px">${names}${data.count > 8 ? ' and others' : ''}</div>`
+    : `<b>Nobody matches.</b><div class="note" style="margin-top:6px">
+       Either no one fits these conditions, or the people who do have notifications turned off.</div>`;
+  $('push-btn').disabled = !data.count;
+}
+
+async function loadPushLog() {
+  const rows = await call('admin_push_log', { p_limit: 50 }, $('pl-tbody'), 6);
+  if (!rows) return;
+  $('pl-tbody').innerHTML = rows.length ? rows.map(l => `
+    <tr>
+      <td><b>${esc(l.title)}</b></td>
+      <td class="truncate" style="max-width:320px">${esc(l.body)}</td>
+      <td>${esc(l.filter?.segment || 'all')}${l.filter?.tags ? ' · ' + esc(l.filter.tags.join(', ')) : ''}</td>
+      <td class="num-cell">${num(l.sent)}</td>
+      <td class="num-cell">${l.failed || '—'}</td>
+      <td>${dayShort(l.created_at)}</td>
+    </tr>`).join('')
+    : '<tr><td colspan="6" class="empty">Nothing has been sent yet.</td></tr>';
+}
+
 async function sendPush() {
   const title = $('push-title').value.trim();
   const message = $('push-message').value.trim();
   if (!title || !message) return alert('Fill in both title and message');
-  if (!confirm(`Send "${title}" to ALL users?`)) return;
+
+  const filter = pushFilter();
+  const { data: aud } = await db.rpc('admin_audience', { p_filter: filter });
+  const n = aud?.count || 0;
+  if (!n) return alert('Nobody matches this audience.');
+  if (!confirm(`Send "${title}" to ${n} people?\n\nThis cannot be recalled.`)) return;
 
   const btn = $('push-btn');
   btn.disabled = true; btn.textContent = 'Sending…';
-  const { data, error } = await db.functions.invoke('admin-push', { body: { title, message } });
-  btn.disabled = false; btn.textContent = 'Send to all users';
+  const { data, error } = await db.functions.invoke('admin-push', { body: { title, message, filter } });
+  btn.disabled = false; btn.textContent = 'Send';
 
   const box = $('push-result');
   box.style.display = 'block';
@@ -2073,6 +2684,7 @@ async function sendPush() {
     box.style.background = '#EAF1E7'; box.style.color = 'var(--green)';
     box.textContent = data.info || `Delivered to Expo: ${data.sent} sent, ${data.failed} failed (of ${data.total} devices).`;
     $('push-title').value = ''; $('push-message').value = '';
+    loadPushLog();
   }
 }
 
@@ -2200,6 +2812,9 @@ document.querySelectorAll('.overlay').forEach(o => {
 document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape') document.querySelectorAll('.overlay.open').forEach(o => o.classList.remove('open'));
 });
+
+document.getElementById('lang-' + lang)?.classList.add('on');
+localize(document.body);
 
 init();
 </script>
