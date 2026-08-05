@@ -18,13 +18,43 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://fred-webpro.github.io/cookfusion-support/iz-togo-chto-est.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://fred-webpro.github.io/cookfusion-support/uzhin-bystro.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://fred-webpro.github.io/cookfusion-support/menu-na-nedelyu.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://fred-webpro.github.io/cookfusion-support/meal-planner.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://fred-webpro.github.io/cookfusion-support/cook-with-what-you-have.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://fred-webpro.github.io/cookfusion-support/dinner-tonight.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://fred-webpro.github.io/cookfusion-support/privacy.html</loc>
-    <changefreq>monthly</changefreq>
+    <changefreq>weekly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://fred-webpro.github.io/cookfusion-support/terms.html</loc>
-    <changefreq>monthly</changefreq>
+    <changefreq>weekly</changefreq>
     <priority>0.3</priority>
   </url>
 </urlset>

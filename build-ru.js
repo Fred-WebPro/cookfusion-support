@@ -43,6 +43,22 @@ const RU = {
   'Recipe apps show you what other people cooked. CookFusion looks at <strong>your</strong> fridge, <strong>your</strong> family and <strong>your</strong> week — and cooks around them.':
     'Приложения с рецептами показывают, что готовили другие. CookFusion смотрит на <strong>ваш</strong> холодильник, <strong>вашу</strong> семью и <strong>вашу</strong> неделю — и готовит вокруг них.',
 
+  // Разборы: у русской версии свои адреса, спрос устроен иначе
+  'href="cook-with-what-you-have.html"': 'href="iz-togo-chto-est.html"',
+  'href="meal-planner.html"': 'href="menu-na-nedelyu.html"',
+  'href="dinner-tonight.html"': 'href="uzhin-bystro.html"',
+  '<h3>What can I cook with what I have?</h3>': '<h3>Что приготовить из того, что есть дома</h3>',
+  '<h3>A weekly meal planner for families</h3>': '<h3>Меню на неделю для семьи</h3>',
+  '<h3>What to make for dinner tonight</h3>': '<h3>Что приготовить на ужин быстро</h3>',
+  'Photograph the shelf, or type what is there. No shopping trip.':
+    'Сфотографируйте полку или перечислите продукты. Без похода в магазин.',
+  'Fourteen days around every diet at your table, grocery list included.':
+    'Четырнадцать дней с учётом аллергий каждого и списком покупок.',
+  'Under twenty minutes, with cooking times that are actually true.':
+    'За двадцать минут, и время в рецептах настоящее.',
+  'Answers to the usual questions': 'Ответы на обычные вопросы',
+  'Guides': 'Разборы',
+
   // Меню
   'Features': 'Возможности',
   'How it works': 'Как это работает',

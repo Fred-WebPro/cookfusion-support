@@ -286,6 +286,15 @@
   .foot-col a:hover { color: #fff; }
   .foot-bottom { border-top: 1px solid var(--line-dark); padding-top: 22px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 12.5px; color: rgba(255,255,255,.35); }
 
+  /* Ссылки на разборы */
+  .guides { background: var(--paper); padding: 70px 0; }
+  .guide-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
+  .guide { display: block; text-decoration: none; color: inherit; background: var(--cream);
+           border: 1px solid rgba(13,31,22,.08); border-radius: 18px; padding: 24px; transition: transform .2s, box-shadow .2s; }
+  .guide:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(13,31,22,.09); }
+  .guide h3 { font-family: 'Fraunces', Georgia, serif; font-size: 19px; line-height: 1.3; color: var(--ink); margin-bottom: 9px; }
+  .guide p { font-size: 14.5px; color: #5C6B60; line-height: 1.6; }
+
   /* Полоса с фактами */
   .numbers { background: var(--ink); color: #fff; padding: 46px 0; }
   .num-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 30px; }
@@ -555,6 +564,29 @@
       <div class="tr rv"><div class="ic">🔒</div><div><h4>Фото остаются вашими</h4><p>Фото холодильника используются только для распознавания продуктов — никогда для рекламы, никогда не продаются и не передаются третьим лицам для их целей.</p></div></div>
       <div class="tr rv d1"><div class="ic">🚫</div><div><h4>Без слежки и рекламы</h4><p>Ни рекламных сетей, ни слежки между приложениями, ни продавцов данных. Приложение делает одно: помогает готовить.</p></div></div>
       <div class="tr rv d2"><div class="ic">🗑️</div><div><h4>Удалить всё в любой момент</h4><p>Одно нажатие в настройках навсегда удаляет аккаунт и все связанные данные. Подробности в <a href="privacy.html">Политика конфиденциальности</a>.</p></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="guides" class="guides">
+  <div class="container">
+    <div class="sec-head center rv">
+      <div class="sec-eyebrow">Разборы</div>
+      <h2 class="sec-title">Ответы на обычные вопросы</h2>
+    </div>
+    <div class="guide-row">
+      <a class="guide rv" href="iz-togo-chto-est.html">
+        <h3>Что приготовить из того, что есть дома</h3>
+        <p>Сфотографируйте полку или перечислите продукты. Без похода в магазин.</p>
+      </a>
+      <a class="guide rv d1" href="menu-na-nedelyu.html">
+        <h3>Меню на неделю для семьи</h3>
+        <p>Четырнадцать дней с учётом аллергий каждого и списком покупок.</p>
+      </a>
+      <a class="guide rv d2" href="uzhin-bystro.html">
+        <h3>Что приготовить на ужин быстро</h3>
+        <p>За двадцать минут, и время в рецептах настоящее.</p>
+      </a>
     </div>
   </div>
 </section>
