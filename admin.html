@@ -115,6 +115,7 @@
       <button class="nav-btn active" data-tab="dashboard" onclick="showTab('dashboard')">📊 Dashboard</button>
       <button class="nav-btn" data-tab="recipes" onclick="showTab('recipes')">🥘 Recipes</button>
       <button class="nav-btn" data-tab="push" onclick="showTab('push')">📣 Push</button>
+      <button class="nav-btn" data-tab="enrich" onclick="showTab('enrich')">✨ Enrich</button>
       <button class="signout" onclick="signOut()">Sign out</button>
     </aside>
 
@@ -164,6 +165,34 @@
           <textarea id="push-message" rows="4" maxlength="200" placeholder="Open CookFusion and let the AI chef surprise you tonight!"></textarea>
           <button class="btn-primary" id="push-btn" onclick="sendPush()">Send to all users</button>
           <div class="result-box" id="push-result"></div>
+        </div>
+      </section>
+
+      <!-- ENRICH -->
+      <section id="tab-enrich" style="display:none">
+        <h1 class="page-title">Enrich recipes</h1>
+        <p class="page-sub">Fills description, calories, macros, real servings, cuisine and meal type using the AI model</p>
+        <div class="push-card">
+          <p style="font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 16px">
+            Runs in batches so nothing times out. Steps are never sent to the model —
+            only the title and ingredient list — which keeps the cost at roughly
+            <b>$0.05 per 1000 recipes</b>. Safe to stop and resume: already processed
+            recipes are skipped.
+          </p>
+          <div style="display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:16px">
+            <div>
+              <label>Batch size</label>
+              <input id="enrich-limit" type="number" value="100" min="10" max="400" style="width:120px">
+            </div>
+            <button class="btn-primary" id="enrich-test" onclick="runEnrich(true)">Test 10 recipes</button>
+            <button class="btn-primary" id="enrich-btn" onclick="runEnrich(false)">Enrich everything</button>
+            <button class="btn-primary" id="enrich-stop" onclick="stopEnrich()" style="display:none;background:#B3352E">Stop</button>
+          </div>
+          <div id="enrich-bar" style="display:none;height:8px;background:#EFEDE4;border-radius:4px;overflow:hidden;margin-bottom:12px">
+            <div id="enrich-fill" style="height:100%;width:0;background:var(--green);transition:width .3s"></div>
+          </div>
+          <div class="result-box" id="enrich-result"></div>
+          <pre id="enrich-sample" style="display:none;font-size:12px;background:#F6F3EC;padding:14px;border-radius:10px;overflow:auto;margin-top:14px"></pre>
         </div>
       </section>
     </main>
@@ -426,6 +455,75 @@ async function sendPush() {
       ? data.info
       : `Delivered to Expo: ${data.sent} sent, ${data.failed} failed (of ${data.total} devices).`;
     $('push-title').value = ''; $('push-message').value = '';
+  }
+}
+
+// ---------- ENRICH ----------
+let enrichStop = false;
+
+function stopEnrich() { enrichStop = true; $('enrich-stop').textContent = 'Stopping…'; }
+
+async function runEnrich(dryRun) {
+  const limit = Math.min(Math.max(parseInt($('enrich-limit').value) || 100, 10), 400);
+  const box = $('enrich-result');
+  const bar = $('enrich-bar');
+  box.style.display = 'block';
+  box.style.background = '#F6F3EC';
+  box.style.color = 'var(--muted)';
+
+  if (!dryRun && !confirm('Process every remaining recipe? You can stop at any point.')) return;
+
+  enrichStop = false;
+  $('enrich-btn').disabled = true;
+  $('enrich-test').disabled = true;
+  $('enrich-stop').style.display = dryRun ? 'none' : 'inline-block';
+  $('enrich-stop').textContent = 'Stop';
+
+  let done = 0, cost = 0, startRemaining = null;
+
+  try {
+    do {
+      const { data, error } = await db.functions.invoke('enrich-recipes', {
+        body: { limit: dryRun ? 10 : limit, dryRun },
+      });
+      if (error || data?.error) throw new Error(error?.message || data.error);
+
+      done += data.processed || 0;
+      cost += data.costUsd || 0;
+      if (startRemaining === null) startRemaining = (data.remaining || 0) + (data.processed || 0);
+
+      if (data.sample) {
+        $('enrich-sample').style.display = 'block';
+        $('enrich-sample').textContent = JSON.stringify(data.sample, null, 2);
+      }
+
+      if (!dryRun && startRemaining) {
+        bar.style.display = 'block';
+        $('enrich-fill').style.width = Math.min(100, (done / startRemaining) * 100) + '%';
+      }
+
+      box.textContent = dryRun
+        ? `Test run: ${data.processed} recipes, $${cost.toFixed(4)} spent. Nothing was saved.`
+        : `${done} done, ${data.remaining} left · $${cost.toFixed(3)} spent so far`;
+
+      if (dryRun || data.remaining === 0 || data.processed === 0) break;
+    } while (!enrichStop);
+
+    box.style.background = '#EAF1E7';
+    box.style.color = 'var(--green)';
+    if (!dryRun) {
+      box.textContent = enrichStop
+        ? `Stopped. ${done} recipes enriched, $${cost.toFixed(3)} spent.`
+        : `Finished. ${done} recipes enriched, $${cost.toFixed(3)} spent.`;
+    }
+  } catch (e) {
+    box.style.background = '#FBE9E7';
+    box.style.color = '#B3352E';
+    box.textContent = 'Failed: ' + e.message;
+  } finally {
+    $('enrich-btn').disabled = false;
+    $('enrich-test').disabled = false;
+    $('enrich-stop').style.display = 'none';
   }
 }
 
