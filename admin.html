@@ -10,122 +10,182 @@
   :root {
     --green: #1E3A2B; --sage: #7A9A75; --orange: #E89D5E;
     --bg: #F3F4EF; --card: #FFFFFF; --text: #1C1C1E;
-    --muted: #7C8379; --border: #E2E6DB; --danger: #D9534F;
+    --muted: #7C8379; --border: #E2E6DB; --danger: #C4553F;
+    --warn: #C98A2E; --soft: #FAFBF8;
   }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); }
-  h1, h2, .brand { font-family: Georgia, 'Times New Roman', serif; }
-  button { cursor: pointer; font-size: 14px; border: none; border-radius: 10px; padding: 10px 16px; font-weight: 600; }
-  input, textarea, select { font-size: 14px; border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; width: 100%; background: #fff; color: var(--text); }
+  h1, h2, h3, .brand { font-family: Georgia, 'Times New Roman', serif; }
+  button { cursor: pointer; font-size: 14px; border: none; border-radius: 10px; padding: 10px 16px; font-weight: 600; font-family: inherit; }
+  button:disabled { opacity: .5; cursor: default; }
+  input, textarea, select { font-family: inherit; font-size: 14px; border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px; width: 100%; background: #fff; color: var(--text); }
   input:focus, textarea:focus, select:focus { outline: 2px solid var(--sage); border-color: transparent; }
   label { display: block; font-size: 12px; font-weight: 700; color: var(--muted); margin: 14px 0 5px; text-transform: uppercase; letter-spacing: .5px; }
+  a { color: var(--sage); }
 
-  /* Login */
+  /* Вход */
   #login-view { min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 20px; }
   .login-card { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 36px 32px; width: 100%; max-width: 380px; box-shadow: 0 10px 30px rgba(30,58,43,.08); }
   .login-card h1 { font-size: 24px; color: var(--green); text-align: center; }
   .login-card .sub { text-align: center; color: var(--muted); font-size: 13px; margin: 6px 0 10px; }
-  .btn-primary { background: var(--green); color: #fff; width: 100%; margin-top: 20px; padding: 13px; }
-  .btn-primary:hover { background: #2A4F3B; }
+  .btn-primary { background: var(--green); color: #fff; }
+  .btn-primary:hover:not(:disabled) { background: #2A4F3B; }
+  .btn-block { width: 100%; margin-top: 20px; padding: 13px; }
   .error-box { display: none; background: #FBE9E7; color: #B3352E; border-radius: 10px; padding: 10px 12px; font-size: 13px; margin-top: 14px; }
 
-  /* Layout */
+  /* Каркас */
   #app-view { display: none; min-height: 100vh; }
   .layout { display: flex; min-height: 100vh; }
-  aside { width: 220px; background: var(--green); color: #fff; padding: 24px 14px; display: flex; flex-direction: column; flex-shrink: 0; }
-  aside .brand { font-size: 20px; text-align: center; margin-bottom: 6px; }
-  aside .brand-sub { text-align: center; font-size: 11px; opacity: .6; margin-bottom: 26px; letter-spacing: 1px; text-transform: uppercase; }
-  .nav-btn { background: transparent; color: #fff; text-align: left; padding: 12px 14px; border-radius: 12px; margin-bottom: 6px; font-weight: 500; width: 100%; opacity: .75; }
+  aside { width: 210px; background: var(--green); color: #fff; padding: 24px 12px; display: flex; flex-direction: column; flex-shrink: 0; position: sticky; top: 0; height: 100vh; }
+  aside .brand { font-size: 20px; text-align: center; margin-bottom: 4px; }
+  aside .brand-sub { text-align: center; font-size: 10.5px; opacity: .55; margin-bottom: 22px; letter-spacing: 1.2px; text-transform: uppercase; }
+  .nav-btn { background: transparent; color: #fff; text-align: left; padding: 11px 13px; border-radius: 11px; margin-bottom: 3px; font-weight: 500; width: 100%; opacity: .72; font-size: 13.5px; display: flex; align-items: center; }
   .nav-btn:hover { background: rgba(255,255,255,.08); opacity: 1; }
   .nav-btn.active { background: var(--sage); opacity: 1; font-weight: 700; }
   .signout { margin-top: auto; background: rgba(255,255,255,.1); color: #fff; }
-  main { flex: 1; padding: 32px clamp(16px, 4vw, 48px); max-width: 1200px; }
+  main { flex: 1; padding: 30px clamp(16px, 3vw, 40px); max-width: 1400px; min-width: 0; }
   .page-title { font-size: 26px; color: var(--green); margin-bottom: 4px; }
-  .page-sub { color: var(--muted); font-size: 14px; margin-bottom: 24px; }
+  .page-sub { color: var(--muted); font-size: 14px; margin-bottom: 22px; }
+  .nav-badge { display: none; background: var(--orange); color: #fff; border-radius: 9px; padding: 1px 7px; font-size: 11px; margin-left: auto; font-weight: 700; }
+  .nav-badge.on { display: inline-block; }
 
-  /* Cards / tables */
-  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; margin-bottom: 26px; }
-  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 18px; }
-  .stat-card .num { font-size: 28px; font-weight: 800; color: var(--green); }
-  .stat-card .lbl { font-size: 12px; color: var(--muted); margin-top: 4px; }
-  .panel { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
-  table { width: 100%; border-collapse: collapse; font-size: 14px; }
-  th { text-align: left; font-size: 11px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); padding: 12px 16px; border-bottom: 1px solid var(--border); background: #FAFBF8; }
-  td { padding: 10px 16px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  /* Показатели */
+  .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 20px; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 15px; padding: 16px; }
+  .stat-card .num { font-size: 25px; font-weight: 800; color: var(--green); font-family: Georgia, serif; }
+  .stat-card .lbl { font-size: 11.5px; color: var(--muted); margin-top: 3px; }
+  .stat-card .delta { font-size: 11.5px; color: var(--sage); font-weight: 700; margin-top: 5px; }
+  .stat-card.warn .num { color: var(--warn); }
+  .stat-card.bad .num { color: var(--danger); }
+
+  /* Графики */
+  .charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; margin-bottom: 20px; }
+  .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 15px; padding: 18px; }
+  .chart-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 14px; }
+  .chart-title { font-size: 13px; font-weight: 700; color: var(--text); }
+  .chart-total { font-size: 13px; color: var(--muted); }
+  .bars { display: flex; align-items: flex-end; height: 70px; gap: 2px; }
+  .bar { flex: 1; background: var(--sage); border-radius: 2px; min-height: 2px; }
+  .bar.zero { opacity: .22; }
+  .axis { display: flex; justify-content: space-between; margin-top: 7px; font-size: 10.5px; color: var(--muted); }
+  .chart-empty { color: var(--muted); font-size: 13px; padding: 22px 0; text-align: center; }
+
+  /* Таблицы */
+  .panel { background: var(--card); border: 1px solid var(--border); border-radius: 15px; overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  th { text-align: left; font-size: 10.5px; text-transform: uppercase; letter-spacing: .5px; color: var(--muted); padding: 11px 14px; border-bottom: 1px solid var(--border); background: var(--soft); white-space: nowrap; }
+  td { padding: 9px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
   tr:last-child td { border-bottom: none; }
-  .thumb { width: 46px; height: 46px; border-radius: 10px; object-fit: cover; background: var(--border); }
-  .avatar { width: 34px; height: 34px; border-radius: 50%; object-fit: cover; background: var(--border); }
-  .toolbar { display: flex; gap: 12px; margin-bottom: 18px; }
-  .toolbar input { max-width: 320px; }
+  tbody tr:hover { background: var(--soft); }
+  .num-cell { text-align: right; font-variant-numeric: tabular-nums; }
+  .thumb { width: 44px; height: 44px; border-radius: 9px; object-fit: cover; background: var(--border); display: block; }
+  .avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; background: var(--border); display: block; }
+  .truncate { max-width: 320px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Панель инструментов */
+  .toolbar { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; align-items: center; }
+  .toolbar input[type=search] { max-width: 260px; }
+  .toolbar select { width: auto; min-width: 130px; }
   .btn-add { background: var(--orange); color: #fff; white-space: nowrap; }
-  .btn-add:hover { filter: brightness(1.05); }
-  .btn-icon { background: var(--bg); padding: 7px 12px; margin-left: 6px; font-size: 13px; }
+  .btn-add:hover:not(:disabled) { filter: brightness(1.05); }
+  .btn-icon { background: var(--bg); padding: 6px 11px; font-size: 12.5px; }
+  .btn-icon:hover:not(:disabled) { background: var(--border); }
   .btn-icon.danger { color: var(--danger); }
-  .btn-icon:hover { background: var(--border); }
-  .badge { display: inline-block; font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 8px; background: #EAF1E7; color: var(--sage); }
-  .badge.admin { background: #FFF4E5; color: var(--orange); }
-  .empty { padding: 40px; text-align: center; color: var(--muted); }
+  .btn-ghost { background: transparent; color: var(--muted); padding: 6px 10px; font-size: 12.5px; }
 
-  /* Modal */
-  #modal-overlay { display: none; position: fixed; inset: 0; background: rgba(20,30,24,.5); z-index: 50; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 40px 16px; }
-  .modal { background: var(--card); border-radius: 20px; padding: 28px; width: 100%; max-width: 640px; }
-  .modal h2 { color: var(--green); margin-bottom: 4px; }
+  .badge { display: inline-block; font-size: 10.5px; font-weight: 700; padding: 3px 8px; border-radius: 7px; background: #EAF1E7; color: #4A6E48; white-space: nowrap; }
+  .badge.admin { background: #FFF4E5; color: #A56220; }
+  .badge.draft { background: #EEEFEA; color: var(--muted); }
+  .badge.pending { background: #FFF4E5; color: #A56220; }
+  .badge.rejected { background: #FBE9E7; color: #B3352E; }
+  .badge.grey { background: #EEEFEA; color: var(--muted); }
+  .empty { padding: 36px; text-align: center; color: var(--muted); }
+  .pager { display: flex; gap: 10px; align-items: center; justify-content: center; margin-top: 16px; color: var(--muted); font-size: 13px; }
+
+  /* Модалки */
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(20,30,24,.5); z-index: 50; align-items: flex-start; justify-content: center; overflow-y: auto; padding: 40px 16px; }
+  .overlay.open { display: flex; }
+  .modal { background: var(--card); border-radius: 18px; padding: 26px; width: 100%; max-width: 680px; }
+  .modal h2 { color: var(--green); font-size: 21px; }
   .modal .hint { font-size: 12px; color: var(--muted); margin-top: 4px; }
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 16px; }
-  .modal-actions { display: flex; gap: 12px; margin-top: 24px; justify-content: flex-end; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0 14px; }
+  .modal-actions { display: flex; gap: 10px; margin-top: 22px; justify-content: flex-end; }
   .btn-cancel { background: var(--bg); color: var(--text); }
-  #img-preview { width: 100%; height: 160px; object-fit: cover; border-radius: 12px; margin-top: 8px; display: none; background: var(--border); }
+  #img-preview { width: 100%; height: 150px; object-fit: cover; border-radius: 11px; margin-top: 8px; display: none; background: var(--border); }
 
-  /* Moderation */
-  .sub-head { font-size: 17px; color: var(--green); margin: 26px 0 12px; }
-  .mod-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 16px; }
-  .mod-top { display: flex; gap: 16px; padding: 16px; }
-  .mod-photo { width: 160px; height: 120px; object-fit: cover; border-radius: 12px; background: var(--border); flex-shrink: 0; }
-  .mod-title { font-size: 17px; font-weight: 700; color: var(--text); }
+  /* Модерация и заявки */
+  .sub-head { font-size: 17px; color: var(--green); margin: 24px 0 12px; }
+  .mod-card { background: var(--card); border: 1px solid var(--border); border-radius: 15px; overflow: hidden; margin-bottom: 14px; }
+  .mod-top { display: flex; gap: 15px; padding: 15px; }
+  .mod-photo { width: 150px; height: 112px; object-fit: cover; border-radius: 11px; background: var(--border); flex-shrink: 0; }
+  .mod-title { font-size: 16.5px; font-weight: 700; }
   .mod-desc { color: var(--muted); font-size: 13.5px; margin-top: 6px; line-height: 1.5; }
-  .mod-meta { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-  .mod-chip { background: var(--bg); border-radius: 8px; padding: 4px 10px; font-size: 12px; color: var(--muted); }
-  .mod-author { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 13px; color: var(--muted); }
-  .mod-body { border-top: 1px solid var(--border); padding: 16px; display: none; }
+  .mod-meta { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 10px; }
+  .mod-chip { background: var(--bg); border-radius: 7px; padding: 4px 9px; font-size: 11.5px; color: var(--muted); }
+  .mod-author { display: flex; align-items: center; gap: 8px; margin-top: 11px; font-size: 12.5px; color: var(--muted); }
+  .mod-body { border-top: 1px solid var(--border); padding: 15px; display: none; }
   .mod-body.open { display: block; }
-  .mod-cols { display: grid; grid-template-columns: 1fr 1.4fr; gap: 24px; }
-  .mod-cols h4 { font-size: 12px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin-bottom: 8px; }
-  .mod-cols li { font-size: 13.5px; margin-bottom: 6px; line-height: 1.5; }
-  .mod-actions { display: flex; gap: 10px; padding: 14px 16px; border-top: 1px solid var(--border); background: #FAFBF8; }
+  .mod-cols { display: grid; grid-template-columns: 1fr 1.4fr; gap: 22px; }
+  .mod-cols h4 { font-size: 11.5px; text-transform: uppercase; letter-spacing: .6px; color: var(--muted); margin-bottom: 8px; }
+  .mod-cols li { font-size: 13px; margin-bottom: 5px; line-height: 1.5; list-style: none; }
+  .mod-actions { display: flex; gap: 9px; padding: 13px 15px; border-top: 1px solid var(--border); background: var(--soft); }
   .btn-approve { background: var(--sage); color: #fff; }
   .btn-reject { background: #FBE9E7; color: #B3352E; }
   .btn-toggle { background: var(--bg); color: var(--text); margin-left: auto; }
-  .nav-badge { display: none; background: var(--orange); color: #fff; border-radius: 9px; padding: 1px 7px; font-size: 11px; margin-left: 6px; }
-  .nav-badge.on { display: inline-block; }
-  .app-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 18px; margin-bottom: 12px; }
-  .app-about { font-size: 13.5px; line-height: 1.55; color: var(--text); margin: 8px 0 12px; white-space: pre-wrap; }
+  .app-card { background: var(--card); border: 1px solid var(--border); border-radius: 15px; padding: 17px; margin-bottom: 12px; }
+  .app-about { font-size: 13.5px; line-height: 1.55; margin: 8px 0 12px; white-space: pre-wrap; }
 
-  /* Push */
-  .push-card { background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 26px; max-width: 560px; }
-  .result-box { display: none; margin-top: 18px; padding: 14px; border-radius: 12px; background: #EAF1E7; color: var(--green); font-size: 14px; }
-  .spinner { display: none; margin-left: 8px; }
-  @media (max-width: 760px) {
+  .form-card { background: var(--card); border: 1px solid var(--border); border-radius: 15px; padding: 24px; max-width: 560px; }
+  .result-box { display: none; margin-top: 16px; padding: 13px; border-radius: 11px; background: #EAF1E7; color: var(--green); font-size: 13.5px; line-height: 1.5; }
+  .note { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+  /* Распределения и воронка */
+  .dist { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; font-size: 13px; }
+  .dist-name { width: 130px; flex-shrink: 0; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .dist-bar { flex: 1; height: 9px; background: var(--bg); border-radius: 5px; overflow: hidden; }
+  .dist-bar i { display: block; height: 100%; background: var(--sage); border-radius: 5px; }
+  .dist-n { width: 96px; text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; flex-shrink: 0; }
+
+  /* Активность по дням */
+  .heat { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 4px; }
+  .heat .cell { width: 11px; height: 11px; border-radius: 3px; background: var(--border); }
+  .heat .cell.on { background: var(--sage); }
+
+  /* Здоровье каталога */
+  .health-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; }
+  .health-row { background: var(--card); border: 1px solid var(--border); border-radius: 13px; padding: 15px; display: flex; align-items: center; gap: 12px; }
+  .health-row .n { font-size: 21px; font-weight: 800; font-family: Georgia, serif; min-width: 62px; }
+  .health-row .t { font-size: 12.5px; color: var(--muted); line-height: 1.4; }
+  .health-row.ok .n { color: var(--sage); }
+  .health-row.warn .n { color: var(--warn); }
+  .health-row.bad .n { color: var(--danger); }
+  .health-row button { margin-left: auto; }
+
+  @media (max-width: 860px) {
     .layout { flex-direction: column; }
-    aside { width: 100%; flex-direction: row; align-items: center; gap: 6px; padding: 12px; }
+    aside { width: 100%; height: auto; position: static; flex-direction: row; align-items: center; gap: 4px; padding: 10px; overflow-x: auto; }
     aside .brand, aside .brand-sub { display: none; }
     .signout { margin-top: 0; margin-left: auto; width: auto; }
-    .nav-btn { width: auto; margin-bottom: 0; }
-    .grid-2 { grid-template-columns: 1fr; }
+    .nav-btn { width: auto; margin-bottom: 0; white-space: nowrap; }
+    .grid-2, .grid-3, .mod-cols { grid-template-columns: 1fr; }
+    .mod-top { flex-direction: column; }
+    .mod-photo { width: 100%; height: 170px; }
   }
 </style>
 </head>
 <body>
 
-<!-- ЛОГИН -->
+<!-- ВХОД -->
 <div id="login-view">
   <div class="login-card">
-    <h1>🍳 CookFusion</h1>
-    <div class="sub">Admin Panel</div>
+    <h1>CookFusion</h1>
+    <div class="sub">Admin panel</div>
     <label>Email</label>
     <input id="login-email" type="email" autocomplete="username" placeholder="admin@email.com">
     <label>Password</label>
     <input id="login-password" type="password" autocomplete="current-password" placeholder="••••••••">
-    <button class="btn-primary" id="login-btn" onclick="signIn()">Sign In</button>
+    <button class="btn-primary btn-block" id="login-btn" onclick="signIn()">Sign in</button>
     <div class="error-box" id="login-error"></div>
   </div>
 </div>
@@ -134,77 +194,167 @@
 <div id="app-view">
   <div class="layout">
     <aside>
-      <div class="brand">🍳 CookFusion</div>
-      <div class="brand-sub">Admin Panel</div>
-      <button class="nav-btn active" data-tab="dashboard" onclick="showTab('dashboard')">📊 Dashboard</button>
-      <button class="nav-btn" data-tab="recipes" onclick="showTab('recipes')">🥘 Recipes</button>
-      <button class="nav-btn" data-tab="push" onclick="showTab('push')">📣 Push</button>
-      <button class="nav-btn" data-tab="moderation" onclick="showTab('moderation')">🧑‍🍳 Moderation<span id="mod-badge" class="nav-badge"></span></button>
-      <button class="nav-btn" data-tab="creators" onclick="showTab('creators')">👥 Creators</button>
-      <button class="nav-btn" data-tab="enrich" onclick="showTab('enrich')">✨ Enrich</button>
+      <div class="brand">CookFusion</div>
+      <div class="brand-sub">Admin panel</div>
+      <button class="nav-btn active" data-tab="dashboard" onclick="showTab('dashboard')">Dashboard</button>
+      <button class="nav-btn" data-tab="analytics" onclick="showTab('analytics')">Analytics</button>
+      <button class="nav-btn" data-tab="recipes" onclick="showTab('recipes')">Recipes</button>
+      <button class="nav-btn" data-tab="health" onclick="showTab('health')">Catalogue health</button>
+      <button class="nav-btn" data-tab="moderation" onclick="showTab('moderation')">Moderation<span id="mod-badge" class="nav-badge"></span></button>
+      <button class="nav-btn" data-tab="users" onclick="showTab('users')">Users</button>
+      <button class="nav-btn" data-tab="creators" onclick="showTab('creators')">Creators<span id="app-badge" class="nav-badge"></span></button>
+      <button class="nav-btn" data-tab="production" onclick="showTab('production')">Production<span id="sub-badge" class="nav-badge"></span></button>
+      <button class="nav-btn" data-tab="orders" onclick="showTab('orders')">Orders</button>
+      <button class="nav-btn" data-tab="comments" onclick="showTab('comments')">Comments</button>
+      <button class="nav-btn" data-tab="push" onclick="showTab('push')">Push</button>
+      <button class="nav-btn" data-tab="enrich" onclick="showTab('enrich')">Enrich</button>
       <button class="signout" onclick="signOut()">Sign out</button>
     </aside>
 
     <main>
-      <!-- DASHBOARD -->
+      <!-- СВОДКА -->
       <section id="tab-dashboard">
         <h1 class="page-title">Dashboard</h1>
-        <p class="page-sub">Users and overall activity</p>
-        <div class="stats-row">
-          <div class="stat-card"><div class="num" id="stat-users">—</div><div class="lbl">Users</div></div>
-          <div class="stat-card"><div class="num" id="stat-recipes">—</div><div class="lbl">Recipes in feed</div></div>
-          <div class="stat-card"><div class="num" id="stat-favorites">—</div><div class="lbl">Saved recipes</div></div>
-          <div class="stat-card"><div class="num" id="stat-push">—</div><div class="lbl">Push-enabled devices</div></div>
-        </div>
-        <div class="panel">
-          <table>
-            <thead><tr><th></th><th>Name</th><th>Cooked</th><th>Shopping items</th><th>Family</th><th>Push</th><th>Role</th></tr></thead>
-            <tbody id="users-tbody"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
-          </table>
-        </div>
+        <p class="page-sub">
+          Everything at a glance ·
+          <select id="ov-days" onchange="loadDashboard()" style="width:auto;display:inline-block;padding:4px 8px;font-size:13px">
+            <option value="7">last 7 days</option>
+            <option value="30" selected>last 30 days</option>
+            <option value="90">last 90 days</option>
+          </select>
+        </p>
+        <div id="ov-body"><div class="empty">Loading…</div></div>
       </section>
 
-      <!-- RECIPES -->
+      <!-- АНАЛИТИКА -->
+      <section id="tab-analytics" style="display:none">
+        <h1 class="page-title">Analytics</h1>
+        <p class="page-sub">
+          Who comes back, how far they get, what they prefer ·
+          <select id="an-days" onchange="loadAnalytics()" style="width:auto;display:inline-block;padding:4px 8px;font-size:13px">
+            <option value="7">last 7 days</option>
+            <option value="30" selected>last 30 days</option>
+            <option value="90">last 90 days</option>
+          </select>
+        </p>
+        <div id="an-body"><div class="empty">Loading…</div></div>
+      </section>
+
+      <!-- ЗАКАЗЫ -->
+      <section id="tab-orders" style="display:none">
+        <h1 class="page-title">Orders</h1>
+        <p class="page-sub">Product shipments to workers, by warehouse</p>
+        <div id="or-body"><div class="empty">Loading…</div></div>
+      </section>
+
+      <!-- РЕЦЕПТЫ -->
       <section id="tab-recipes" style="display:none">
         <h1 class="page-title">Recipes</h1>
-        <p class="page-sub">Content of the app feed</p>
+        <p class="page-sub">The whole catalogue with filters, bulk actions and a working editor</p>
         <div class="toolbar">
-          <input id="recipe-search" placeholder="Search by title…" oninput="debouncedLoadRecipes()">
-          <button class="btn-add" onclick="openRecipeModal()">+ Add recipe</button>
+          <input type="search" id="r-search" placeholder="Search by title…" oninput="debounce(loadRecipes)">
+          <select id="r-status" onchange="resetPage(); loadRecipes()">
+            <option value="">Any status</option>
+            <option value="approved">Published</option>
+            <option value="pending_review">In review</option>
+            <option value="draft">Draft</option>
+            <option value="rejected">Rejected</option>
+          </select>
+          <select id="r-cuisine" onchange="resetPage(); loadRecipes()"><option value="">Any cuisine</option></select>
+          <select id="r-flag" onchange="resetPage(); loadRecipes()">
+            <option value="">No filter</option>
+            <option value="no_photo">Without photo</option>
+            <option value="no_desc">Without description</option>
+            <option value="no_kcal">Without calories</option>
+            <option value="no_steps">Without steps</option>
+            <option value="unenriched">Not enriched</option>
+            <option value="by_creators">From creators</option>
+          </select>
+          <select id="r-sort" onchange="resetPage(); loadRecipes()">
+            <option value="new">Newest</option>
+            <option value="views">Most viewed</option>
+            <option value="rating">Best rated</option>
+            <option value="title">By title</option>
+          </select>
+          <button class="btn-add" onclick="openRecipe(null)">Add recipe</button>
+        </div>
+        <div id="bulk-bar" style="display:none" class="toolbar">
+          <b id="bulk-count" style="font-size:13.5px"></b>
+          <button class="btn-icon" onclick="bulk('publish')">Publish</button>
+          <button class="btn-icon" onclick="bulk('hide')">Hide</button>
+          <button class="btn-icon" onclick="bulk('pin')">Pin</button>
+          <button class="btn-icon" onclick="bulk('unpin')">Unpin</button>
+          <button class="btn-icon danger" onclick="bulk('delete')">Delete</button>
+          <button class="btn-ghost" onclick="clearSelection()">Clear</button>
         </div>
         <div class="panel">
           <table>
-            <thead><tr><th></th><th>Title</th><th>Time</th><th>Difficulty</th><th>Kcal</th><th>Rating</th><th style="width:150px"></th></tr></thead>
-            <tbody id="recipes-tbody"><tr><td colspan="7" class="empty">Loading…</td></tr></tbody>
+            <thead><tr>
+              <th style="width:34px"><input type="checkbox" id="r-all" style="width:auto" onchange="toggleAll(this)"></th>
+              <th style="width:56px"></th><th>Title</th><th>Status</th><th>Cuisine</th>
+              <th class="num-cell">Time</th><th class="num-cell">Kcal</th><th class="num-cell">Steps</th>
+              <th class="num-cell">Views</th><th class="num-cell">Rating</th><th style="width:70px"></th>
+            </tr></thead>
+            <tbody id="r-tbody"><tr><td colspan="11" class="empty">Loading…</td></tr></tbody>
           </table>
         </div>
-      </section>
-
-      <!-- PUSH -->
-      <section id="tab-push" style="display:none">
-        <h1 class="page-title">Push broadcast</h1>
-        <p class="page-sub">Send a notification to every user who allowed push notifications</p>
-        <div class="push-card">
-          <label>Title</label>
-          <input id="push-title" maxlength="80" placeholder="Dinner idea inside 🍝">
-          <label>Message</label>
-          <textarea id="push-message" rows="4" maxlength="200" placeholder="Open CookFusion and let the AI chef surprise you tonight!"></textarea>
-          <button class="btn-primary" id="push-btn" onclick="sendPush()">Send to all users</button>
-          <div class="result-box" id="push-result"></div>
+        <div class="pager">
+          <button class="btn-icon" id="r-prev" onclick="pageBy(-1)">Previous</button>
+          <span id="r-range"></span>
+          <button class="btn-icon" id="r-next" onclick="pageBy(1)">Next</button>
         </div>
       </section>
 
-      <!-- MODERATION -->
+      <!-- ЗДОРОВЬЕ КАТАЛОГА -->
+      <section id="tab-health" style="display:none">
+        <h1 class="page-title">Catalogue health</h1>
+        <p class="page-sub">What is missing from published recipes. The app hides shelves it cannot fill honestly, so these gaps are why the catalogue looks smaller than it is.</p>
+        <div id="health-body"><div class="empty">Loading…</div></div>
+      </section>
+
+      <!-- МОДЕРАЦИЯ -->
       <section id="tab-moderation" style="display:none">
         <h1 class="page-title">Moderation queue</h1>
         <p class="page-sub">Recipes creators sent for review — approve to publish, or send back with a reason</p>
         <div id="mod-list"><div class="empty">Loading…</div></div>
       </section>
 
-      <!-- CREATORS -->
+      <!-- ПОЛЬЗОВАТЕЛИ -->
+      <section id="tab-users" style="display:none">
+        <h1 class="page-title">Users</h1>
+        <p class="page-sub">Everyone registered, with what they actually do in the app</p>
+        <div id="roles-row" class="stats-row"></div>
+        <div class="toolbar">
+          <input type="search" id="u-search" placeholder="Search by name or handle…" oninput="debounce(loadUsers)">
+          <select id="u-filter" onchange="uPage = 0; loadUsers()">
+            <option value="">Everyone</option>
+            <option value="new">Joined this week</option>
+            <option value="push">Push enabled</option>
+            <option value="creator">Creators</option>
+            <option value="admin">Admins</option>
+          </select>
+        </div>
+        <div class="panel">
+          <table>
+            <thead><tr>
+              <th style="width:44px"></th><th>Name</th><th>Joined</th><th>Last seen</th>
+              <th class="num-cell">Family</th><th class="num-cell">Cooked</th><th class="num-cell">Saved</th>
+              <th class="num-cell">Comments</th><th class="num-cell">Recipes</th><th>Push</th><th style="width:150px">Role</th><th style="width:150px"></th>
+            </tr></thead>
+            <tbody id="u-tbody"><tr><td colspan="12" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+        <div class="pager">
+          <button class="btn-icon" id="u-prev" onclick="uPageBy(-1)">Previous</button>
+          <span id="u-range"></span>
+          <button class="btn-icon" id="u-next" onclick="uPageBy(1)">Next</button>
+        </div>
+      </section>
+
+      <!-- КРЕАТОРЫ -->
       <section id="tab-creators" style="display:none">
         <h1 class="page-title">Creators</h1>
-        <p class="page-sub">Applications, active creators and assignments</p>
+        <p class="page-sub">Applications, active authors and assignments</p>
 
         <h2 class="sub-head">Applications</h2>
         <div id="app-list"><div class="empty">Loading…</div></div>
@@ -212,88 +362,162 @@
         <h2 class="sub-head">Active creators</h2>
         <div class="panel">
           <table>
-            <thead><tr><th></th><th>Name</th><th>Country</th><th>Quota</th><th>Published</th><th>Views</th><th>Pending</th><th></th></tr></thead>
-            <tbody id="creators-tbody"><tr><td colspan="8" class="empty">Loading…</td></tr></tbody>
+            <thead><tr><th style="width:44px"></th><th>Name</th><th>Country</th><th>Contract</th><th class="num-cell">Published</th><th class="num-cell">Views</th><th class="num-cell">In review</th><th></th></tr></thead>
+            <tbody id="c-tbody"><tr><td colspan="8" class="empty">Loading…</td></tr></tbody>
           </table>
         </div>
       </section>
 
-      <!-- ENRICH -->
+      <!-- ПРОИЗВОДСТВО -->
+      <section id="tab-production" style="display:none">
+        <h1 class="page-title">Production</h1>
+        <p class="page-sub">Worker weeks and dishes waiting to be checked</p>
+
+        <h2 class="sub-head">Submitted dishes</h2>
+        <div id="sub-list"><div class="empty">Loading…</div></div>
+
+        <h2 class="sub-head">Weeks</h2>
+        <div class="panel">
+          <table>
+            <thead><tr><th style="width:44px"></th><th>Worker</th><th>Week</th><th>Status</th><th class="num-cell">Picked</th><th class="num-cell">Submitted</th><th class="num-cell">Approved</th><th class="num-cell">Rejected</th></tr></thead>
+            <tbody id="p-tbody"><tr><td colspan="8" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- КОММЕНТАРИИ -->
+      <section id="tab-comments" style="display:none">
+        <h1 class="page-title">Comments</h1>
+        <p class="page-sub">Latest comments across the whole app — hide anything that does not belong</p>
+        <div class="panel">
+          <table>
+            <thead><tr><th style="width:44px"></th><th>Author</th><th>Comment</th><th>Recipe</th><th>When</th><th></th></tr></thead>
+            <tbody id="cm-tbody"><tr><td colspan="6" class="empty">Loading…</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ПУШИ -->
+      <section id="tab-push" style="display:none">
+        <h1 class="page-title">Push broadcast</h1>
+        <p class="page-sub">Goes to every user who allowed notifications</p>
+        <div class="form-card">
+          <div id="push-reach" class="note" style="margin-bottom:6px"></div>
+          <label>Title</label>
+          <input id="push-title" maxlength="80" placeholder="Dinner idea inside">
+          <label>Message</label>
+          <textarea id="push-message" rows="4" maxlength="200" placeholder="Open CookFusion and let the AI chef surprise you tonight."></textarea>
+          <button class="btn-primary btn-block" id="push-btn" onclick="sendPush()">Send to all users</button>
+          <div class="result-box" id="push-result"></div>
+        </div>
+      </section>
+
+      <!-- ОБОГАЩЕНИЕ -->
       <section id="tab-enrich" style="display:none">
         <h1 class="page-title">Enrich recipes</h1>
         <p class="page-sub">Fills description, calories, macros, real servings, cuisine and meal type using the AI model</p>
-        <div class="push-card">
-          <p style="font-size:14px;color:var(--muted);line-height:1.6;margin:0 0 16px">
+        <div class="form-card">
+          <p class="note" style="margin-bottom:14px">
             Runs in batches so nothing times out. Steps are never sent to the model —
             only the title and ingredient list — which keeps the cost at roughly
             <b>$0.05 per 1000 recipes</b>. Safe to stop and resume: already processed
             recipes are skipped.
           </p>
-          <div style="display:flex;gap:12px;align-items:end;flex-wrap:wrap;margin-bottom:16px">
+          <div id="enrich-left" class="note" style="margin-bottom:14px"></div>
+          <div style="display:flex;gap:10px;align-items:end;flex-wrap:wrap;margin-bottom:14px">
             <div>
               <label>Batch size</label>
-              <input id="enrich-limit" type="number" value="100" min="10" max="400" style="width:120px">
+              <input id="enrich-limit" type="number" value="100" min="10" max="400" style="width:110px">
             </div>
             <button class="btn-primary" id="enrich-test" onclick="runEnrich(true)">Test 10 recipes</button>
             <button class="btn-primary" id="enrich-btn" onclick="runEnrich(false)">Enrich everything</button>
-            <button class="btn-primary" id="enrich-stop" onclick="stopEnrich()" style="display:none;background:#B3352E">Stop</button>
+            <button id="enrich-stop" onclick="stopEnrich()" style="display:none;background:#B3352E;color:#fff">Stop</button>
           </div>
           <div id="enrich-bar" style="display:none;height:8px;background:#EFEDE4;border-radius:4px;overflow:hidden;margin-bottom:12px">
             <div id="enrich-fill" style="height:100%;width:0;background:var(--green);transition:width .3s"></div>
           </div>
           <div class="result-box" id="enrich-result"></div>
-          <pre id="enrich-sample" style="display:none;font-size:12px;background:#F6F3EC;padding:14px;border-radius:10px;overflow:auto;margin-top:14px"></pre>
+          <pre id="enrich-sample" style="display:none;font-size:12px;background:#F6F3EC;padding:13px;border-radius:10px;overflow:auto;margin-top:13px"></pre>
         </div>
       </section>
     </main>
   </div>
 </div>
 
-<!-- МОДАЛКА ЗАДАНИЯ -->
-<div id="assign-overlay" style="display:none;position:fixed;inset:0;background:rgba(20,30,24,.5);z-index:60;align-items:center;justify-content:center;padding:20px">
+<!-- РЕДАКТОР РЕЦЕПТА -->
+<div class="overlay" id="recipe-overlay">
+  <div class="modal">
+    <h2 id="rm-title">Add recipe</h2>
+    <div class="hint" id="rm-stats"></div>
+    <input type="hidden" id="rm-id">
+    <label>Title</label>
+    <input id="rm-name" placeholder="Creamy mushroom risotto">
+    <label>Description</label>
+    <textarea id="rm-desc" rows="2" maxlength="400" placeholder="One or two sentences about the dish"></textarea>
+    <label>Image URL</label>
+    <input id="rm-image" placeholder="https://…" oninput="previewImage()">
+    <img id="img-preview" alt="">
+    <div class="grid-3">
+      <div><label>Servings</label><input id="rm-servings" type="number" min="1"></div>
+      <div><label>Minutes</label><input id="rm-minutes" type="number" min="1"></div>
+      <div><label>Calories</label><input id="rm-kcal" type="number" min="0"></div>
+      <div><label>Protein, g</label><input id="rm-protein" type="number" step="0.1" min="0"></div>
+      <div><label>Fat, g</label><input id="rm-fat" type="number" step="0.1" min="0"></div>
+      <div><label>Carbs, g</label><input id="rm-carbs" type="number" step="0.1" min="0"></div>
+    </div>
+    <div class="grid-3">
+      <div><label>Difficulty</label>
+        <select id="rm-level"><option value="">—</option><option value="1">Easy</option><option value="2">Medium</option><option value="3">Hard</option></select>
+      </div>
+      <div><label>Cuisine</label><input id="rm-cuisine" placeholder="italian"></div>
+      <div><label>Status</label>
+        <select id="rm-status">
+          <option value="approved">Published</option>
+          <option value="draft">Draft</option>
+          <option value="pending_review">In review</option>
+          <option value="rejected">Rejected</option>
+        </select>
+      </div>
+    </div>
+    <label>Meal types — comma separated</label>
+    <input id="rm-meals" placeholder="breakfast, lunch, dinner, snack, dessert">
+    <label>Ingredients — one per line: <span style="text-transform:none">name | amount</span></label>
+    <textarea id="rm-ing" rows="6" placeholder="Arborio rice | 300 g&#10;Mushrooms | 400 g"></textarea>
+    <label>Steps — one per line</label>
+    <textarea id="rm-steps" rows="6" placeholder="Sauté mushrooms until golden.&#10;Add rice and stir for 2 minutes."></textarea>
+    <div class="error-box" id="rm-error"></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeOverlay('recipe-overlay')">Cancel</button>
+      <button class="btn-primary" id="rm-save" onclick="saveRecipe()">Save recipe</button>
+    </div>
+  </div>
+</div>
+
+<!-- КАРТОЧКА ПОЛЬЗОВАТЕЛЯ -->
+<div class="overlay" id="user-overlay">
+  <div class="modal" style="max-width:760px">
+    <div id="user-body"><div class="empty">Loading…</div></div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeOverlay('user-overlay')">Close</button>
+    </div>
+  </div>
+</div>
+
+<!-- ЗАДАНИЕ КРЕАТОРУ -->
+<div class="overlay" id="assign-overlay">
   <div class="modal" style="max-width:520px">
     <h2>New assignment</h2>
     <div class="hint" id="assign-for"></div>
     <label>Brief — what to cook and how to shoot it</label>
-    <textarea id="assign-brief" rows="5" placeholder="Pasta with Barilla penne and Heinz tomato sauce. Hands and packaging visible in at least two shots."></textarea>
+    <textarea id="assign-brief" rows="5" placeholder="Pasta with penne and tomato sauce. Hands and packaging visible in at least two shots."></textarea>
     <div class="grid-2">
       <div><label>Payout, USD</label><input id="assign-payout" type="number" step="0.5" placeholder="12"></div>
       <div><label>Due date</label><input id="assign-due" type="date"></div>
     </div>
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeAssign()">Cancel</button>
-      <button class="btn-primary" style="width:auto;margin:0" onclick="sendAssign()">Send assignment</button>
-    </div>
     <div class="error-box" id="assign-error"></div>
-  </div>
-</div>
-
-<!-- МОДАЛКА РЕЦЕПТА -->
-<div id="modal-overlay">
-  <div class="modal">
-    <h2 id="modal-title">Add recipe</h2>
-    <input type="hidden" id="r-id">
-    <label>Title</label>
-    <input id="r-title" placeholder="Creamy Mushroom Risotto">
-    <label>Image URL</label>
-    <input id="r-image" placeholder="https://…" oninput="previewImage()">
-    <img id="img-preview" alt="">
-    <div class="grid-2">
-      <div><label>Time</label><input id="r-time" placeholder="30 min"></div>
-      <div><label>Difficulty</label>
-        <select id="r-difficulty"><option>Easy</option><option>Medium</option><option>Hard</option></select>
-      </div>
-      <div><label>Calories</label><input id="r-calories" type="number" placeholder="450"></div>
-      <div><label>Rating (1–5)</label><input id="r-rating" type="number" step="0.1" min="1" max="5" placeholder="4.7"></div>
-    </div>
-    <label>Ingredients — one per line: <span style="text-transform:none">Name | amount</span></label>
-    <textarea id="r-ingredients" rows="5" placeholder="Arborio rice | 300 g&#10;Mushrooms | 400 g&#10;Parmesan | 80 g"></textarea>
-    <div class="hint">Optional. If empty, the app generates ingredients with AI on demand.</div>
-    <label>Steps — one per line</label>
-    <textarea id="r-steps" rows="5" placeholder="Sauté mushrooms until golden.&#10;Add rice and stir for 2 minutes."></textarea>
     <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeRecipeModal()">Cancel</button>
-      <button class="btn-primary" style="width:auto; margin:0" id="save-recipe-btn" onclick="saveRecipe()">Save recipe</button>
+      <button class="btn-cancel" onclick="closeOverlay('assign-overlay')">Cancel</button>
+      <button class="btn-primary" onclick="sendAssign()">Send assignment</button>
     </div>
   </div>
 </div>
@@ -305,8 +529,39 @@ const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const $ = (id) => document.getElementById(id);
 const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const num = (n) => (Number(n) || 0).toLocaleString('en-US');
+const day = (d) => d ? new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' }) : '—';
+const dayShort = (d) => d ? new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: '2-digit' }) : '—';
 
-// ---------- AUTH ----------
+/** Одна общая задержка на все поля поиска — набор текста не должен слать запрос на каждую букву */
+let searchTimer = null;
+function debounce(fn) { clearTimeout(searchTimer); searchTimer = setTimeout(fn, 350); }
+
+function closeOverlay(id) { $(id).classList.remove('open'); }
+function openOverlay(id) { $(id).classList.add('open'); }
+
+/** Столбчатый график без графической библиотеки */
+function chart(series, label) {
+  const arr = series || [];
+  const total = arr.reduce((s, p) => s + (p.v || 0), 0);
+  if (!arr.length) return `<div class="chart-card"><div class="chart-title">${esc(label)}</div><div class="chart-empty">No data</div></div>`;
+  const max = Math.max(...arr.map(p => p.v), 0);
+  const bars = arr.map(p => {
+    const h = max ? Math.max(2, (p.v / max) * 100) : 2;
+    return `<div class="bar${p.v ? '' : ' zero'}" style="height:${h}%" title="${esc(p.d)}: ${p.v}"></div>`;
+  }).join('');
+  return `
+    <div class="chart-card">
+      <div class="chart-head">
+        <span class="chart-title">${esc(label)}</span>
+        <span class="chart-total">${num(total)} total · peak ${num(max)}</span>
+      </div>
+      <div class="bars">${bars}</div>
+      <div class="axis"><span>${day(arr[0].d)}</span><span>${day(arr[arr.length - 1].d)}</span></div>
+    </div>`;
+}
+
+// ---------- ВХОД ----------
 async function init() {
   const { data: { session } } = await db.auth.getSession();
   if (session) await enterApp(session.user);
@@ -320,13 +575,13 @@ async function signIn() {
     email: $('login-email').value.trim(),
     password: $('login-password').value,
   });
-  btn.disabled = false; btn.textContent = 'Sign In';
+  btn.disabled = false; btn.textContent = 'Sign in';
   if (error) return showError(error.message);
   await enterApp(data.user);
 }
 
 async function enterApp(user) {
-  const { data: profile } = await db.from('profiles').select('is_admin').eq('id', user.id).single();
+  const { data: profile } = await db.from('profiles').select('is_admin').eq('id', user.id).maybeSingle();
   if (!profile?.is_admin) {
     await db.auth.signOut();
     return showError('This account has no admin access.');
@@ -334,179 +589,1030 @@ async function enterApp(user) {
   $('login-view').style.display = 'none';
   $('app-view').style.display = 'block';
   loadDashboard();
-  loadRecipes();
+  refreshBadges();
 }
 
-async function signOut() {
-  await db.auth.signOut();
-  location.reload();
-}
-
+async function signOut() { await db.auth.signOut(); location.reload(); }
 function showError(msg) { const e = $('login-error'); e.textContent = msg; e.style.display = 'block'; }
 function hideError() { $('login-error').style.display = 'none'; }
 $('login-password').addEventListener('keydown', (e) => { if (e.key === 'Enter') signIn(); });
 
-// ---------- TABS ----------
+/**
+ * Одна точка для вызова функций базы.
+ *
+ * Раньше каждая вкладка сама решала, что показать при ошибке, и
+ * ненастроенная база выглядела как пустая таблица без объяснений.
+ */
+async function call(fn, args, into, cols) {
+  const { data, error } = await db.rpc(fn, args || {});
+  if (error) {
+    const box = typeof into === 'string' ? $(into) : into;
+    if (box) {
+      const msg = `<div class="empty">Could not load: ${esc(error.message)}<br>
+        <small>If this function is missing, run admin_panel.sql in Supabase.</small></div>`;
+      box.innerHTML = box.tagName === 'TBODY' ? `<tr><td colspan="${cols || 8}">${msg}</td></tr>` : msg;
+    }
+    return null;
+  }
+  return data;
+}
+
+// ---------- ВКЛАДКИ ----------
+const LOADERS = {
+  dashboard: loadDashboard, analytics: loadAnalytics, recipes: loadRecipes,
+  health: loadHealth, moderation: loadModeration, users: loadUsers,
+  creators: loadCreators, production: loadProduction, orders: loadOrders,
+  comments: loadComments,
+};
+
 function showTab(name) {
-  // Перебираем секции по разметке, а не по списку в коде: иначе новая
-  // вкладка добавляется в меню, но её содержимое остаётся скрытым
   document.querySelectorAll('main section[id^="tab-"]').forEach(s => {
     s.style.display = s.id === 'tab-' + name ? 'block' : 'none';
   });
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
-  if (name === 'dashboard') loadDashboard();
-  if (name === 'moderation') loadModeration();
-  if (name === 'creators') loadCreators();
+  LOADERS[name]?.();
 }
 
-// ---------- DASHBOARD ----------
-async function loadDashboard() {
-  loadModeration().catch(() => {});   // заодно обновляем счётчик в меню
-  const [{ count: usersCount }, { count: recipesCount }, { count: favCount }] = await Promise.all([
-    db.from('profiles').select('id', { count: 'exact', head: true }),
-    db.from('recipes').select('id', { count: 'exact', head: true }),
-    db.from('favorites').select('id', { count: 'exact', head: true }),
+/** Счётчики в меню: сколько всего ждёт решения, видно не заходя во вкладку */
+async function refreshBadges() {
+  const setBadge = (id, n) => {
+    const el = $(id);
+    el.textContent = n || '';
+    el.className = n ? 'nav-badge on' : 'nav-badge';
+  };
+  const [mod, apps, subs] = await Promise.all([
+    db.rpc('moderation_queue').then(r => r.data?.length || 0, () => 0),
+    db.rpc('applications_queue').then(r => r.data?.length || 0, () => 0),
+    db.rpc('admin_submissions').then(r => r.data?.length || 0, () => 0),
   ]);
-  $('stat-users').textContent = usersCount ?? 0;
-  $('stat-recipes').textContent = recipesCount ?? 0;
-  $('stat-favorites').textContent = favCount ?? 0;
-
-  const { data: users } = await db
-    .from('profiles')
-    .select('full_name, avatar_url, cooked_history, shopping_list, family_members, push_token, is_admin')
-    .limit(500);
-
-  const pushCount = (users ?? []).filter(u => u.push_token).length;
-  $('stat-push').textContent = pushCount;
-
-  const tbody = $('users-tbody');
-  if (!users || users.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="7" class="empty">No users yet</td></tr>';
-    return;
-  }
-  tbody.innerHTML = users.map(u => `
-    <tr>
-      <td><img class="avatar" src="${esc(u.avatar_url || '')}" onerror="this.style.visibility='hidden'"></td>
-      <td><b>${esc(u.full_name || 'No name')}</b></td>
-      <td>${(u.cooked_history || []).length}</td>
-      <td>${(u.shopping_list || []).length}</td>
-      <td>${(u.family_members || []).length}</td>
-      <td>${u.push_token ? '<span class="badge">on</span>' : '—'}</td>
-      <td>${u.is_admin ? '<span class="badge admin">admin</span>' : 'user'}</td>
-    </tr>`).join('');
+  setBadge('mod-badge', mod);
+  setBadge('app-badge', apps);
+  setBadge('sub-badge', subs);
 }
 
-// ---------- RECIPES ----------
-let searchTimer = null;
-function debouncedLoadRecipes() {
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(loadRecipes, 350);
+// ---------- СВОДКА ----------
+async function loadDashboard() {
+  const days = parseInt($('ov-days').value, 10) || 30;
+  const d = await call('admin_overview', { p_days: days }, 'ov-body');
+  if (!d) return;
+  refreshBadges();
+
+  const u = d.users || {}, r = d.recipes || {}, e = d.engagement || {},
+        c = d.creators || {}, p = d.production || {}, s = d.series || {};
+
+  const card = (n, l, extra, cls) =>
+    `<div class="stat-card ${cls || ''}"><div class="num">${n}</div><div class="lbl">${l}</div>${extra ? `<div class="delta">${extra}</div>` : ''}</div>`;
+
+  const cuisines = (d.cuisines || []).map(x =>
+    `<tr><td>${esc(x.name)}</td><td class="num-cell">${num(x.n)}</td></tr>`).join('');
+
+  const top = (d.top_recipes || []).map(x => `
+    <tr>
+      <td><img class="thumb" src="${esc(x.image || '')}" onerror="this.style.visibility='hidden'"></td>
+      <td class="truncate">${esc(x.title)}</td>
+      <td class="num-cell">${num(x.views)}</td>
+      <td class="num-cell">${x.rating ? '★ ' + x.rating : '—'}</td>
+      <td class="num-cell">${num(x.comments)}</td>
+    </tr>`).join('');
+
+  $('ov-body').innerHTML = `
+    <h2 class="sub-head" style="margin-top:0">People</h2>
+    <div class="stats-row">
+      ${card(num(u.total), 'Users', u.day ? '+' + u.day + ' today' : '')}
+      ${card(num(u.week), 'Joined this week')}
+      ${card(num(u.active_7d), 'Active this week')}
+      ${card(num(u.push), 'Push enabled')}
+      ${card(num(u.onboarded), 'Finished onboarding')}
+      ${card(num(u.admins), 'Admins')}
+    </div>
+
+    <h2 class="sub-head">Catalogue</h2>
+    <div class="stats-row">
+      ${card(num(r.total), 'Recipes')}
+      ${card(num(r.approved), 'Published')}
+      ${card(num(r.pending), 'In review', '', r.pending ? 'warn' : '')}
+      ${card(num(r.photo), 'With photo', r.total ? Math.round(r.photo / r.total * 100) + '% of all' : '')}
+      ${card(num(r.enriched), 'Enriched', r.total ? Math.round(r.enriched / r.total * 100) + '% of all' : '')}
+      ${card(num(r.by_creators), 'From creators')}
+    </div>
+
+    <h2 class="sub-head">Activity</h2>
+    <div class="stats-row">
+      ${card(num(e.views), 'Views, all time', num(e.views_period) + ' in period')}
+      ${card(num(e.cooks), 'Cooks finished')}
+      ${card(num(e.favorites), 'Saved recipes')}
+      ${card(num(e.comments), 'Comments')}
+      ${card(num(e.ratings), 'Reviews')}
+      ${card(num(e.follows), 'Follows')}
+    </div>
+
+    <div class="charts">
+      ${chart(s.signups, 'New users per day')}
+      ${chart(s.views, 'Recipe views per day')}
+      ${chart(s.cooks, 'Cooks finished per day')}
+    </div>
+
+    <h2 class="sub-head">Creators and production</h2>
+    <div class="stats-row">
+      ${card(num(c.active), 'Active creators')}
+      ${card(num(c.contract), 'On contract')}
+      ${card(num(c.pending), 'Applications waiting', '', c.pending ? 'warn' : '')}
+      ${card(num(p.weeks_open), 'Open work weeks')}
+      ${card(num(p.submitted), 'Dishes to check', '', p.submitted ? 'warn' : '')}
+      ${card(num(p.approved), 'Dishes approved')}
+    </div>
+
+    <div class="charts">
+      <div class="chart-card">
+        <div class="chart-title" style="margin-bottom:10px">Most viewed recipes</div>
+        <table>${top || '<tr><td class="empty">Nobody has opened a recipe yet</td></tr>'}</table>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title" style="margin-bottom:10px">Published by cuisine</div>
+        <table>${cuisines || '<tr><td class="empty">No data</td></tr>'}</table>
+      </div>
+    </div>`;
+
+  // Кухни для фильтра в рецептах берём отсюда же, чтобы не ходить второй раз
+  const sel = $('r-cuisine');
+  if (sel.options.length <= 1) {
+    (d.cuisines || []).filter(x => x.name !== 'not set').forEach(x => {
+      const o = document.createElement('option');
+      o.value = x.name; o.textContent = x.name + ' (' + x.n + ')';
+      sel.appendChild(o);
+    });
+  }
+  $('push-reach').textContent = `${num(u.push)} of ${num(u.total)} users have notifications on.`;
+}
+
+// ---------- АНАЛИТИКА ----------
+/** Горизонтальная полоса-распределение: доли читаются быстрее, чем список чисел */
+function distribution(items, title, empty) {
+  const list = items || [];
+  const max = Math.max(...list.map(x => x.n), 0);
+  if (!list.length) return `<div class="chart-card"><div class="chart-title">${esc(title)}</div><div class="chart-empty">${esc(empty || 'No data')}</div></div>`;
+  return `
+    <div class="chart-card">
+      <div class="chart-title" style="margin-bottom:12px">${esc(title)}</div>
+      ${list.map(x => `
+        <div class="dist">
+          <span class="dist-name">${esc(x.name)}</span>
+          <span class="dist-bar"><i style="width:${max ? (x.n / max) * 100 : 0}%"></i></span>
+          <span class="dist-n">${num(x.n)}</span>
+        </div>`).join('')}
+    </div>`;
+}
+
+async function loadAnalytics() {
+  const days = parseInt($('an-days').value, 10) || 30;
+  const d = await call('admin_analytics', { p_days: days }, 'an-body');
+  if (!d) return;
+
+  const a = d.active || {}, f = d.funnel || {}, ck = d.cooking || {},
+        dp = d.depth || {}, pr = d.preferences || {};
+
+  const card = (n, l, extra, cls) =>
+    `<div class="stat-card ${cls || ''}"><div class="num">${n}</div><div class="lbl">${l}</div>${extra ? `<div class="delta">${extra}</div>` : ''}</div>`;
+
+  // Воронка от регистрации до повторной готовки: доля считается от
+  // начала, а не от предыдущего шага — иначе последний шаг выглядит
+  // хорошо при том, что до него дошли единицы
+  const base = f.registered || 1;
+  const funnelSteps = [
+    ['Registered', f.registered], ['Finished onboarding', f.onboarded],
+    ['Set up a household', f.set_family], ['Saved a recipe', f.saved],
+    ['Started cooking', f.started], ['Finished cooking', f.finished],
+    ['Cooked more than once', f.repeated], ['Left a review', f.reviewed],
+  ];
+
+  const cohorts = (d.cohorts || []).map(c => `
+    <tr>
+      <td>${dayShort(c.week)}</td>
+      <td class="num-cell">${num(c.size)}</td>
+      <td class="num-cell">${c.d1}%</td>
+      <td class="num-cell">${c.d7}%</td>
+      <td class="num-cell">${c.d30}%</td>
+    </tr>`).join('');
+
+  const drops = (ck.drop_steps || []).map(x =>
+    `<tr><td>Step ${x.step}</td><td class="num-cell">${num(x.n)}</td></tr>`).join('');
+
+  const events = (d.events || []).map(x =>
+    `<tr><td>${esc(x.name)}</td><td class="num-cell">${num(x.n)}</td><td class="num-cell">${num(x.users)}</td></tr>`).join('');
+
+  const searches = (d.searches || []).map(x =>
+    `<tr><td>${esc(x.name)}</td><td class="num-cell">${num(x.n)}</td></tr>`).join('');
+
+  $('an-body').innerHTML = `
+    <h2 class="sub-head" style="margin-top:0">Who is actually using it</h2>
+    <div class="stats-row">
+      ${card(num(a.dau), 'Active today')}
+      ${card(num(a.wau), 'Active this week')}
+      ${card(num(a.mau), 'Active this month')}
+      ${card(a.stickiness != null ? a.stickiness + '%' : '—', 'Daily of monthly',
+             'above 20% means a daily habit')}
+    </div>
+    <div class="charts">${chart(d.dau_series, 'Active users per day')}</div>
+
+    <h2 class="sub-head">Do they come back</h2>
+    <div class="chart-card">
+      <div class="chart-title" style="margin-bottom:10px">Retention by signup week</div>
+      <table>
+        <thead><tr><th>Cohort</th><th class="num-cell">People</th><th class="num-cell">Day 1</th><th class="num-cell">Week 1</th><th class="num-cell">Month 1</th></tr></thead>
+        <tbody>${cohorts || '<tr><td colspan="5" class="empty">No cohorts yet</td></tr>'}</tbody>
+      </table>
+    </div>
+
+    <h2 class="sub-head">How far they get</h2>
+    <div class="chart-card">
+      ${funnelSteps.map(([label, n]) => `
+        <div class="dist">
+          <span class="dist-name" style="width:190px">${label}</span>
+          <span class="dist-bar"><i style="width:${Math.min(100, (n || 0) / base * 100)}%"></i></span>
+          <span class="dist-n">${num(n)} · ${Math.round((n || 0) / base * 100)}%</span>
+        </div>`).join('')}
+    </div>
+
+    <h2 class="sub-head">Behaviour while cooking</h2>
+    <div class="stats-row">
+      ${card(num(ck.sessions), 'Cooking sessions')}
+      ${card(ck.completion != null ? ck.completion + '%' : '—', 'Finished to the end',
+             '', ck.completion != null && ck.completion < 50 ? 'warn' : '')}
+      ${card(num(ck.abandoned), 'Closed halfway')}
+      ${card(ck.median_minutes ?? '—', 'Median minutes')}
+    </div>
+    <div class="charts">
+      <div class="chart-card">
+        <div class="chart-title" style="margin-bottom:10px">Where people stop</div>
+        <table>
+          <thead><tr><th>Step they were on</th><th class="num-cell">Times</th></tr></thead>
+          <tbody>${drops || '<tr><td colspan="2" class="empty">Nobody has abandoned a recipe yet</td></tr>'}</tbody>
+        </table>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title" style="margin-bottom:10px">How deep people go</div>
+        <table>
+          <tr><td>Cooked 5 or more</td><td class="num-cell">${num(dp.power)}</td></tr>
+          <tr><td>Cooked 2 to 4</td><td class="num-cell">${num(dp.regular)}</td></tr>
+          <tr><td>Cooked once</td><td class="num-cell">${num(dp.tried)}</td></tr>
+          <tr><td>Never cooked</td><td class="num-cell">${num(dp.never)}</td></tr>
+          <tr><td>Cooks per user, average</td><td class="num-cell">${dp.cooks_per_user ?? '—'}</td></tr>
+          <tr><td>Saves per user, average</td><td class="num-cell">${dp.saves_per_user ?? '—'}</td></tr>
+        </table>
+      </div>
+    </div>
+
+    <h2 class="sub-head">What they prefer</h2>
+    <div class="charts">
+      ${distribution(pr.diet, 'Diet')}
+      ${distribution(pr.level, 'Cooking level')}
+      ${distribution(pr.allergies, 'Allergies', 'Nobody has set an allergy yet')}
+      ${distribution(pr.cuisines, 'Favourite cuisines', 'Nobody has picked a cuisine yet')}
+      ${distribution(pr.household, 'Household size')}
+      ${distribution(pr.units, 'Units')}
+    </div>
+
+    <h2 class="sub-head">What they do</h2>
+    <div class="charts">
+      <div class="chart-card">
+        <div class="chart-title" style="margin-bottom:10px">Actions</div>
+        <table>
+          <thead><tr><th>Event</th><th class="num-cell">Times</th><th class="num-cell">People</th></tr></thead>
+          <tbody>${events || `<tr><td colspan="3" class="empty">
+            No events recorded yet. Tracking starts once a build with the new
+            app code is installed — nothing is invented for the meantime.</td></tr>`}</tbody>
+        </table>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title" style="margin-bottom:10px">What they search for</div>
+        <table>
+          <thead><tr><th>Query</th><th class="num-cell">Times</th></tr></thead>
+          <tbody>${searches || '<tr><td colspan="2" class="empty">No searches recorded yet</td></tr>'}</tbody>
+        </table>
+      </div>
+    </div>
+
+    <h2 class="sub-head">Money</h2>
+    <div class="chart-card">
+      <p class="note">${esc(d.revenue?.note || '')}</p>
+    </div>`;
+}
+
+// ---------- ЗАКАЗЫ ----------
+async function loadOrders() {
+  const d = await call('admin_orders', {}, 'or-body');
+  if (!d) return;
+
+  const rows = (d.shipments || []).map(s => `
+    <tr>
+      <td><img class="avatar" src="${esc(s.avatar || '')}" onerror="this.style.visibility='hidden'"></td>
+      <td><b>${esc(s.person)}</b></td>
+      <td>${esc(s.warehouse || '—')}</td>
+      <td>${s.week_start ? dayShort(s.week_start) : '—'}</td>
+      <td class="num-cell">${s.dishes || '—'}</td>
+      <td><span class="badge ${s.status === 'delivered' ? '' : s.status === 'cancelled' ? 'rejected' : 'pending'}">${esc(s.status)}</span></td>
+      <td>${esc(s.tracking || '—')}</td>
+      <td>${dayShort(s.created_at)}</td>
+      <td>${s.delivered_at ? dayShort(s.delivered_at) : '—'}</td>
+    </tr>`).join('');
+
+  const houses = (d.warehouses || []).map(w => `
+    <tr><td><b>${esc(w.name)}</b></td><td>${esc([w.city, w.country].filter(Boolean).join(', ') || '—')}</td>
+    <td class="num-cell">${num(w.shipments)}</td></tr>`).join('');
+
+  $('or-body').innerHTML = `
+    <div class="stats-row">
+      ${(d.by_status || []).map(x =>
+        `<div class="stat-card"><div class="num">${num(x.n)}</div><div class="lbl">${esc(x.name)}</div></div>`).join('')
+        || '<div class="stat-card"><div class="num">0</div><div class="lbl">No shipments yet</div></div>'}
+    </div>
+
+    <h2 class="sub-head">Shipments</h2>
+    <div class="panel">
+      <table>
+        <thead><tr><th style="width:44px"></th><th>To</th><th>Warehouse</th><th>Week</th><th class="num-cell">Dishes</th><th>Status</th><th>Tracking</th><th>Created</th><th>Delivered</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="9" class="empty">Nothing has been shipped yet. Shipments appear when a worker orders the products for their week.</td></tr>'}</tbody>
+      </table>
+    </div>
+
+    <h2 class="sub-head">Warehouses</h2>
+    <div class="panel">
+      <table>
+        <thead><tr><th>Name</th><th>Where</th><th class="num-cell">Shipments</th></tr></thead>
+        <tbody>${houses || '<tr><td colspan="3" class="empty">No warehouses set up yet.</td></tr>'}</tbody>
+      </table>
+    </div>`;
+}
+
+// ---------- РЕЦЕПТЫ ----------
+let rPage = 0, rTotal = 0, selected = new Set();
+const PAGE = 50;
+
+function resetPage() { rPage = 0; clearSelection(); }
+function pageBy(d) { rPage = Math.max(0, rPage + d); loadRecipes(); }
+
+function clearSelection() {
+  selected.clear();
+  $('r-all').checked = false;
+  document.querySelectorAll('.row-check').forEach(c => { c.checked = false; });
+  renderBulk();
+}
+function renderBulk() {
+  $('bulk-bar').style.display = selected.size ? 'flex' : 'none';
+  $('bulk-count').textContent = selected.size + ' selected';
+}
+function toggleRow(id, on) { on ? selected.add(id) : selected.delete(id); renderBulk(); }
+function toggleAll(box) {
+  document.querySelectorAll('.row-check').forEach(c => {
+    c.checked = box.checked;
+    toggleRow(Number(c.dataset.id), box.checked);
+  });
 }
 
 async function loadRecipes() {
-  const q = $('recipe-search').value.trim();
-  let query = db.from('recipes')
-    .select('id, title, image, time, difficulty, rating, calories, ingredients, steps')
-    .order('id', { ascending: false })
-    .limit(200);
-  if (q) query = query.ilike('title', '%' + q + '%');
-  const { data, error } = await query;
+  const tbody = $('r-tbody');
+  tbody.innerHTML = '<tr><td colspan="11" class="empty">Loading…</td></tr>';
 
-  const tbody = $('recipes-tbody');
-  if (error) { tbody.innerHTML = `<tr><td colspan="7" class="empty">${esc(error.message)}</td></tr>`; return; }
-  if (!data || data.length === 0) { tbody.innerHTML = '<tr><td colspan="7" class="empty">Nothing found</td></tr>'; return; }
+  const d = await call('admin_recipes', {
+    p_search: $('r-search').value.trim() || null,
+    p_status: $('r-status').value || null,
+    p_cuisine: $('r-cuisine').value || null,
+    p_flag: $('r-flag').value || null,
+    p_sort: $('r-sort').value,
+    p_limit: PAGE,
+    p_offset: rPage * PAGE,
+  }, tbody, 11);
+  if (!d) return;
 
-  window._recipes = Object.fromEntries(data.map(r => [r.id, r]));
-  tbody.innerHTML = data.map(r => `
+  rTotal = d.total || 0;
+  const rows = d.rows || [];
+  const from = rTotal ? rPage * PAGE + 1 : 0;
+  $('r-range').textContent = `${from}–${rPage * PAGE + rows.length} of ${num(rTotal)}`;
+  $('r-prev').disabled = rPage === 0;
+  $('r-next').disabled = (rPage + 1) * PAGE >= rTotal;
+
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="11" class="empty">Nothing matches these filters</td></tr>';
+    return;
+  }
+
+  const statusBadge = (s) => {
+    const cls = { approved: '', pending_review: 'pending', draft: 'draft', rejected: 'rejected' }[s] ?? 'grey';
+    const label = { approved: 'Published', pending_review: 'In review', draft: 'Draft', rejected: 'Rejected' }[s] || s;
+    return `<span class="badge ${cls}">${esc(label)}</span>`;
+  };
+
+  tbody.innerHTML = rows.map(r => `
     <tr>
+      <td><input type="checkbox" class="row-check" data-id="${r.id}" style="width:auto"
+                 ${selected.has(r.id) ? 'checked' : ''}
+                 onchange="toggleRow(${r.id}, this.checked)"></td>
       <td><img class="thumb" src="${esc(r.image || '')}" onerror="this.style.visibility='hidden'"></td>
-      <td><b>${esc(r.title)}</b></td>
-      <td>${esc(r.time || '—')}</td>
-      <td>${esc(r.difficulty || '—')}</td>
-      <td>${esc(r.calories ?? '—')}</td>
-      <td>${esc(r.rating ?? '—')}</td>
-      <td style="text-align:right">
-        <button class="btn-icon" onclick="openRecipeModal('${r.id}')">Edit</button>
-        <button class="btn-icon danger" onclick="deleteRecipe('${r.id}', this)">Delete</button>
+      <td>
+        <div class="truncate"><b>${esc(r.title)}</b>${r.is_pinned ? ' <span class="badge">pinned</span>' : ''}</div>
+        <div style="font-size:11.5px;color:var(--muted);margin-top:2px">
+          ${r.by_creator ? 'from a creator · ' : ''}${r.has_desc ? '' : 'no description · '}${r.n_ingredients} ingredients
+        </div>
       </td>
+      <td>${statusBadge(r.status)}</td>
+      <td>${esc(r.cuisine || '—')}</td>
+      <td class="num-cell">${r.time_minutes || '—'}</td>
+      <td class="num-cell">${r.kcal || '—'}</td>
+      <td class="num-cell">${r.n_steps || '<span style="color:var(--danger)">0</span>'}</td>
+      <td class="num-cell">${num(r.view_count)}</td>
+      <td class="num-cell">${r.rating_avg ? '★ ' + r.rating_avg : '—'}</td>
+      <td><button class="btn-icon" onclick="openRecipe(${r.id})">Edit</button></td>
     </tr>`).join('');
 }
 
-function openRecipeModal(id) {
-  const r = id ? window._recipes?.[id] : null;
-  $('modal-title').textContent = r ? 'Edit recipe' : 'Add recipe';
-  $('r-id').value = r?.id ?? '';
-  $('r-title').value = r?.title ?? '';
-  $('r-image').value = r?.image ?? '';
-  $('r-time').value = r?.time ?? '';
-  $('r-difficulty').value = r?.difficulty ?? 'Easy';
-  $('r-calories').value = r?.calories ?? '';
-  $('r-rating').value = r?.rating ?? '';
-  $('r-ingredients').value = (r?.ingredients || []).map(i => `${i.name} | ${i.amount ?? ''}`).join('\n');
-  $('r-steps').value = (r?.steps || []).map(s => s.text).join('\n');
-  previewImage();
-  $('modal-overlay').style.display = 'flex';
+async function bulk(action) {
+  const ids = [...selected];
+  if (!ids.length) return;
+  const verb = { publish: 'Publish', hide: 'Hide', pin: 'Pin', unpin: 'Unpin', delete: 'PERMANENTLY DELETE' }[action];
+  if (!confirm(`${verb} ${ids.length} recipe(s)?`)) return;
+
+  const { error } = await db.rpc('admin_recipes_bulk', { p_ids: ids, p_action: action });
+  if (error) return alert('Failed: ' + error.message);
+  clearSelection();
+  loadRecipes();
 }
-function closeRecipeModal() { $('modal-overlay').style.display = 'none'; }
+
+async function openRecipe(id) {
+  $('rm-error').style.display = 'none';
+  $('rm-id').value = id ?? '';
+  $('rm-title').textContent = id ? 'Edit recipe' : 'Add recipe';
+  $('rm-stats').textContent = '';
+
+  const fields = ['name', 'desc', 'image', 'servings', 'minutes', 'kcal', 'protein', 'fat', 'carbs', 'cuisine', 'meals', 'ing', 'steps'];
+  fields.forEach(f => { $('rm-' + f).value = ''; });
+  $('rm-level').value = '';
+  $('rm-status').value = 'approved';
+  previewImage();
+  openOverlay('recipe-overlay');
+
+  if (!id) return;
+
+  const d = await call('admin_recipe', { p_id: id });
+  if (!d?.recipe) return;
+  const r = d.recipe;
+
+  $('rm-name').value = r.title || '';
+  $('rm-desc').value = r.description || '';
+  $('rm-image').value = r.image || '';
+  $('rm-servings').value = r.servings ?? '';
+  $('rm-minutes').value = r.time_minutes ?? '';
+  $('rm-kcal').value = r.kcal ?? '';
+  $('rm-protein').value = r.protein_g ?? '';
+  $('rm-fat').value = r.fat_g ?? '';
+  $('rm-carbs').value = r.carbs_g ?? '';
+  $('rm-level').value = r.difficulty_level ?? '';
+  $('rm-cuisine').value = r.cuisine || '';
+  $('rm-status').value = r.status || 'approved';
+  $('rm-meals').value = (r.meal_types || []).join(', ');
+  $('rm-ing').value = (r.ingredients || []).map(i => `${i.name} | ${i.amount ?? ''}`).join('\n');
+  $('rm-steps').value = (r.steps || []).map(s => s.text ?? s).join('\n');
+  previewImage();
+
+  const views = (d.views_daily || []).reduce((s, x) => s + x.v, 0);
+  $('rm-stats').textContent =
+    `${num(r.view_count)} views all time · ${views} in the last 30 days · `
+    + `${(d.comments || []).length} comments · ${(d.ratings || []).length} reviews`
+    + (d.author ? ` · by ${d.author.name || 'a creator'}` : '');
+}
+
 function previewImage() {
-  const url = $('r-image').value.trim();
+  const url = $('rm-image').value.trim();
   const img = $('img-preview');
   img.style.display = url ? 'block' : 'none';
   if (url) img.src = url;
 }
 
-function parseIngredients(text) {
+const parseLines = (text, fn) => {
   const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-  if (!lines.length) return null;
-  return lines.map((l, i) => {
-    const [name, amount] = l.split('|').map(p => p.trim());
-    return { id: String(i + 1), name: name || l, amount: amount || '' };
-  });
-}
-function parseSteps(text) {
-  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
-  if (!lines.length) return null;
-  return lines.map((l, i) => ({ id: String(i + 1), text: l }));
-}
+  return lines.map(fn);
+};
 
 async function saveRecipe() {
-  const title = $('r-title').value.trim();
-  if (!title) return alert('Title is required');
-  const btn = $('save-recipe-btn');
+  const title = $('rm-name').value.trim();
+  const err = $('rm-error');
+  if (!title) { err.textContent = 'Title is required'; err.style.display = 'block'; return; }
+
+  const btn = $('rm-save');
   btn.disabled = true; btn.textContent = 'Saving…';
 
-  const row = {
+  const payload = {
     title,
-    image: $('r-image').value.trim() || null,
-    time: $('r-time').value.trim() || null,
-    difficulty: $('r-difficulty').value,
-    calories: $('r-calories').value ? Number($('r-calories').value) : null,
-    rating: $('r-rating').value ? Number($('r-rating').value) : null,
-    ingredients: parseIngredients($('r-ingredients').value),
-    steps: parseSteps($('r-steps').value),
+    description: $('rm-desc').value.trim(),
+    image: $('rm-image').value.trim(),
+    servings: $('rm-servings').value,
+    time_minutes: $('rm-minutes').value,
+    kcal: $('rm-kcal').value,
+    protein_g: $('rm-protein').value,
+    fat_g: $('rm-fat').value,
+    carbs_g: $('rm-carbs').value,
+    difficulty_level: $('rm-level').value,
+    cuisine: $('rm-cuisine').value.trim(),
+    status: $('rm-status').value,
+    meal_types: $('rm-meals').value.split(',').map(s => s.trim().toLowerCase()).filter(Boolean),
+    ingredients: parseLines($('rm-ing').value, (l, i) => {
+      const [name, amount] = l.split('|').map(p => p.trim());
+      return { id: String(i + 1), name: name || l, amount: amount || '' };
+    }),
+    steps: parseLines($('rm-steps').value, (l, i) => ({ id: String(i + 1), text: l })),
   };
 
-  const id = $('r-id').value;
-  const { error } = id
-    ? await db.from('recipes').update(row).eq('id', id)
-    : await db.from('recipes').insert(row);
+  const id = $('rm-id').value;
+  const { error } = await db.rpc('admin_save_recipe', {
+    p_id: id ? Number(id) : null,
+    p_data: payload,
+  });
 
   btn.disabled = false; btn.textContent = 'Save recipe';
-  if (error) return alert('Save failed: ' + error.message);
-  closeRecipeModal();
+  if (error) { err.textContent = error.message; err.style.display = 'block'; return; }
+  closeOverlay('recipe-overlay');
   loadRecipes();
 }
 
-async function deleteRecipe(id, btn) {
-  if (!confirm('Delete this recipe? This cannot be undone.')) return;
-  btn.disabled = true;
-  const { error } = await db.from('recipes').delete().eq('id', id);
-  btn.disabled = false;
-  if (error) return alert('Delete failed: ' + error.message);
+// ---------- ЗДОРОВЬЕ КАТАЛОГА ----------
+async function loadHealth() {
+  const d = await call('admin_health', {}, 'health-body');
+  if (!d) return;
+  const total = d.total || 1;
+
+  // Порог по доле, а не по числу: 200 рецептов без фото — это разное
+  // при каталоге в 300 и в 13 000
+  const row = (n, text, flag) => {
+    const share = n / total;
+    const cls = !n ? 'ok' : share > 0.25 ? 'bad' : share > 0.05 ? 'warn' : '';
+    const pct = Math.round(share * 100);
+    return `
+      <div class="health-row ${cls}">
+        <div class="n">${num(n)}</div>
+        <div class="t">${esc(text)}<br><span style="opacity:.7">${pct}% of published</span></div>
+        ${n && flag ? `<button class="btn-icon" onclick="jumpToFlag('${flag}')">Show</button>` : ''}
+      </div>`;
+  };
+
+  $('health-body').innerHTML = `
+    <div class="stats-row">
+      <div class="stat-card"><div class="num">${num(d.total)}</div><div class="lbl">Published recipes</div></div>
+    </div>
+    <div class="health-grid">
+      ${row(d.no_photo, 'No photo — hidden from most shelves', 'no_photo')}
+      ${row(d.no_desc, 'No description', 'no_desc')}
+      ${row(d.no_steps, 'No steps at all — cannot be cooked', 'no_steps')}
+      ${row(d.few_steps, 'Only one or two steps')}
+      ${row(d.no_ingredients, 'No ingredients')}
+      ${row(d.no_kcal, 'No calories', 'no_kcal')}
+      ${row(d.no_time, 'No cooking time')}
+      ${row(d.no_servings, 'No serving count')}
+      ${row(d.no_cuisine, 'No cuisine — missing from country browsing')}
+      ${row(d.no_meal, 'No meal type — missing from breakfast/lunch/dinner')}
+      ${row(d.unenriched, 'Never went through enrichment', 'unenriched')}
+      ${row(d.stock_photo, 'Using a stock photo, not a real shot')}
+      ${row(d.unverified, 'Photo not verified by a worker')}
+    </div>`;
+}
+
+function jumpToFlag(flag) {
+  showTab('recipes');
+  $('r-flag').value = flag;
+  $('r-status').value = 'approved';
+  resetPage();
   loadRecipes();
 }
 
-// ---------- PUSH ----------
+// ---------- МОДЕРАЦИЯ ----------
+async function loadModeration() {
+  const box = $('mod-list');
+  const { data, error } = await db.rpc('moderation_queue');
+  if (error) {
+    box.innerHTML = `<div class="empty">Could not load: ${esc(error.message)}<br><small>Run moderation.sql in Supabase.</small></div>`;
+    return;
+  }
+  const queue = data || [];
+  refreshBadges();
+
+  if (!queue.length) {
+    box.innerHTML = '<div class="empty">Nothing waiting. Recipes creators submit land here.</div>';
+    return;
+  }
+
+  box.innerHTML = queue.map(r => {
+    const ing = (r.ingredients || []).map(x => `<li>${esc(x.amount || '')} — ${esc(x.name || '')}</li>`).join('');
+    const steps = (r.steps || []).map((x, n) => `<li><b>${n + 1}.</b> ${esc(x.text || '')}</li>`).join('');
+    return `
+      <div class="mod-card" id="mod-${r.id}">
+        <div class="mod-top">
+          <img class="mod-photo" src="${esc(r.image || '')}" alt="">
+          <div style="flex:1;min-width:0">
+            <div class="mod-title">${esc(r.title || 'Untitled')}</div>
+            <div class="mod-desc">${esc(r.description || 'No description')}</div>
+            <div class="mod-meta">
+              <span class="mod-chip">${r.servings || '?'} servings</span>
+              <span class="mod-chip">${r.time_minutes || '?'} min</span>
+              <span class="mod-chip">${(r.ingredients || []).length} ingredients</span>
+              <span class="mod-chip">${(r.steps || []).length} steps</span>
+              ${r.cuisine ? `<span class="mod-chip">${esc(r.cuisine)}</span>` : ''}
+            </div>
+            <div class="mod-author">
+              <img class="avatar" style="width:24px;height:24px" src="${esc(r.author_avatar || '')}" alt="">
+              ${esc(r.author_name)} · ${dayShort(r.created_at)}
+            </div>
+          </div>
+        </div>
+        <div class="mod-body" id="body-${r.id}">
+          <div class="mod-cols">
+            <div><h4>Ingredients</h4><ul>${ing || '<li>—</li>'}</ul></div>
+            <div><h4>Steps</h4><ol style="padding-left:0">${steps || '<li>—</li>'}</ol></div>
+          </div>
+        </div>
+        <div class="mod-actions">
+          <button class="btn-approve" onclick="decide(${r.id}, true)">Approve and publish</button>
+          <button class="btn-reject" onclick="decide(${r.id}, false)">Send back</button>
+          <button class="btn-toggle" onclick="document.getElementById('body-${r.id}').classList.toggle('open')">Full recipe</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+async function decide(id, approve) {
+  let reason = null;
+  if (!approve) {
+    reason = prompt('What should the creator fix?');
+    if (reason === null) return;
+  } else if (!confirm('Publish this recipe?')) return;
+
+  const { error } = await db.rpc('moderate_recipe', { p_recipe_id: id, p_approve: approve, p_reason: reason });
+  if (error) return alert('Failed: ' + error.message);
+  $('mod-' + id)?.remove();
+  loadModeration();
+}
+
+// ---------- ПОЛЬЗОВАТЕЛИ ----------
+let uPage = 0;
+function uPageBy(d) { uPage = Math.max(0, uPage + d); loadUsers(); }
+
+async function loadRoles() {
+  const r = await call('admin_roles', {});
+  if (!r) return;
+  const card = (n, l, cls) =>
+    `<div class="stat-card ${cls || ''}"><div class="num">${num(n)}</div><div class="lbl">${l}</div></div>`;
+  $('roles-row').innerHTML =
+    card(r.users, 'Everyone') + card(r.plain, 'Plain users') +
+    card(r.authors, 'Authors') + card(r.workers, 'Workers on contract') +
+    card(r.paused, 'Paused creators') + card(r.admins, 'Admins') +
+    card(r.applicants, 'Applications waiting', r.applicants ? 'warn' : '');
+}
+
+async function loadUsers() {
+  loadRoles();
+  const tbody = $('u-tbody');
+  const d = await call('admin_users', {
+    p_search: $('u-search').value.trim() || null,
+    p_filter: $('u-filter').value || null,
+    p_limit: PAGE,
+    p_offset: uPage * PAGE,
+  }, tbody, 12);
+  if (!d) return;
+
+  const rows = d.rows || [];
+  const from = d.total ? uPage * PAGE + 1 : 0;
+  $('u-range').textContent = `${from}–${uPage * PAGE + rows.length} of ${num(d.total)}`;
+  $('u-prev').disabled = uPage === 0;
+  $('u-next').disabled = (uPage + 1) * PAGE >= d.total;
+
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="12" class="empty">Nobody matches</td></tr>';
+    return;
+  }
+
+  tbody.innerHTML = rows.map(u => `
+    <tr>
+      <td><img class="avatar" src="${esc(u.avatar || '')}" onerror="this.style.visibility='hidden'"></td>
+      <td>
+        <b>${esc(u.name)}</b>
+        ${u.username ? `<div style="font-size:11.5px;color:var(--muted)">@${esc(u.username)}</div>` : ''}
+      </td>
+      <td>${dayShort(u.created_at)}</td>
+      <td>${dayShort(u.last_seen_at)}</td>
+      <td class="num-cell">${u.family}</td>
+      <td class="num-cell">${u.cooked}</td>
+      <td class="num-cell">${u.favorites}</td>
+      <td class="num-cell">${u.comments}</td>
+      <td class="num-cell">${u.recipes}</td>
+      <td>${u.push ? '<span class="badge">on</span>' : '—'}</td>
+      <td>
+        <select onchange="setRole('${u.id}', this.value, this)" style="padding:5px 8px;font-size:12.5px">
+          <option value="user"${u.role === 'user' ? ' selected' : ''}>User</option>
+          <option value="author"${u.role === 'creator' && !u.worker ? ' selected' : ''}>Author</option>
+          <option value="worker"${u.worker ? ' selected' : ''}>Worker</option>
+        </select>
+      </td>
+      <td style="white-space:nowrap">
+        <button class="btn-icon" onclick="openUser('${u.id}')">Open</button>
+        <button class="btn-icon${u.is_admin ? ' danger' : ''}" onclick="toggleAdmin('${u.id}', ${!u.is_admin})">
+          ${u.is_admin ? 'Revoke admin' : 'Admin'}</button>
+      </td>
+    </tr>`).join('');
+}
+
+async function toggleAdmin(id, value) {
+  if (!confirm(value ? 'Give this person full admin access?' : 'Remove admin access?')) return;
+  const { error } = await db.rpc('admin_set_admin', { p_user_id: id, p_value: value });
+  if (error) return alert('Failed: ' + error.message);
+  loadUsers();
+}
+
+/** Смена роли. Работник отличается от автора договором и недельной нормой. */
+async function setRole(id, role, select) {
+  const explain = {
+    user: 'Back to a plain user. The creator page and followers are kept, just paused.',
+    author: 'Author: publishes whenever they want, paid on views. No quota.',
+    worker: 'Worker on contract: 21 dishes a week, products delivered.',
+  }[role];
+  if (!confirm(explain + '\n\nApply?')) { loadUsers(); return; }
+
+  select.disabled = true;
+  const { error } = await db.rpc('admin_set_role', { p_user_id: id, p_role: role });
+  select.disabled = false;
+  if (error) { alert('Failed: ' + error.message); loadUsers(); return; }
+  loadUsers();
+}
+
+/** Полная карточка: предпочтения, активность по дням и последние действия */
+async function openUser(id) {
+  $('user-body').innerHTML = '<div class="empty">Loading…</div>';
+  openOverlay('user-overlay');
+
+  const d = await call('admin_user', { p_user_id: id }, 'user-body');
+  if (!d?.profile) return;
+  const p = d.profile, c = d.counts || {}, cr = d.creator;
+
+  const list = (arr, none) => (arr && arr.length)
+    ? arr.map(x => `<span class="mod-chip">${esc(x)}</span>`).join(' ')
+    : `<span style="color:var(--muted)">${none}</span>`;
+
+  const family = (p.family || []).map(m =>
+    `<span class="mod-chip">${esc(m.name || 'Member')}${m.relationship ? ' · ' + esc(m.relationship) : ''}</span>`).join(' ');
+
+  // Активность за 90 дней клеточками: сразу видно, заходит ли человек
+  // регулярно или появился один раз
+  const activeDays = new Set((d.activity || []).map(x => x.d));
+  const cells = Array.from({ length: 90 }, (_, i) => {
+    const dt = new Date();
+    dt.setDate(dt.getDate() - (89 - i));
+    const key = dt.toISOString().slice(0, 10);
+    return `<i class="cell${activeDays.has(key) ? ' on' : ''}" title="${key}"></i>`;
+  }).join('');
+
+  const cooks = (d.recent_cooks || []).map(x => `
+    <tr><td>${esc(x.title || 'Deleted recipe')}</td>
+    <td>${x.completed ? '<span class="badge">finished</span>' : '<span class="badge draft">stopped</span>'}</td>
+    <td class="num-cell">${x.minutes ?? '—'} min</td>
+    <td>${dayShort(x.at)}</td></tr>`).join('');
+
+  const events = (d.recent_events || []).map(x => `
+    <tr><td>${esc(x.name)}</td>
+    <td style="font-size:12px;color:var(--muted)">${esc(JSON.stringify(x.props)).slice(0, 90)}</td>
+    <td>${dayShort(x.at)}</td></tr>`).join('');
+
+  $('user-body').innerHTML = `
+    <div style="display:flex;gap:14px;align-items:center;margin-bottom:6px">
+      <img class="avatar" style="width:56px;height:56px" src="${esc(p.avatar || '')}" onerror="this.style.visibility='hidden'">
+      <div>
+        <h2>${esc(p.name || 'No name')}</h2>
+        <div class="hint">
+          ${p.username ? '@' + esc(p.username) + ' · ' : ''}${esc(p.role)}${p.is_admin ? ' · admin' : ''}
+          · joined ${dayShort(p.created_at)} · last seen ${dayShort(p.last_seen_at)}
+        </div>
+      </div>
+    </div>
+
+    <div class="stats-row" style="margin-top:18px">
+      <div class="stat-card"><div class="num">${num(c.cooks_done)}</div><div class="lbl">Cooked</div></div>
+      <div class="stat-card"><div class="num">${num(c.favorites)}</div><div class="lbl">Saved</div></div>
+      <div class="stat-card"><div class="num">${num(c.comments)}</div><div class="lbl">Comments</div></div>
+      <div class="stat-card"><div class="num">${num(c.recipes)}</div><div class="lbl">Recipes</div></div>
+      <div class="stat-card"><div class="num">${num(c.followers)}</div><div class="lbl">Followers</div></div>
+    </div>
+
+    <label>Активность за 90 дней</label>
+    <div class="heat">${cells}</div>
+
+    <label>Preferences</label>
+    <div style="display:flex;flex-direction:column;gap:8px;font-size:13.5px">
+      <div><b>Diet:</b> ${esc(p.diet || 'not set')} · <b>Level:</b> ${esc(p.cooking_level || 'not set')}
+           · <b>Units:</b> ${esc(p.unit_system || 'not set')} · <b>Language:</b> ${esc(p.locale || 'not set')}</div>
+      <div><b>Allergies:</b> ${list(p.allergies, 'none')}</div>
+      <div><b>Dislikes:</b> ${list(p.dislikes, 'none')}</div>
+      <div><b>Favourite cuisines:</b> ${list(p.favorite_cuisines, 'none')}</div>
+      <div><b>Household:</b> ${family || '<span style="color:var(--muted)">nobody added</span>'}</div>
+    </div>
+
+    ${cr ? `
+      <label>As a creator</label>
+      <div style="font-size:13.5px">
+        ${cr.contract_type === 'contract' ? 'Worker on contract' : 'Author'} · ${esc(cr.status)}
+        · ${num(cr.total_recipes)} recipes · ${num(cr.total_views)} views · ${num(cr.followers)} followers
+      </div>` : ''}
+
+    <label>Recent cooking</label>
+    <div class="panel"><table>
+      <tbody>${cooks || '<tr><td class="empty">Has not cooked anything yet</td></tr>'}</tbody>
+    </table></div>
+
+    <label>Recent actions</label>
+    <div class="panel"><table>
+      <tbody>${events || '<tr><td class="empty">No tracked actions yet</td></tr>'}</tbody>
+    </table></div>`;
+}
+
+// ---------- КРЕАТОРЫ ----------
+async function loadCreators() {
+  const box = $('app-list');
+  const { data: apps, error: appErr } = await db.rpc('applications_queue');
+  if (appErr) {
+    box.innerHTML = `<div class="empty">Could not load: ${esc(appErr.message)}</div>`;
+  } else if (!apps?.length) {
+    box.innerHTML = '<div class="empty">No applications waiting.</div>';
+  } else {
+    box.innerHTML = apps.map(a => `
+      <div class="app-card">
+        <div style="display:flex;align-items:center;gap:10px">
+          <img class="avatar" src="${esc(a.avatar || '')}" alt="">
+          <div>
+            <b>${esc(a.name)}</b>
+            <div style="font-size:12px;color:var(--muted)">${esc(a.country || '')} · ${dayShort(a.created_at)}</div>
+          </div>
+        </div>
+        <div class="app-about">${esc(a.about || '')}</div>
+        ${(a.sample_links || []).map(l => `<a href="${esc(l)}" target="_blank" rel="noopener" style="font-size:12.5px;margin-right:10px">${esc(l)}</a>`).join('')}
+        <div style="display:flex;gap:10px;margin-top:14px">
+          <button class="btn-approve" onclick="decideApp('${a.user_id}', true, 0)">Approve as author</button>
+          <button class="btn-approve" style="background:var(--green)" onclick="decideApp('${a.user_id}', true, 21)">Approve as worker</button>
+          <button class="btn-reject" onclick="decideApp('${a.user_id}', false, 0)">Decline</button>
+        </div>
+      </div>`).join('');
+  }
+  refreshBadges();
+
+  const tbody = $('c-tbody');
+  const { data: list, error } = await db.rpc('creators_list');
+  if (error) {
+    tbody.innerHTML = `<tr><td colspan="8" class="empty">Could not load: ${esc(error.message)}</td></tr>`;
+    return;
+  }
+  if (!list?.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="empty">No creators yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = list.map(c => `
+    <tr>
+      <td><img class="avatar" src="${esc(c.avatar || '')}" alt=""></td>
+      <td><b>${esc(c.name)}</b></td>
+      <td>${esc(c.country || '—')}</td>
+      <td>${c.weekly_quota ? `<span class="badge">worker · ${c.weekly_quota}/week</span>` : '<span class="badge grey">author</span>'}</td>
+      <td class="num-cell">${num(c.total_recipes)}</td>
+      <td class="num-cell">${num(c.total_views)}</td>
+      <td class="num-cell">${c.pending ? `<span class="badge pending">${c.pending}</span>` : '—'}</td>
+      <td><button class="btn-icon" onclick="openAssign('${c.user_id}', '${esc(c.name)}')">Assign</button></td>
+    </tr>`).join('');
+}
+
+async function decideApp(userId, approve, quota) {
+  let reason = null;
+  if (!approve) {
+    reason = prompt('Why not?');
+    if (reason === null) return;
+  } else if (!confirm(quota
+      ? 'Approve as a worker on contract — 21 dishes a week, products delivered?'
+      : 'Approve as an author — publishes freely, paid on views?')) return;
+
+  const { error } = await db.rpc('decide_application', {
+    p_user_id: userId, p_approve: approve, p_reason: reason, p_quota: quota,
+  });
+  if (error) return alert('Failed: ' + error.message);
+  loadCreators();
+}
+
+let assignTarget = null;
+function openAssign(userId, name) {
+  assignTarget = userId;
+  $('assign-for').textContent = 'For ' + name;
+  ['brief', 'payout', 'due'].forEach(f => { $('assign-' + f).value = ''; });
+  $('assign-error').style.display = 'none';
+  openOverlay('assign-overlay');
+}
+
+async function sendAssign() {
+  const brief = $('assign-brief').value.trim();
+  const box = $('assign-error');
+  if (brief.length < 15) {
+    box.textContent = 'Write a brief the creator can actually follow.';
+    box.style.display = 'block';
+    return;
+  }
+  const { error } = await db.rpc('assign_task', {
+    p_creator_id: assignTarget,
+    p_brief: brief,
+    p_payout: parseFloat($('assign-payout').value) || null,
+    p_due: $('assign-due').value || null,
+  });
+  if (error) { box.textContent = error.message; box.style.display = 'block'; return; }
+  closeOverlay('assign-overlay');
+}
+
+// ---------- ПРОИЗВОДСТВО ----------
+async function loadProduction() {
+  const box = $('sub-list');
+  const subs = await call('admin_submissions', {}, box);
+  if (subs) {
+    box.innerHTML = subs.length ? subs.map(s => `
+      <div class="mod-card" id="sub-${s.id}">
+        <div class="mod-top">
+          <img class="mod-photo" src="${esc(s.photo || '')}" alt="">
+          <div style="flex:1;min-width:0">
+            <div class="mod-title">${esc(s.title)}</div>
+            <div class="mod-meta">
+              <span class="mod-chip">${s.actual_minutes || '?'} min actual vs ${s.stated_minutes || '?'} stated</span>
+              <span class="mod-chip">${s.taste_ok ? 'tasted good' : 'taste flagged'}</span>
+              <span class="mod-chip">${s.time_ok ? 'timing matched' : 'timing off'}</span>
+            </div>
+            ${s.notes ? `<div class="mod-desc">${esc(s.notes)}</div>` : ''}
+            <div class="mod-author">${esc(s.worker)} · ${dayShort(s.submitted_at)}</div>
+          </div>
+        </div>
+        <div class="mod-actions">
+          <button class="btn-approve" onclick="reviewDish(${s.id}, true)">Approve — use this photo</button>
+          <button class="btn-reject" onclick="reviewDish(${s.id}, false)">Send back</button>
+        </div>
+      </div>`).join('')
+      : '<div class="empty">Nothing waiting to be checked.</div>';
+  }
+  refreshBadges();
+
+  const tbody = $('p-tbody');
+  const weeks = await call('admin_production', {}, tbody, 8);
+  if (!weeks) return;
+  if (!weeks.length) {
+    tbody.innerHTML = '<tr><td colspan="8" class="empty">No work weeks yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = weeks.map(w => `
+    <tr>
+      <td><img class="avatar" src="${esc(w.avatar || '')}" alt=""></td>
+      <td><b>${esc(w.worker)}</b></td>
+      <td>${dayShort(w.week_start)}</td>
+      <td><span class="badge ${w.status === 'closed' ? 'grey' : ''}">${esc(w.status)}</span></td>
+      <td class="num-cell">${w.picked} / ${w.target}</td>
+      <td class="num-cell">${w.submitted}</td>
+      <td class="num-cell">${w.approved}</td>
+      <td class="num-cell">${w.rejected || '—'}</td>
+    </tr>`).join('');
+}
+
+async function reviewDish(id, approve) {
+  let reason = null;
+  if (!approve) {
+    reason = prompt('What should the worker redo?');
+    if (reason === null) return;
+  } else if (!confirm('Approve? The photo and measured time replace what the recipe has now.')) return;
+
+  const { error } = await db.rpc('review_dish', { p_item_id: id, p_approve: approve, p_reason: reason });
+  if (error) return alert('Failed: ' + error.message);
+  $('sub-' + id)?.remove();
+  loadProduction();
+}
+
+// ---------- КОММЕНТАРИИ ----------
+async function loadComments() {
+  const tbody = $('cm-tbody');
+  const rows = await call('admin_comments', { p_limit: 200 }, tbody, 6);
+  if (!rows) return;
+  if (!rows.length) {
+    tbody.innerHTML = '<tr><td colspan="6" class="empty">No comments yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML = rows.map(c => `
+    <tr style="${c.hidden ? 'opacity:.5' : ''}">
+      <td><img class="avatar" src="${esc(c.avatar || '')}" onerror="this.style.visibility='hidden'"></td>
+      <td>${esc(c.author)}</td>
+      <td style="max-width:420px">${esc(c.body)}</td>
+      <td class="truncate" style="max-width:200px">${esc(c.recipe_title)}</td>
+      <td>${dayShort(c.created_at)}</td>
+      <td><button class="btn-icon ${c.hidden ? '' : 'danger'}" onclick="hideComment('${c.id}', ${!c.hidden})">
+        ${c.hidden ? 'Restore' : 'Hide'}</button></td>
+    </tr>`).join('');
+}
+
+async function hideComment(id, hidden) {
+  const { error } = await db.rpc('admin_hide_comment', { p_id: id, p_hidden: hidden });
+  if (error) return alert('Failed: ' + error.message);
+  loadComments();
+}
+
+// ---------- ПУШИ ----------
 async function sendPush() {
   const title = $('push-title').value.trim();
   const message = $('push-message').value.trim();
@@ -525,20 +1631,17 @@ async function sendPush() {
     box.textContent = 'Failed: ' + (error?.message || data?.error);
   } else {
     box.style.background = '#EAF1E7'; box.style.color = 'var(--green)';
-    box.textContent = data.info
-      ? data.info
-      : `Delivered to Expo: ${data.sent} sent, ${data.failed} failed (of ${data.total} devices).`;
+    box.textContent = data.info || `Delivered to Expo: ${data.sent} sent, ${data.failed} failed (of ${data.total} devices).`;
     $('push-title').value = ''; $('push-message').value = '';
   }
 }
 
-// ---------- ENRICH ----------
+// ---------- ОБОГАЩЕНИЕ ----------
 let enrichStop = false;
-
 function stopEnrich() { enrichStop = true; $('enrich-stop').textContent = 'Stopping…'; }
 
 async function runEnrich(dryRun) {
-  const limit = Math.min(Math.max(parseInt($('enrich-limit').value) || 100, 10), 400);
+  const limit = Math.min(Math.max(parseInt($('enrich-limit').value, 10) || 100, 10), 400);
   const box = $('enrich-result');
   const bar = $('enrich-bar');
   box.style.display = 'block';
@@ -621,7 +1724,7 @@ async function runEnrich(dryRun) {
         emptyStreak++;
         offset += limit;
         if (emptyStreak >= 3) {
-          stopReason = `three batches in a row produced nothing`
+          stopReason = 'three batches in a row produced nothing'
             + (data.firstFailure ? `: ${data.firstFailure}` : '');
           break;
         }
@@ -651,173 +1754,12 @@ async function runEnrich(dryRun) {
   }
 }
 
-// ---------- MODERATION ----------
-let modQueue = [];
-
-async function loadModeration() {
-  const box = $('mod-list');
-  const { data, error } = await db.rpc('moderation_queue');
-  if (error) {
-    box.innerHTML = '<div class="empty">Run moderation.sql in Supabase to switch the queue on.<br><small>' + error.message + '</small></div>';
-    return;
-  }
-  modQueue = data || [];
-
-  const badge = $('mod-badge');
-  badge.textContent = modQueue.length;
-  badge.className = modQueue.length ? 'nav-badge on' : 'nav-badge';
-
-  if (!modQueue.length) {
-    box.innerHTML = '<div class="empty">Nothing waiting. Recipes creators submit land here.</div>';
-    return;
-  }
-
-  box.innerHTML = modQueue.map((r, i) => {
-    const ing = (r.ingredients || []).map(x => '<li>' + esc(x.amount || '') + ' — ' + esc(x.name || '') + '</li>').join('');
-    const steps = (r.steps || []).map((x, n) => '<li><b>' + (n + 1) + '.</b> ' + esc(x.text || '') + '</li>').join('');
-    return `
-      <div class="mod-card" id="mod-${r.id}">
-        <div class="mod-top">
-          <img class="mod-photo" src="${esc(r.image || '')}" alt="">
-          <div style="flex:1">
-            <div class="mod-title">${esc(r.title || 'Untitled')}</div>
-            <div class="mod-desc">${esc(r.description || 'No description')}</div>
-            <div class="mod-meta">
-              <span class="mod-chip">${r.servings || '?'} servings</span>
-              <span class="mod-chip">${r.time_minutes || '?'} min</span>
-              <span class="mod-chip">${(r.ingredients || []).length} ingredients</span>
-              <span class="mod-chip">${(r.steps || []).length} steps</span>
-              ${r.cuisine ? '<span class="mod-chip">' + esc(r.cuisine) + '</span>' : ''}
-              ${r.assignment_id ? '<span class="mod-chip">assignment #' + r.assignment_id + '</span>' : ''}
-            </div>
-            <div class="mod-author">
-              <img class="avatar" style="width:26px;height:26px" src="${esc(r.author_avatar || '')}" alt="">
-              ${esc(r.author_name)} · ${new Date(r.created_at).toLocaleDateString()}
-            </div>
-          </div>
-        </div>
-        <div class="mod-body" id="body-${r.id}">
-          <div class="mod-cols">
-            <div><h4>Ingredients</h4><ul>${ing || '<li>—</li>'}</ul></div>
-            <div><h4>Steps</h4><ol style="padding-left:0;list-style:none">${steps || '<li>—</li>'}</ol></div>
-          </div>
-        </div>
-        <div class="mod-actions">
-          <button class="btn-approve" onclick="decide(${r.id}, true)">Approve & publish</button>
-          <button class="btn-reject" onclick="decide(${r.id}, false)">Send back</button>
-          <button class="btn-toggle" onclick="document.getElementById('body-${r.id}').classList.toggle('open')">Full recipe</button>
-        </div>
-      </div>`;
-  }).join('');
-}
-
-async function decide(id, approve) {
-  let reason = null;
-  if (!approve) {
-    reason = prompt('What should the creator fix?');
-    if (reason === null) return;
-  } else if (!confirm('Publish this recipe?')) return;
-
-  const { error } = await db.rpc('moderate_recipe', {
-    p_recipe_id: id, p_approve: approve, p_reason: reason,
-  });
-  if (error) { alert('Failed: ' + error.message); return; }
-  document.getElementById('mod-' + id)?.remove();
-  loadModeration();
-}
-
-// ---------- CREATORS ----------
-async function loadCreators() {
-  const { data: apps, error: appErr } = await db.rpc('applications_queue');
-  const box = $('app-list');
-  if (appErr) {
-    box.innerHTML = '<div class="empty">Run moderation.sql to switch this on.</div>';
-  } else if (!apps || !apps.length) {
-    box.innerHTML = '<div class="empty">No applications waiting.</div>';
-  } else {
-    box.innerHTML = apps.map(a => `
-      <div class="app-card">
-        <div style="display:flex;align-items:center;gap:10px">
-          <img class="avatar" src="${esc(a.avatar || '')}" alt="">
-          <div>
-            <b>${esc(a.name)}</b>
-            <div style="font-size:12px;color:var(--muted)">${esc(a.country || '')} · ${new Date(a.created_at).toLocaleDateString()}</div>
-          </div>
-        </div>
-        <div class="app-about">${esc(a.about || '')}</div>
-        ${(a.sample_links || []).map(l => '<a href="' + esc(l) + '" target="_blank" rel="noopener" style="font-size:12.5px;margin-right:10px">' + esc(l) + '</a>').join('')}
-        <div style="display:flex;gap:10px;margin-top:14px">
-          <button class="btn-approve" onclick="decideApp('${a.user_id}', true)">Approve as creator</button>
-          <button class="btn-reject" onclick="decideApp('${a.user_id}', false)">Decline</button>
-        </div>
-      </div>`).join('');
-  }
-
-  const { data: list, error } = await db.rpc('creators_list');
-  const tbody = $('creators-tbody');
-  if (error || !list || !list.length) {
-    tbody.innerHTML = '<tr><td colspan="8" class="empty">No creators yet.</td></tr>';
-    return;
-  }
-  tbody.innerHTML = list.map(c => `
-    <tr>
-      <td><img class="avatar" src="${esc(c.avatar || '')}" alt=""></td>
-      <td><b>${esc(c.name)}</b></td>
-      <td>${esc(c.country || '—')}</td>
-      <td>${c.weekly_quota || 0}/week</td>
-      <td>${c.total_recipes || 0}</td>
-      <td>${c.total_views || 0}</td>
-      <td>${c.pending ? '<span class="badge admin">' + c.pending + '</span>' : '—'}</td>
-      <td><button class="btn-icon" onclick="openAssign('${c.user_id}', '${esc(c.name)}')">Assign</button></td>
-    </tr>`).join('');
-}
-
-async function decideApp(userId, approve) {
-  let reason = null;
-  if (!approve) {
-    reason = prompt('Why not?');
-    if (reason === null) return;
-  } else if (!confirm('Approve this person as a creator with a 21/week quota?')) return;
-
-  const { error } = await db.rpc('decide_application', {
-    p_user_id: userId, p_approve: approve, p_reason: reason, p_quota: 21,
-  });
-  if (error) { alert('Failed: ' + error.message); return; }
-  loadCreators();
-}
-
-let assignTarget = null;
-function openAssign(userId, name) {
-  assignTarget = userId;
-  $('assign-for').textContent = 'For ' + name;
-  $('assign-brief').value = '';
-  $('assign-payout').value = '';
-  $('assign-due').value = '';
-  $('assign-error').style.display = 'none';
-  $('assign-overlay').style.display = 'flex';
-}
-function closeAssign() { $('assign-overlay').style.display = 'none'; }
-
-async function sendAssign() {
-  const brief = $('assign-brief').value.trim();
-  if (brief.length < 15) { alert('Write a brief the creator can actually follow.'); return; }
-
-  const { error } = await db.rpc('assign_task', {
-    p_creator_id: assignTarget,
-    p_brief: brief,
-    p_payout: parseFloat($('assign-payout').value) || null,
-    p_due: $('assign-due').value || null,
-  });
-  if (error) {
-    const box = $('assign-error');
-    box.style.display = 'block';
-    box.textContent = error.message;
-    return;
-  }
-  closeAssign();
-  alert('Assignment sent — it shows up in their studio.');
-}
-
+document.querySelectorAll('.overlay').forEach(o => {
+  o.addEventListener('click', (e) => { if (e.target === o) o.classList.remove('open'); });
+});
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') document.querySelectorAll('.overlay.open').forEach(o => o.classList.remove('open'));
+});
 
 init();
 </script>
