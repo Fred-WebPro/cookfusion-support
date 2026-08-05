@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CookFusion — Author</title>
+<meta name="description" content="Recipes on CookFusion">
+<style>
+  :root {
+    --bg: #F6F3EC; --card: #fff; --ink: #1E3A2B; --text: #1C1C1E;
+    --muted: #7C8379; --border: #E2E6DB; --accent: #E89D5E;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background: var(--bg); color: var(--text); }
+  h1, h2 { font-family: Georgia, 'Times New Roman', serif; }
+  a { color: inherit; }
+
+  .cover { height: 220px; background: linear-gradient(135deg, var(--accent), var(--ink)); position: relative; }
+  .cover img { width: 100%; height: 100%; object-fit: cover; }
+  .cover::after { content: ''; position: absolute; inset: 0; background: linear-gradient(transparent 40%, rgba(0,0,0,.45)); }
+
+  .wrap { max-width: 780px; margin: 0 auto; padding: 0 20px 60px; }
+  .head { margin-top: -50px; position: relative; z-index: 2; }
+  .avatar { width: 100px; height: 100px; border-radius: 50%; border: 4px solid var(--bg); object-fit: cover; background: var(--border); display: block; }
+  .name { font-size: 30px; color: var(--ink); margin-top: 12px; }
+  .handle { color: var(--accent); font-weight: 700; font-size: 15px; margin-top: 2px; }
+  .headline { font-size: 16px; margin-top: 10px; }
+  .bio { color: var(--muted); font-size: 15px; line-height: 1.6; margin-top: 10px; white-space: pre-wrap; }
+
+  .stats { display: flex; background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 18px; margin-top: 22px; }
+  .stat { flex: 1; text-align: center; }
+  .stat b { display: block; font-family: Georgia, serif; font-size: 20px; color: var(--ink); }
+  .stat span { font-size: 12px; color: var(--muted); }
+
+  .section { font-size: 12px; letter-spacing: 1.2px; text-transform: uppercase; color: var(--muted); font-weight: 800; margin: 30px 0 14px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 16px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; overflow: hidden; }
+  .card img { width: 100%; height: 140px; object-fit: cover; background: var(--border); display: block; }
+  .card .body { padding: 13px; }
+  .card .title { font-weight: 700; font-size: 14.5px; line-height: 1.35; }
+  .card .meta { color: var(--muted); font-size: 12px; margin-top: 6px; }
+
+  .cta { display: block; text-align: center; background: var(--ink); color: #fff; text-decoration: none;
+         border-radius: 26px; padding: 16px; font-weight: 700; margin-top: 34px; }
+  .empty { text-align: center; color: var(--muted); padding: 40px 20px; }
+  .foot { text-align: center; color: var(--muted); font-size: 12.5px; margin-top: 30px; }
+
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #0F150F; --card: #17201A; --text: #EDEFE8; --muted: #8A9285; --border: #253026; --ink: #EDEFE8; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cover" id="cover"></div>
+<div class="wrap">
+  <div class="head">
+    <img class="avatar" id="avatar" alt="">
+    <h1 class="name" id="name">…</h1>
+    <div class="handle" id="handle"></div>
+    <div class="headline" id="headline"></div>
+    <div class="bio" id="bio"></div>
+  </div>
+
+  <div class="stats" id="stats" style="display:none">
+    <div class="stat"><b id="s-recipes">0</b><span>recipes</span></div>
+    <div class="stat"><b id="s-followers">0</b><span>followers</span></div>
+    <div class="stat"><b id="s-views">0</b><span>views</span></div>
+    <div class="stat"><b id="s-rating">—</b><span>rating</span></div>
+  </div>
+
+  <div class="section" id="sec" style="display:none">Recipes</div>
+  <div class="grid" id="grid"></div>
+
+  <a class="cta" href="https://apps.apple.com/app/id0000000000">Open in CookFusion</a>
+  <div class="foot">CookFusion — AI Meal Planner</div>
+</div>
+
+<script>
+// Публичная страница автора: данные отдаёт функция creator_page,
+// она возвращает только то, что можно показывать посторонним —
+// выплаты и заметки в неё не входят.
+const SUPABASE_URL = 'https://vimdtngoecdhkliixgit.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_gPDI3LlWFukfehmKPcIYTw_nYsv5xVU';
+
+const esc = v => String(v ?? '').replace(/[&<>"']/g, c =>
+  ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+
+const handle = new URLSearchParams(location.search).get('u');
+
+const fmt = m => {
+  if (!m) return '';
+  if (m < 60) return m + ' min';
+  const h = Math.floor(m / 60), r = m % 60;
+  return r ? h + ' h ' + r + ' min' : h + ' h';
+};
+
+(async () => {
+  if (!handle) { document.getElementById('name').textContent = 'No author specified'; return; }
+
+  const res = await fetch(SUPABASE_URL + '/rest/v1/rpc/creator_page', {
+    method: 'POST',
+    headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ p_handle: handle }),
+  });
+
+  const page = res.ok ? await res.json() : null;
+  if (!page) {
+    document.getElementById('name').textContent = 'Author not found';
+    return;
+  }
+
+  document.title = page.display_name + ' — CookFusion';
+  if (page.accent) document.documentElement.style.setProperty('--accent', page.accent);
+  if (page.cover_url) {
+    document.getElementById('cover').innerHTML = '<img src="' + esc(page.cover_url) + '" alt="">';
+  }
+  if (page.avatar_url) document.getElementById('avatar').src = page.avatar_url;
+
+  document.getElementById('name').textContent = page.display_name;
+  document.getElementById('handle').textContent = page.username ? '@' + page.username : '';
+  document.getElementById('headline').textContent = page.headline || '';
+  document.getElementById('bio').textContent = page.bio || '';
+
+  document.getElementById('stats').style.display = 'flex';
+  document.getElementById('s-recipes').textContent = (page.recipes || []).length;
+  document.getElementById('s-followers').textContent = page.followers || 0;
+  document.getElementById('s-views').textContent = page.total_views || 0;
+  document.getElementById('s-rating').textContent = page.rating_avg ? '★ ' + page.rating_avg : '—';
+
+  const grid = document.getElementById('grid');
+  const list = page.recipes || [];
+  document.getElementById('sec').style.display = 'block';
+
+  if (!list.length) {
+    grid.innerHTML = '<div class="empty">Nothing published yet.</div>';
+    return;
+  }
+
+  grid.innerHTML = list.map(r => `
+    <div class="card">
+      <img src="${esc(r.image || '')}" alt="" loading="lazy">
+      <div class="body">
+        <div class="title">${esc(r.title)}</div>
+        <div class="meta">${fmt(r.time_minutes)}${r.kcal ? ' · ' + r.kcal + ' kcal' : ''}</div>
+      </div>
+    </div>`).join('');
+})();
+</script>
+</body>
+</html>
