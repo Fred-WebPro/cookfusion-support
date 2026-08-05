@@ -488,7 +488,18 @@ async function runEnrich(dryRun) {
       const { data, error } = await db.functions.invoke('enrich-recipes', {
         body: { limit: dryRun ? 10 : limit, dryRun },
       });
-      if (error || data?.error) throw new Error(error?.message || data.error);
+
+      // supabase-js прячет тело ответа за общим «non-2xx status code»,
+      // поэтому достаём настоящую причину из контекста
+      if (error) {
+        let detail = error.message;
+        try {
+          const body = await error.context?.json();
+          if (body?.error) detail = body.error;
+        } catch (_) { /* тела нет */ }
+        throw new Error(detail);
+      }
+      if (data?.error) throw new Error(data.error);
 
       done += data.processed || 0;
       cost += data.costUsd || 0;
@@ -504,9 +515,11 @@ async function runEnrich(dryRun) {
         $('enrich-fill').style.width = Math.min(100, (done / startRemaining) * 100) + '%';
       }
 
+      const warn = data.failures ? ` · ${data.failures} batches retried or skipped` : '';
       box.textContent = dryRun
         ? `Test run: ${data.processed} recipes, $${cost.toFixed(4)} spent. Nothing was saved.`
-        : `${done} done, ${data.remaining} left · $${cost.toFixed(3)} spent so far`;
+        : `${done} done, ${data.remaining} left · $${cost.toFixed(3)} spent${warn}`;
+      if (data.firstFailure) console.warn('enrich:', data.firstFailure);
 
       if (dryRun || data.remaining === 0 || data.processed === 0) break;
     } while (!enrichStop);
