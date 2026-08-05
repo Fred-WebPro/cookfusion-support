@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Админка — не для поиска. Она и так за паролем, но и в индексе ей нечего делать.
+Disallow: /admin.html
+
+Sitemap: https://fred-webpro.github.io/cookfusion-support/sitemap.xml
