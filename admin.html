@@ -486,9 +486,14 @@ async function runEnrich(dryRun) {
 
   try {
     do {
-      const { data, error } = await db.functions.invoke('enrich-recipes', {
-        body: { limit: dryRun ? 10 : limit, dryRun, offset },
-      });
+      // Свой таймаут: invoke ждёт бесконечно, и зависший вызов выглядит
+      // как замерший прогресс без единого признака жизни
+      const guard = new Promise((_, reject) =>
+        setTimeout(() => reject(new Error('No answer in 3 minutes — stopped to avoid hanging.')), 180000));
+      const { data, error } = await Promise.race([
+        db.functions.invoke('enrich-recipes', { body: { limit: dryRun ? 10 : limit, dryRun, offset } }),
+        guard,
+      ]);
 
       // supabase-js прячет тело ответа за общим «non-2xx status code»,
       // поэтому достаём настоящую причину из контекста
@@ -516,12 +521,19 @@ async function runEnrich(dryRun) {
         $('enrich-fill').style.width = Math.min(100, (done / startRemaining) * 100) + '%';
       }
 
-      const warn = data.failures ? ` · ${data.failures} batches retried or skipped` : '';
+      const warn = data.failures ? ` · ${data.failures} chunks failed` : '';
+      const slow = data.elapsedMs > 45000 ? ` · slow (${Math.round(data.elapsedMs / 1000)}s)` : '';
       box.textContent = dryRun
         ? `Test run: ${data.processed} recipes, $${cost.toFixed(4)} spent. Nothing was saved.`
-        : `${done} done, ${data.remaining} left · $${cost.toFixed(3)} spent${warn}`
+        : `${done} done, ${data.remaining} left · $${cost.toFixed(3)} spent${warn}${slow}`
           + (emptyStreak ? ` · skipping a stuck batch (${emptyStreak}/3)` : '');
-      if (data.firstFailure) console.warn('enrich:', data.firstFailure);
+
+      // Причина сбоя должна быть видна сразу, а не в консоли: без неё
+      // прогон выглядит как необъяснимо замерший счётчик
+      if (data.firstFailure) {
+        $('enrich-sample').style.display = 'block';
+        $('enrich-sample').textContent = 'Last problem: ' + data.firstFailure;
+      }
 
       if (dryRun || data.remaining === 0) break;
 
