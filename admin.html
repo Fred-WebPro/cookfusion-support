@@ -279,9 +279,11 @@ $('login-password').addEventListener('keydown', (e) => { if (e.key === 'Enter') 
 
 // ---------- TABS ----------
 function showTab(name) {
-  for (const t of ['dashboard', 'recipes', 'push']) {
-    $('tab-' + t).style.display = t === name ? 'block' : 'none';
-  }
+  // Перебираем секции по разметке, а не по списку в коде: иначе новая
+  // вкладка добавляется в меню, но её содержимое остаётся скрытым
+  document.querySelectorAll('main section[id^="tab-"]').forEach(s => {
+    s.style.display = s.id === 'tab-' + name ? 'block' : 'none';
+  });
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === name));
   if (name === 'dashboard') loadDashboard();
 }
