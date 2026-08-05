@@ -261,6 +261,7 @@
       <button class="nav-btn" data-tab="warehouses" onclick="showTab('warehouses')">Warehouses</button>
       <button class="nav-btn" data-tab="partners" onclick="showTab('partners')">Partners</button>
       <button class="nav-btn" data-tab="banners" onclick="showTab('banners')">Banners</button>
+      <button class="nav-btn" data-tab="shelves" onclick="showTab('shelves')">Home shelves</button>
       <button class="nav-btn" data-tab="settings" onclick="showTab('settings')">Ranking</button>
       <button class="nav-btn" data-tab="comments" onclick="showTab('comments')">Comments</button>
       <button class="nav-btn" data-tab="push" onclick="showTab('push')">Push</button>
@@ -491,6 +492,15 @@
         <div id="bn-body"><div class="empty">Loading…</div></div>
       </section>
 
+      <!-- ПОЛКИ ГЛАВНОЙ -->
+      <section id="tab-shelves" style="display:none">
+        <h1 class="page-title">Home shelves</h1>
+        <p class="page-sub">The rows on the app home screen — their order, rules and titles</p>
+        <div class="help">These were hard-coded in the app until now: changing one meant a new build and another App Store review. A shelf with fewer than three recipes is not shown at all, so watch the Fills column — an empty shelf is a rule that matches nothing.</div>
+        <div class="toolbar"><button class="btn-add" onclick="openShelf(null)">Add shelf</button></div>
+        <div id="sh-body"><div class="empty">Loading…</div></div>
+      </section>
+
       <!-- РАНЖИРОВАНИЕ -->
       <section id="tab-settings" style="display:none">
         <h1 class="page-title">Ranking and settings</h1>
@@ -719,6 +729,52 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&
  * верный способ что-нибудь сломать.
  */
 const RU = {
+  'Home shelves':
+    'Полки главной',
+  'The rows on the app home screen — their order, rules and titles':
+    'Ряды на главной странице приложения — порядок, правила и названия',
+  'These were hard-coded in the app until now: changing one meant a new build and another App Store review. A shelf with fewer than three recipes is not shown at all, so watch the Fills column — an empty shelf is a rule that matches nothing.':
+    'До сих пор они были прошиты в приложении: чтобы изменить одну, нужна была новая сборка и повторная проверка в App Store. Полка меньше чем с тремя рецептами не показывается вовсе — следите за колонкой «Наберётся»: пусто означает, что правило не находит ничего.',
+  'Add shelf':
+    'Добавить полку',
+  'Shelves set up':
+    'Полок настроено',
+  'Actually shown':
+    'Реально показывается',
+  'Shelf':
+    'Полка',
+  'Layout':
+    'Вёрстка',
+  'Rules':
+    'Правила',
+  'Hours':
+    'Часы',
+  'Limit':
+    'Предел',
+  'Fills':
+    'Наберётся',
+  'Pos':
+    'Место',
+  'Key — internal name':
+    'Ключ — служебное имя',
+  'Position':
+    'Место',
+  'Title, English':
+    'Название, английский',
+  'Title, Russian':
+    'Название, русский',
+  'How many recipes':
+    'Сколько рецептов',
+  'Show from hour':
+    'Показывать с часа',
+  'Show until hour':
+    'Показывать до часа',
+  'Rules, JSON':
+    'Правила, JSON',
+  'No shelves yet. Run feed_shelves.sql to fill in the ones the app used to have hard-coded.':
+    'Полок пока нет. Выполните feed_shelves.sql — он перенесёт те, что были прошиты в приложении.',
+  'always':
+    'всегда',
   'This went to':
     'Ушло на',
   'devices, not':
@@ -1238,6 +1294,7 @@ const LOADERS = {
   creators: loadCreators, production: loadProduction, orders: loadOrders,
   warehouses: loadWarehouses, partners: loadPartners, banners: loadBanners,
   settings: loadSettings, comments: loadComments, reports: loadReports,
+  shelves: loadShelves,
   push: loadPush,
 };
 
@@ -1676,6 +1733,23 @@ const FORMS = {
       { k: 'notes', l: 'Notes', type: 'area', wide: true },
     ],
   },
+  shelf: {
+    title: 'Shelf', save: 'admin_save_shelf', del: 'admin_delete_shelf',
+    fields: [
+      { k: 'key', l: 'Key — internal name', req: true },
+      { k: 'position', l: 'Position', type: 'number' },
+      { k: 'title_en', l: 'Title, English', req: true },
+      { k: 'title_ru', l: 'Title, Russian' },
+      { k: 'subtitle', l: 'Subtitle' },
+      { k: 'layout', l: 'Layout', type: 'select', opts: ['row_small', 'row_large', 'grid_two', 'list', 'hero'] },
+      { k: 'items_limit', l: 'How many recipes', type: 'number' },
+      { k: 'kind', l: 'Kind', type: 'select', opts: ['auto', 'manual', 'algo'] },
+      { k: 'show_from_hour', l: 'Show from hour', type: 'number' },
+      { k: 'show_to_hour', l: 'Show until hour', type: 'number' },
+      { k: 'rules', l: 'Rules, JSON', type: 'area', wide: true },
+      { k: 'is_active', l: 'Active', type: 'bool' },
+    ],
+  },
   banner: {
     title: 'Banner', save: 'admin_save_banner', del: 'admin_delete_banner',
     fields: [
@@ -1849,6 +1923,45 @@ async function loadBanners() {
         <th class="num-cell">Clicks</th><th class="num-cell">CTR</th><th>State</th><th style="width:70px"></th></tr></thead>
       <tbody>${list || `<tr><td colspan="11" class="empty">
         No banners yet. A banner shows up in the app only while it is live and inside its dates.</td></tr>`}</tbody>
+    </table></div>`;
+}
+
+const openShelf = (row) => openForm('shelf', row && { ...row, rules: JSON.stringify(row.rules || {}) });
+
+async function loadShelves() {
+  const rows = await call('admin_shelves', {}, 'sh-body');
+  if (!rows) return;
+  cache.shelves = Object.fromEntries(rows.map(x => [x.id, x]));
+
+  const list = rows.map(x => {
+    // Меньше трёх рецептов — приложение полку не покажет
+    const thin = x.fills < 3;
+    return `
+    <tr style="${x.is_active ? '' : 'opacity:.5'}">
+      <td class="num-cell">${x.position}</td>
+      <td><b>${esc(x.title_en)}</b>
+        <div style="font-size:11.5px;color:var(--muted)">${esc(x.title_ru || '')} · ${esc(x.key)}</div></td>
+      <td>${esc(x.layout)}</td>
+      <td style="max-width:280px;font-size:12px;color:var(--muted);white-space:normal">${esc(JSON.stringify(x.rules || {}))}</td>
+      <td>${x.show_from_hour != null || x.show_to_hour != null
+            ? `${x.show_from_hour ?? 0}:00–${x.show_to_hour ?? 24}:00` : 'always'}</td>
+      <td class="num-cell">${x.items_limit}</td>
+      <td class="num-cell" style="${thin ? 'color:var(--danger);font-weight:700' : ''}">${num(x.fills)}</td>
+      <td>${x.is_active ? '<span class="badge">on</span>' : '<span class="badge draft">off</span>'}</td>
+      <td><button class="btn-icon" onclick="openShelf(cache.shelves[${x.id}])">Edit</button></td>
+    </tr>`;
+  }).join('');
+
+  const live = rows.filter(x => x.is_active && x.fills >= 3).length;
+  $('sh-body').innerHTML = `
+    <div class="stats-row">
+      <div class="stat-card"><div class="num">${num(rows.length)}</div><div class="lbl">Shelves set up</div></div>
+      <div class="stat-card ${live < rows.length ? 'warn' : ''}"><div class="num">${num(live)}</div><div class="lbl">Actually shown</div></div>
+    </div>
+    <div class="panel"><table>
+      <thead><tr><th class="num-cell">Pos</th><th>Shelf</th><th>Layout</th><th>Rules</th>
+        <th>Hours</th><th class="num-cell">Limit</th><th class="num-cell">Fills</th><th>State</th><th style="width:70px"></th></tr></thead>
+      <tbody>${list || '<tr><td colspan="9" class="empty">No shelves yet. Run feed_shelves.sql to fill in the ones the app used to have hard-coded.</td></tr>'}</tbody>
     </table></div>`;
 }
 
