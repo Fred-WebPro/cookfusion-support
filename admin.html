@@ -155,6 +155,10 @@
   .result-box { display: none; margin-top: 16px; padding: 13px; border-radius: 11px; background: #EAF1E7; color: var(--green); font-size: 13.5px; line-height: 1.5; }
   .note { font-size: 13px; color: var(--muted); line-height: 1.6; }
 
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0 14px; }
+  .form-grid label { margin-top: 12px; }
+  #form-delete { margin-right: auto; }
+
   /* Распределения и воронка */
   .dist { display: flex; align-items: center; gap: 10px; margin-bottom: 7px; font-size: 13px; }
   .dist-name { flex: 0 1 130px; min-width: 70px; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -222,6 +226,10 @@
       <button class="nav-btn" data-tab="creators" onclick="showTab('creators')">Creators<span id="app-badge" class="nav-badge"></span></button>
       <button class="nav-btn" data-tab="production" onclick="showTab('production')">Production<span id="sub-badge" class="nav-badge"></span></button>
       <button class="nav-btn" data-tab="orders" onclick="showTab('orders')">Orders</button>
+      <button class="nav-btn" data-tab="warehouses" onclick="showTab('warehouses')">Warehouses</button>
+      <button class="nav-btn" data-tab="partners" onclick="showTab('partners')">Partners</button>
+      <button class="nav-btn" data-tab="banners" onclick="showTab('banners')">Banners</button>
+      <button class="nav-btn" data-tab="settings" onclick="showTab('settings')">Ranking</button>
       <button class="nav-btn" data-tab="comments" onclick="showTab('comments')">Comments</button>
       <button class="nav-btn" data-tab="push" onclick="showTab('push')">Push</button>
       <button class="nav-btn" data-tab="enrich" onclick="showTab('enrich')">Enrich</button>
@@ -403,6 +411,37 @@
         </div>
       </section>
 
+      <!-- СКЛАДЫ -->
+      <section id="tab-warehouses" style="display:none">
+        <h1 class="page-title">Warehouses</h1>
+        <p class="page-sub">Where the products go out from. Workers order against these.</p>
+        <div class="toolbar"><button class="btn-add" onclick="openWarehouse(null)">Add warehouse</button></div>
+        <div id="wh-body"><div class="empty">Loading…</div></div>
+      </section>
+
+      <!-- ПАРТНЁРЫ -->
+      <section id="tab-partners" style="display:none">
+        <h1 class="page-title">Partners</h1>
+        <p class="page-sub">Brands, retailers and delivery services — from first contact to a running deal</p>
+        <div class="toolbar"><button class="btn-add" onclick="openPartner(null)">Add partner</button></div>
+        <div id="pt-body"><div class="empty">Loading…</div></div>
+      </section>
+
+      <!-- БАННЕРЫ -->
+      <section id="tab-banners" style="display:none">
+        <h1 class="page-title">Banners</h1>
+        <p class="page-sub">Promo slots inside the app, with impressions and clicks counted per banner</p>
+        <div class="toolbar"><button class="btn-add" onclick="openBanner(null)">Add banner</button></div>
+        <div id="bn-body"><div class="empty">Loading…</div></div>
+      </section>
+
+      <!-- РАНЖИРОВАНИЕ -->
+      <section id="tab-settings" style="display:none">
+        <h1 class="page-title">Ranking and settings</h1>
+        <p class="page-sub">How the feed decides what to show first. Change the weights, then recalculate.</p>
+        <div id="st-body"><div class="empty">Loading…</div></div>
+      </section>
+
       <!-- КОММЕНТАРИИ -->
       <section id="tab-comments" style="display:none">
         <h1 class="page-title">Comments</h1>
@@ -507,6 +546,20 @@
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeOverlay('recipe-overlay')">Cancel</button>
       <button class="btn-primary" id="rm-save" onclick="saveRecipe()">Save recipe</button>
+    </div>
+  </div>
+</div>
+
+<!-- СПРАВОЧНИКИ: СКЛАДЫ, ПАРТНЁРЫ, БАННЕРЫ -->
+<div class="overlay" id="form-overlay">
+  <div class="modal">
+    <h2 id="form-title">New</h2>
+    <div id="form-fields" class="form-grid"></div>
+    <div class="error-box" id="form-error"></div>
+    <div class="modal-actions">
+      <button class="btn-icon danger" id="form-delete" onclick="deleteForm()" style="display:none">Delete</button>
+      <button class="btn-cancel" onclick="closeOverlay('form-overlay')">Cancel</button>
+      <button class="btn-primary" id="form-save" onclick="saveForm()">Save</button>
     </div>
   </div>
 </div>
@@ -640,7 +693,8 @@ const LOADERS = {
   dashboard: loadDashboard, analytics: loadAnalytics, recipes: loadRecipes,
   health: loadHealth, moderation: loadModeration, users: loadUsers,
   creators: loadCreators, production: loadProduction, orders: loadOrders,
-  comments: loadComments,
+  warehouses: loadWarehouses, partners: loadPartners, banners: loadBanners,
+  settings: loadSettings, comments: loadComments,
 };
 
 /**
@@ -698,22 +752,11 @@ async function loadDashboard() {
   if (!d) return;
 
   const u = d.users || {}, r = d.recipes || {}, e = d.engagement || {},
-        c = d.creators || {}, p = d.production || {}, s = d.series || {};
+        c = d.creators || {}, p = d.production || {};
 
   const card = (n, l, extra, cls) =>
     `<div class="stat-card ${cls || ''}"><div class="num">${n}</div><div class="lbl">${l}</div>${extra ? `<div class="delta">${extra}</div>` : ''}</div>`;
 
-  const cuisines = (d.cuisines || []).map(x =>
-    `<tr><td>${esc(x.name)}</td><td class="num-cell">${num(x.n)}</td></tr>`).join('');
-
-  const top = (d.top_recipes || []).map(x => `
-    <tr>
-      <td><img class="thumb" src="${esc(x.image || '')}" onerror="this.style.visibility='hidden'"></td>
-      <td class="truncate">${esc(x.title)}</td>
-      <td class="num-cell">${num(x.views)}</td>
-      <td class="num-cell">${x.rating ? '★ ' + x.rating : '—'}</td>
-      <td class="num-cell">${num(x.comments)}</td>
-    </tr>`).join('');
 
   $('ov-body').innerHTML = `
     <h2 class="sub-head" style="margin-top:0">People</h2>
@@ -746,11 +789,7 @@ async function loadDashboard() {
       ${card(num(e.follows), 'Follows')}
     </div>
 
-    <div class="charts">
-      ${chart(s.signups, 'New users per day')}
-      ${chart(s.views, 'Recipe views per day')}
-      ${chart(s.cooks, 'Cooks finished per day')}
-    </div>
+    <div class="charts" id="ov-charts"><div class="chart-card"><div class="chart-empty">Loading charts…</div></div></div>
 
     <h2 class="sub-head">Creators and production</h2>
     <div class="stats-row">
@@ -762,31 +801,66 @@ async function loadDashboard() {
       ${card(num(p.approved), 'Dishes approved')}
     </div>
 
-    <div class="charts">
-      <div class="chart-card">
-        <div class="chart-title" style="margin-bottom:14px">Most viewed recipes</div>
-        <div class="card-scroll"><table>
-          <tbody>${top || '<tr><td class="empty">Nobody has opened a recipe yet</td></tr>'}</tbody>
-        </table></div>
-      </div>
-      <div class="chart-card">
-        <div class="chart-title" style="margin-bottom:14px">Published by cuisine</div>
-        <div class="card-scroll"><table>
-          <tbody>${cuisines || '<tr><td class="empty">No data</td></tr>'}</tbody>
-        </table></div>
-      </div>
+    <div class="charts" id="ov-lists"></div>`;
+
+  $('push-reach').textContent = `${num(u.push)} of ${num(u.total)} users have notifications on.`;
+
+  loadCharts(days);
+}
+
+/**
+ * Ряды по дням и списки — вторым запросом.
+ *
+ * Они заметно дороже счётчиков, и вместе с ними дашборд не укладывался
+ * в отведённое на запрос время. Цифры теперь появляются сразу, графики
+ * дорисовываются следом.
+ */
+async function loadCharts(days) {
+  const { data: c, error } = await db.rpc('admin_charts', { p_days: days });
+  if (error || !c) {
+    $('ov-charts').innerHTML = `<div class="chart-card"><div class="chart-empty">Charts unavailable: ${esc(error?.message || 'no data')}</div></div>`;
+    return;
+  }
+
+  $('ov-charts').innerHTML =
+    chart(c.signups, 'New users per day') +
+    chart(c.views, 'Recipe views per day') +
+    chart(c.cooks, 'Cooks finished per day');
+
+  const top = (c.top_recipes || []).map(x => `
+    <tr>
+      <td><img class="thumb" src="${esc(x.image || '')}" onerror="this.style.visibility='hidden'"></td>
+      <td class="truncate">${esc(x.title)}</td>
+      <td class="num-cell">${num(x.views)}</td>
+      <td class="num-cell">${x.rating ? '★ ' + x.rating : '—'}</td>
+      <td class="num-cell">${num(x.comments)}</td>
+    </tr>`).join('');
+  const cuisines = (c.cuisines || []).map(x =>
+    `<tr><td>${esc(x.name)}</td><td class="num-cell">${num(x.n)}</td></tr>`).join('');
+
+  $('ov-lists').innerHTML = `
+    <div class="chart-card">
+      <div class="chart-title" style="margin-bottom:14px">Most viewed recipes</div>
+      <div class="card-scroll"><table>
+        <tbody>${top || '<tr><td class="empty">Nobody has opened a recipe yet</td></tr>'}</tbody>
+      </table></div>
+    </div>
+    <div class="chart-card">
+      <div class="chart-title" style="margin-bottom:14px">Published by cuisine</div>
+      <div class="card-scroll"><table>
+        <tbody>${cuisines || '<tr><td class="empty">No data</td></tr>'}</tbody>
+      </table></div>
     </div>`;
 
   // Кухни для фильтра в рецептах берём отсюда же, чтобы не ходить второй раз
   const sel = $('r-cuisine');
   if (sel.options.length <= 1) {
-    (d.cuisines || []).filter(x => x.name !== 'not set').forEach(x => {
+    (c.cuisines || []).filter(x => x.name !== 'not set').forEach(x => {
       const o = document.createElement('option');
       o.value = x.name; o.textContent = x.name + ' (' + x.n + ')';
       sel.appendChild(o);
     });
   }
-  $('push-reach').textContent = `${num(u.push)} of ${num(u.total)} users have notifications on.`;
 }
 
 // ---------- АНАЛИТИКА ----------
@@ -986,6 +1060,280 @@ async function loadOrders() {
         <tbody>${houses || '<tr><td colspan="3" class="empty">No warehouses set up yet.</td></tr>'}</tbody>
       </table>
     </div>`;
+}
+
+// ---------- СКЛАДЫ, ПАРТНЁРЫ, БАННЕРЫ ----------
+/**
+ * Один редактор на все три справочника.
+ *
+ * Формы у них разной длины, но устроены одинаково: набор полей, кнопка
+ * сохранения и одна функция в базе. Отдельные модалки на каждый были бы
+ * тремя копиями одного и того же кода.
+ */
+const FORMS = {
+  warehouse: {
+    title: 'Warehouse', save: 'admin_save_warehouse', del: null,
+    fields: [
+      { k: 'name', l: 'Name', req: true },
+      { k: 'country', l: 'Country' }, { k: 'city', l: 'City' },
+      { k: 'address', l: 'Address', wide: true },
+      { k: 'manager_name', l: 'Manager' }, { k: 'manager_contact', l: 'Manager contact' },
+      { k: 'is_active', l: 'Active', type: 'bool' },
+    ],
+  },
+  partner: {
+    title: 'Partner', save: 'admin_save_partner', del: 'admin_delete_partner',
+    fields: [
+      { k: 'name', l: 'Name', req: true },
+      { k: 'kind', l: 'Kind', type: 'select', opts: ['brand', 'retailer', 'delivery', 'media', 'other'] },
+      { k: 'status', l: 'Status', type: 'select', opts: ['lead', 'talking', 'active', 'paused', 'ended'] },
+      { k: 'deal_usd', l: 'Deal, USD', type: 'number' },
+      { k: 'website', l: 'Website' }, { k: 'logo_url', l: 'Logo URL' },
+      { k: 'contact_name', l: 'Contact name' }, { k: 'contact_email', l: 'Contact email' },
+      { k: 'contact_phone', l: 'Contact phone' },
+      { k: 'started_at', l: 'Started', type: 'date' }, { k: 'ends_at', l: 'Ends', type: 'date' },
+      { k: 'notes', l: 'Notes', type: 'area', wide: true },
+    ],
+  },
+  banner: {
+    title: 'Banner', save: 'admin_save_banner', del: 'admin_delete_banner',
+    fields: [
+      { k: 'title', l: 'Title', req: true },
+      { k: 'subtitle', l: 'Subtitle' },
+      { k: 'image_url', l: 'Image URL', wide: true },
+      { k: 'placement', l: 'Placement', type: 'select', opts: ['feed_top', 'feed_middle', 'search', 'plan', 'profile'] },
+      { k: 'priority', l: 'Priority', type: 'number' },
+      { k: 'recipe_id', l: 'Opens recipe id', type: 'number' },
+      { k: 'action_url', l: 'Or opens a link' },
+      { k: 'partner_id', l: 'Partner id', type: 'number' },
+      { k: 'accent', l: 'Accent colour' },
+      { k: 'starts_at', l: 'Starts', type: 'date' }, { k: 'ends_at', l: 'Ends', type: 'date' },
+      { k: 'is_active', l: 'Live', type: 'bool' },
+    ],
+  },
+};
+
+let formKind = null, formId = null;
+
+function openForm(kind, row) {
+  const f = FORMS[kind];
+  formKind = kind; formId = row?.id ?? null;
+  $('form-title').textContent = (row ? 'Edit ' : 'New ') + f.title.toLowerCase();
+  $('form-error').style.display = 'none';
+  $('form-delete').style.display = f.del && row ? 'inline-block' : 'none';
+
+  $('form-fields').innerHTML = f.fields.map(x => {
+    const v = row?.[x.k];
+    const id = 'f-' + x.k;
+    let input;
+    if (x.type === 'bool') {
+      input = `<select id="${id}"><option value="true"${v ? ' selected' : ''}>Yes</option><option value="false"${v ? '' : ' selected'}>No</option></select>`;
+    } else if (x.type === 'select') {
+      input = `<select id="${id}">${x.opts.map(o => `<option${o === v ? ' selected' : ''}>${o}</option>`).join('')}</select>`;
+    } else if (x.type === 'area') {
+      input = `<textarea id="${id}" rows="3">${esc(v ?? '')}</textarea>`;
+    } else {
+      const t = x.type === 'number' ? 'number' : x.type === 'date' ? 'date' : 'text';
+      input = `<input id="${id}" type="${t}" value="${esc(v ?? '')}">`;
+    }
+    return `<div style="${x.wide ? 'grid-column:1/-1' : ''}"><label>${esc(x.l)}</label>${input}</div>`;
+  }).join('');
+
+  openOverlay('form-overlay');
+}
+
+async function saveForm() {
+  const f = FORMS[formKind];
+  const data = {};
+  for (const x of f.fields) {
+    const v = $('f-' + x.k).value;
+    if (x.req && !String(v).trim()) {
+      $('form-error').textContent = x.l + ' is required';
+      $('form-error').style.display = 'block';
+      return;
+    }
+    data[x.k] = v;
+  }
+
+  const btn = $('form-save');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  const { error } = await db.rpc(f.save, { p_id: formId, p_data: data });
+  btn.disabled = false; btn.textContent = 'Save';
+  if (error) { $('form-error').textContent = error.message; $('form-error').style.display = 'block'; return; }
+  closeOverlay('form-overlay');
+  reloadTab();
+}
+
+async function deleteForm() {
+  const f = FORMS[formKind];
+  if (!f.del || !confirm('Delete this ' + f.title.toLowerCase() + '? This cannot be undone.')) return;
+  const { error } = await db.rpc(f.del, { p_id: formId });
+  if (error) return alert('Failed: ' + error.message);
+  closeOverlay('form-overlay');
+  reloadTab();
+}
+
+const openWarehouse = (row) => openForm('warehouse', row);
+const openPartner = (row) => openForm('partner', row);
+const openBanner = (row) => openForm('banner', row);
+
+// Строки держим здесь, чтобы кнопка «Edit» открывала форму с данными,
+// а не ходила за ними в базу второй раз
+let cache = {};
+
+async function loadWarehouses() {
+  const d = await call('admin_orders', {}, 'wh-body');
+  if (!d) return;
+  cache.warehouses = Object.fromEntries((d.warehouses || []).map(w => [w.id, w]));
+  const rows = (d.warehouses || []).map(w => `
+    <tr>
+      <td><b>${esc(w.name)}</b></td>
+      <td>${esc([w.city, w.country].filter(Boolean).join(', ') || '—')}</td>
+      <td class="num-cell">${num(w.shipments)}</td>
+      <td><button class="btn-icon" onclick="openWarehouse(cache.warehouses[${w.id}])">Edit</button></td>
+    </tr>`).join('');
+  $('wh-body').innerHTML = `
+    <div class="panel"><table>
+      <thead><tr><th>Name</th><th>Where</th><th class="num-cell">Shipments</th><th style="width:70px"></th></tr></thead>
+      <tbody>${rows || '<tr><td colspan="4" class="empty">No warehouses yet. Add the first one — workers order their products against it.</td></tr>'}</tbody>
+    </table></div>`;
+}
+
+async function loadPartners() {
+  const d = await call('admin_partners', {}, 'pt-body');
+  if (!d) return;
+  cache.partners = Object.fromEntries((d.rows || []).map(p => [p.id, p]));
+  const t = d.totals || {};
+  const badge = (s) => `<span class="badge ${s === 'active' ? '' : s === 'ended' ? 'rejected' : 'pending'}">${esc(s)}</span>`;
+
+  const rows = (d.rows || []).map(p => `
+    <tr>
+      <td><b>${esc(p.name)}</b>${p.website ? `<div style="font-size:11.5px"><a href="${esc(p.website)}" target="_blank" rel="noopener">${esc(p.website)}</a></div>` : ''}</td>
+      <td>${esc(p.kind)}</td>
+      <td>${badge(p.status)}</td>
+      <td class="num-cell">${p.deal_usd ? '$' + num(p.deal_usd) : '—'}</td>
+      <td>${esc(p.contact_name || '—')}<div style="font-size:11.5px;color:var(--muted)">${esc(p.contact_email || '')}</div></td>
+      <td>${p.started_at ? dayShort(p.started_at) : '—'}</td>
+      <td><button class="btn-icon" onclick="openPartner(cache.partners[${p.id}])">Edit</button></td>
+    </tr>`).join('');
+
+  $('pt-body').innerHTML = `
+    <div class="stats-row">
+      <div class="stat-card"><div class="num">${num(t.all)}</div><div class="lbl">Partners</div></div>
+      <div class="stat-card"><div class="num">${num(t.active)}</div><div class="lbl">Running deals</div></div>
+      <div class="stat-card"><div class="num">${num(t.talking)}</div><div class="lbl">In talks</div></div>
+      <div class="stat-card"><div class="num">$${num(t.value)}</div><div class="lbl">Value of running deals</div></div>
+    </div>
+    <div class="panel"><table>
+      <thead><tr><th>Partner</th><th>Kind</th><th>Status</th><th class="num-cell">Deal</th><th>Contact</th><th>Since</th><th style="width:70px"></th></tr></thead>
+      <tbody>${rows || '<tr><td colspan="7" class="empty">No partners yet. Add the first brand or retailer you are talking to.</td></tr>'}</tbody>
+    </table></div>`;
+}
+
+async function loadBanners() {
+  const rows = await call('admin_banners', {}, 'bn-body');
+  if (!rows) return;
+  cache.banners = Object.fromEntries(rows.map(b => [b.id, b]));
+
+  const list = rows.map(b => `
+    <tr style="${b.is_active ? '' : 'opacity:.55'}">
+      <td>${b.image_url ? `<img class="thumb" src="${esc(b.image_url)}" onerror="this.style.visibility='hidden'">` : ''}</td>
+      <td><b>${esc(b.title)}</b><div style="font-size:11.5px;color:var(--muted)">${esc(b.subtitle || '')}</div></td>
+      <td>${esc(b.placement)}</td>
+      <td>${esc(b.partner || '—')}</td>
+      <td class="num-cell">${b.priority}</td>
+      <td>${b.starts_at || b.ends_at ? `${b.starts_at ? dayShort(b.starts_at) : '…'} – ${b.ends_at ? dayShort(b.ends_at) : '…'}` : 'always'}</td>
+      <td class="num-cell">${num(b.impressions)}</td>
+      <td class="num-cell">${num(b.clicks)}</td>
+      <td class="num-cell">${b.ctr != null ? b.ctr + '%' : '—'}</td>
+      <td>${b.is_active ? '<span class="badge">live</span>' : '<span class="badge draft">off</span>'}</td>
+      <td><button class="btn-icon" onclick="openBanner(cache.banners[${b.id}])">Edit</button></td>
+    </tr>`).join('');
+
+  const live = rows.filter(b => b.is_active).length;
+  const imp = rows.reduce((s, b) => s + b.impressions, 0);
+  const clk = rows.reduce((s, b) => s + b.clicks, 0);
+
+  $('bn-body').innerHTML = `
+    <div class="stats-row">
+      <div class="stat-card"><div class="num">${num(rows.length)}</div><div class="lbl">Banners</div></div>
+      <div class="stat-card"><div class="num">${num(live)}</div><div class="lbl">Live now</div></div>
+      <div class="stat-card"><div class="num">${num(imp)}</div><div class="lbl">Impressions</div></div>
+      <div class="stat-card"><div class="num">${imp ? (clk / imp * 100).toFixed(2) + '%' : '—'}</div><div class="lbl">Click rate</div></div>
+    </div>
+    <div class="panel"><table>
+      <thead><tr><th style="width:56px"></th><th>Banner</th><th>Placement</th><th>Partner</th>
+        <th class="num-cell">Priority</th><th>Runs</th><th class="num-cell">Shown</th>
+        <th class="num-cell">Clicks</th><th class="num-cell">CTR</th><th>State</th><th style="width:70px"></th></tr></thead>
+      <tbody>${list || `<tr><td colspan="11" class="empty">
+        No banners yet. A banner shows up in the app only while it is live and inside its dates.</td></tr>`}</tbody>
+    </table></div>`;
+}
+
+// ---------- РАНЖИРОВАНИЕ ----------
+const SETTING_HELP = {
+  'ranking.views_weight': 'How much views count. Applied to the logarithm of the view count, so a hit does not bury everything else.',
+  'ranking.rating_weight': 'How much the rating counts.',
+  'ranking.recency_weight': 'How much being new counts. Fades to zero over 90 days.',
+  'ranking.pinned_boost': 'What a pinned recipe gets added on top. Keep it far above everything else.',
+  'ranking.min_rating_count': 'Ratings below this many votes are ignored — one five-star vote is not a rating.',
+  'feed.shelf_size': 'How many recipes go on one shelf in the app.',
+  'feed.banners_enabled': 'Whether banners are shown in the app at all.',
+};
+
+async function loadSettings() {
+  const d = await call('admin_settings', {}, 'st-body');
+  if (!d) return;
+
+  const rows = Object.entries(d).sort().map(([k, v]) => `
+    <tr>
+      <td><b>${esc(k)}</b><div style="font-size:11.5px;color:var(--muted);max-width:420px;white-space:normal">${esc(SETTING_HELP[k] || '')}</div></td>
+      <td style="width:150px"><input id="set-${esc(k)}" value="${esc(JSON.stringify(v))}"></td>
+      <td style="width:90px"><button class="btn-icon" onclick="saveSetting('${esc(k)}')">Save</button></td>
+    </tr>`).join('');
+
+  $('st-body').innerHTML = `
+    <div class="chart-card" style="margin-bottom:16px">
+      <div class="chart-title" style="margin-bottom:8px">How the score is built</div>
+      <p class="note">
+        score = views_weight · ln(1 + views) + rating_weight · rating + recency_weight · freshness
+        + pinned_boost if pinned.<br>
+        Changing a weight does nothing until you recalculate — the score is stored on each recipe,
+        because sorting 13,501 rows by a formula on every request would be slow.
+      </p>
+      <button class="btn-primary" style="margin-top:14px" id="recalc-btn" onclick="recalcRanking()">Recalculate all recipes</button>
+      <div class="result-box" id="recalc-result"></div>
+    </div>
+    <div class="panel"><table>
+      <thead><tr><th>Setting</th><th>Value</th><th></th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+}
+
+async function saveSetting(key) {
+  const raw = $('set-' + key).value.trim();
+  let value;
+  try { value = JSON.parse(raw); }
+  catch { return alert('Value must be a number, true/false, or a quoted string.'); }
+  const { error } = await db.rpc('admin_save_setting', { p_key: key, p_value: value });
+  if (error) return alert('Failed: ' + error.message);
+  reloadTab();
+}
+
+async function recalcRanking() {
+  const btn = $('recalc-btn');
+  btn.disabled = true; btn.textContent = 'Recalculating…';
+  const { data, error } = await db.rpc('admin_recalc_ranking');
+  btn.disabled = false; btn.textContent = 'Recalculate all recipes';
+  const box = $('recalc-result');
+  box.style.display = 'block';
+  if (error) {
+    box.style.background = '#FBE9E7'; box.style.color = '#B3352E';
+    box.textContent = 'Failed: ' + error.message;
+  } else {
+    box.style.background = '#EAF1E7'; box.style.color = 'var(--green)';
+    box.textContent = `Rescored ${num(data)} published recipes.`;
+  }
 }
 
 // ---------- РЕЦЕПТЫ ----------
