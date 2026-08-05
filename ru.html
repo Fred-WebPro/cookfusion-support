@@ -736,5 +736,49 @@
 
   document.getElementById('yr').textContent = new Date().getFullYear();
 </script>
+
+<script>
+/* Свой счётчик посещений. Что именно считается и чего не считается —
+   написано в политике конфиденциальности, раздел 8.
+
+   Ни куки, ни localStorage, ни отпечатков браузера. Из-за этого
+   уникальных посетителей не посчитать — и мы их не считаем, а не
+   притворяемся, что можем. Сбой счётчика не должен ломать страницу,
+   поэтому всё внутри try и без await. */
+(function () {
+  var URL = 'https://vimdtngoecdhkliixgit.supabase.co/rest/v1/rpc/track_site';
+  var KEY = 'sb_publishable_gPDI3LlWFukfehmKPcIYTw_nYsv5xVU';
+
+  function device() {
+    var w = window.innerWidth || 1024;
+    return w < 768 ? 'mobile' : w < 1024 ? 'tablet' : 'desktop';
+  }
+
+  function send(kind) {
+    try {
+      fetch(URL, {
+        method: 'POST',
+        headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          p_kind: kind,
+          p_path: location.pathname,
+          /* Только домен источника: полный адрес чужой страницы нас не касается */
+          p_ref: document.referrer || null,
+          p_lang: navigator.language || null,
+          p_device: device(),
+        }),
+        keepalive: true,
+      }).catch(function () {});
+    } catch (e) { /* счётчик не важнее страницы */ }
+  }
+
+  send('view');
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href*="apps.apple.com"]');
+    if (a) send('store_click');
+  });
+})();
+</script>
 </body>
 </html>

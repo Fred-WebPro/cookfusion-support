@@ -89,8 +89,24 @@
     <li><strong>Links out.</strong> The App Store link takes you to Apple, whose own privacy
     policy applies from that point.</li>
   </ul>
-  <p>If we ever add visitor statistics, this section will say exactly what is counted before it
-  starts counting.</p>
+  <h3 style="font-size:17px;margin:22px 0 8px">Visitor statistics</h3>
+  <p>We count page views on this site with our own counter, running on our own database. We do not
+  use Google Analytics, Yandex Metrica or any other third-party analytics product, because the home
+  page promises no tracking and we would rather keep that promise than measure more.</p>
+  <p><strong>What is recorded:</strong></p>
+  <ul>
+    <li>Which page was opened.</li>
+    <li>The <em>domain</em> you arrived from, if any &mdash; google.com, not the full address of the
+    page you were on.</li>
+    <li>Your browser&rsquo;s language, as two letters.</li>
+    <li>Whether the screen is phone-sized, tablet-sized or larger.</li>
+    <li>Whether the App Store button was pressed.</li>
+  </ul>
+  <p><strong>What is not recorded:</strong> no cookies and no browser storage of any kind, no IP
+  addresses, no device fingerprints, and no identifier that would let one visit be linked to
+  another. That last point has a consequence we accept: we cannot count unique visitors, only page
+  views, and the admin panel says exactly that rather than pretending otherwise.</p>
+  <p>Nothing collected here identifies you, is combined with anything else, or leaves our database.</p>
 
   <h2>9. Changes to This Policy</h2>
   <p>We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated date.</p>
@@ -99,5 +115,48 @@
   <p>If you have questions about this Privacy Policy, contact us at <a href="mailto:web.pro.farid@gmail.com">web.pro.farid@gmail.com</a>.</p>
 </main>
 <footer><p>© 2026 CookFusion</p></footer>
+<script>
+/* Свой счётчик посещений. Что именно считается и чего не считается —
+   написано в политике конфиденциальности, раздел 8.
+
+   Ни куки, ни localStorage, ни отпечатков браузера. Из-за этого
+   уникальных посетителей не посчитать — и мы их не считаем, а не
+   притворяемся, что можем. Сбой счётчика не должен ломать страницу,
+   поэтому всё внутри try и без await. */
+(function () {
+  var URL = 'https://vimdtngoecdhkliixgit.supabase.co/rest/v1/rpc/track_site';
+  var KEY = 'sb_publishable_gPDI3LlWFukfehmKPcIYTw_nYsv5xVU';
+
+  function device() {
+    var w = window.innerWidth || 1024;
+    return w < 768 ? 'mobile' : w < 1024 ? 'tablet' : 'desktop';
+  }
+
+  function send(kind) {
+    try {
+      fetch(URL, {
+        method: 'POST',
+        headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          p_kind: kind,
+          p_path: location.pathname,
+          /* Только домен источника: полный адрес чужой страницы нас не касается */
+          p_ref: document.referrer || null,
+          p_lang: navigator.language || null,
+          p_device: device(),
+        }),
+        keepalive: true,
+      }).catch(function () {});
+    } catch (e) { /* счётчик не важнее страницы */ }
+  }
+
+  send('view');
+
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest && e.target.closest('a[href*="apps.apple.com"]');
+    if (a) send('store_click');
+  });
+})();
+</script>
 </body>
 </html>

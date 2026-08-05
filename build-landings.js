@@ -185,6 +185,16 @@ const PAGES = [
   },
 ];
 
+// Счётчик один на весь сайт: берём его из index.html, чтобы не держать две копии
+const COUNTER = (() => {
+  const home = fs.readFileSync(path.join(DIR, 'index.html'), 'utf8');
+  // Ищем по комментарию внутри счётчика: он там один такой
+  const a = home.indexOf('/* Свой счётчик посещений');
+  if (a < 0) return '';
+  const start = home.lastIndexOf('<script>', a);
+  return home.slice(start, home.indexOf('</' + 'script>', a) + 9);
+})();
+
 // ── Шаблон ───────────────────────────────────────────────────
 const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
@@ -291,6 +301,8 @@ ${page.links.map(l => `    <a href="${l}">${esc(titleOf(l))}</a>`).join('\n')}
 </main>
 
 <footer><div class="wrap">${esc(ui.footer)} &middot; <a href="privacy.html">Privacy</a></div></footer>
+
+${COUNTER}
 </body>
 </html>
 `;

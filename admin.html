@@ -250,6 +250,7 @@
       <div class="brand-sub">Admin panel</div>
       <button class="nav-btn active" data-tab="dashboard" onclick="showTab('dashboard')">Dashboard</button>
       <button class="nav-btn" data-tab="analytics" onclick="showTab('analytics')">Analytics</button>
+      <button class="nav-btn" data-tab="site" onclick="showTab('site')">Website</button>
       <button class="nav-btn" data-tab="recipes" onclick="showTab('recipes')">Recipes</button>
       <button class="nav-btn" data-tab="health" onclick="showTab('health')">Catalogue health</button>
       <button class="nav-btn" data-tab="moderation" onclick="showTab('moderation')">Moderation<span id="mod-badge" class="nav-badge"></span></button>
@@ -311,6 +312,21 @@
         <p class="page-sub">Product shipments to workers, by warehouse</p>
         <div class="help">Products shipped to workers so they can cook their week.</div>
         <div id="or-body"><div class="empty">Loading…</div></div>
+      </section>
+
+      <!-- САЙТ -->
+      <section id="tab-site" style="display:none">
+        <h1 class="page-title">Website</h1>
+        <p class="page-sub">
+          Visits to the public site ·
+          <select id="site-days" onchange="loadSite()" style="width:auto;display:inline-block;padding:4px 8px;font-size:13px">
+            <option value="7">last 7 days</option>
+            <option value="30" selected>last 30 days</option>
+            <option value="90">last 90 days</option>
+          </select>
+        </p>
+        <div class="help">Counted by our own counter, not Google Analytics — the home page promises no tracking and this keeps that promise. No cookies, no IP addresses, no fingerprints. That has a cost: without an identifier there is no honest way to count unique visitors, so these are page views. What is recorded is written out in the privacy policy.</div>
+        <div id="site-body"><div class="empty">Loading…</div></div>
       </section>
 
       <!-- РЕЦЕПТЫ -->
@@ -729,6 +745,40 @@ const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&
  * верный способ что-нибудь сломать.
  */
 const RU = {
+  '{n} today': '{n} сегодня',
+  '+{n} today': '+{n} сегодня',
+  'Website':
+    'Сайт',
+  'Visits to the public site ·':
+    'Посещения публичного сайта ·',
+  'Counted by our own counter, not Google Analytics — the home page promises no tracking and this keeps that promise. No cookies, no IP addresses, no fingerprints. That has a cost: without an identifier there is no honest way to count unique visitors, so these are page views. What is recorded is written out in the privacy policy.':
+    'Считает свой счётчик, а не Google Analytics: на главной обещано отсутствие слежки, и это обещание держится. Ни куки, ни IP-адресов, ни отпечатков браузера. У этого есть цена: без идентификатора уникальных посетителей честно не посчитать, поэтому здесь просмотры страниц. Что именно записывается — расписано в политике конфиденциальности.',
+  'Page views in period':
+    'Просмотров за период',
+  'Pressed App Store':
+    'Нажали на App Store',
+  'Of views went to the store':
+    'Просмотров дошло до магазина',
+  'Views since counting began':
+    'Просмотров за всё время',
+  'Page views per day':
+    'Просмотров в день',
+  'Pages':
+    'Страницы',
+  'Where visitors came from':
+    'Откуда пришли',
+  'Browser language':
+    'Язык браузера',
+  'Screen size':
+    'Размер экрана',
+  'Nothing recorded yet':
+    'Пока ничего не записано',
+  'No referrers yet':
+    'Переходов пока не было',
+  'What is not here':
+    'Чего здесь нет',
+  'No unique visitors, no sessions, no time on page, no bounce rate, no countries. All of those need an identifier or an IP address, and the site stores neither. Search Console will give you positions and search queries; this panel gives you traffic and whether it reaches the App Store.':
+    'Нет уникальных посетителей, сессий, времени на странице, показателя отказов и стран. Всё это требует идентификатора или IP-адреса, а сайт не хранит ни того, ни другого. Позиции и поисковые запросы даст Search Console; эта панель даёт трафик и то, доходит ли он до App Store.',
   'Home shelves':
     'Полки главной',
   'The rows on the app home screen — their order, rules and titles':
@@ -1294,6 +1344,7 @@ const LOADERS = {
   creators: loadCreators, production: loadProduction, orders: loadOrders,
   warehouses: loadWarehouses, partners: loadPartners, banners: loadBanners,
   settings: loadSettings, comments: loadComments, reports: loadReports,
+  site: loadSite,
   shelves: loadShelves,
   push: loadPush,
 };
@@ -1613,6 +1664,41 @@ async function loadAnalytics() {
     <h2 class="sub-head">Money</h2>
     <div class="chart-card">
       <p class="note">${esc(d.revenue?.note || '')}</p>
+    </div>`;
+}
+
+// ---------- САЙТ ----------
+async function loadSite() {
+  const days = parseInt($('site-days').value, 10) || 30;
+  const d = await call('admin_site_stats', { p_days: days }, 'site-body');
+  if (!d) return;
+
+  const card = (n, l, extra) =>
+    `<div class="stat-card"><div class="num">${n}</div><div class="lbl">${l}</div>${extra ? `<div class="delta">${extra}</div>` : ''}</div>`;
+
+  $('site-body').innerHTML = `
+    <div class="stats-row">
+      ${card(num(d.views), 'Page views in period', d.views_today ? tr('{n} today').replace('{n}', d.views_today) : '')}
+      ${card(num(d.store_clicks), 'Pressed App Store')}
+      ${card(d.to_store != null ? d.to_store + '%' : '—', 'Of views went to the store')}
+      ${card(num(d.total_ever), 'Views since counting began')}
+    </div>
+
+    <div class="charts">${chart(d.series, 'Page views per day')}</div>
+
+    <div class="charts">
+      ${distribution(d.pages, 'Pages', 'Nothing recorded yet')}
+      ${distribution(d.sources, 'Where visitors came from', 'No referrers yet')}
+      ${distribution(d.langs, 'Browser language')}
+      ${distribution(d.devices, 'Screen size')}
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title" style="margin-bottom:8px">What is not here</div>
+      <p class="note">No unique visitors, no sessions, no time on page, no bounce rate, no
+      countries. All of those need an identifier or an IP address, and the site stores neither.
+      Search Console will give you positions and search queries; this panel gives you traffic
+      and whether it reaches the App Store.</p>
     </div>`;
 }
 
