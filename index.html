@@ -88,7 +88,11 @@
   .nav-links a:hover { color: #fff; }
   .nav-cta { background: #fff; color: var(--ink) !important; padding: 10px 20px; border-radius: 100px; font-weight: 600; }
   .nav-cta:hover { background: var(--cream); }
-  @media (max-width: 760px) { .nav-links a:not(.nav-cta) { display: none; } }
+  @media (max-width: 760px) {
+    .nav-links > a:not(.nav-cta) { display: none; }
+    .nav-links { gap: 12px; }
+    .nav-cta { padding: 10px 16px; font-size: 13.5px; }
+  }
 
   /* ===== HERO ===== */
   .hero { position: relative; background: var(--ink); color: #fff; padding: 160px 0 0; overflow: hidden; }
@@ -285,9 +289,21 @@
   .q p { margin-top: 12px; line-height: 1.65; color: #4A5850; font-size: 15px; }
 
   /* Выбор языка */
-  .lang-pick { display: flex; gap: 6px; align-items: center; }
-  .lang-pick a { text-decoration: none; font-size: 12.5px; font-weight: 700; padding: 5px 10px; border-radius: 8px; color: inherit; opacity: .55; }
-  .lang-pick a.on { background: var(--sage); color: #fff; opacity: 1; }
+  /* Переключатель языка: две половинки одной таблетки, а не два
+     отдельных слова. Выбранный язык оформлен как кнопка «Get the app» —
+     в меню и так две белые формы, третья манера была бы лишней. */
+  .lang-pick {
+    display: inline-flex; align-items: center; gap: 2px;
+    background: rgba(255,255,255,.10); border-radius: 100px; padding: 3px;
+    flex-shrink: 0;
+  }
+  .lang-pick a {
+    text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: .4px;
+    padding: 6px 12px; border-radius: 100px; line-height: 1;
+    color: rgba(255,255,255,.6); transition: color .18s, background .18s;
+  }
+  .lang-pick a:hover { color: #fff; }
+  .lang-pick a.on { background: #fff; color: var(--ink); }
 </style>
 <script type="application/ld+json">
 {
