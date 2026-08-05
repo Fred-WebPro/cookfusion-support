@@ -482,11 +482,12 @@ async function runEnrich(dryRun) {
   $('enrich-stop').textContent = 'Stop';
 
   let done = 0, cost = 0, startRemaining = null;
+  let offset = 0, emptyStreak = 0;
 
   try {
     do {
       const { data, error } = await db.functions.invoke('enrich-recipes', {
-        body: { limit: dryRun ? 10 : limit, dryRun },
+        body: { limit: dryRun ? 10 : limit, dryRun, offset },
       });
 
       // supabase-js прячет тело ответа за общим «non-2xx status code»,
@@ -518,10 +519,27 @@ async function runEnrich(dryRun) {
       const warn = data.failures ? ` · ${data.failures} batches retried or skipped` : '';
       box.textContent = dryRun
         ? `Test run: ${data.processed} recipes, $${cost.toFixed(4)} spent. Nothing was saved.`
-        : `${done} done, ${data.remaining} left · $${cost.toFixed(3)} spent${warn}`;
+        : `${done} done, ${data.remaining} left · $${cost.toFixed(3)} spent${warn}`
+          + (emptyStreak ? ` · skipping a stuck batch (${emptyStreak}/3)` : '');
       if (data.firstFailure) console.warn('enrich:', data.firstFailure);
 
-      if (dryRun || data.remaining === 0 || data.processed === 0) break;
+      if (dryRun || data.remaining === 0) break;
+
+      // Порция ничего не дала — не считаем это концом работы, а перешагиваем
+      // через неё. Раньше цикл здесь молча останавливался, и прогон замирал
+      // на первой же пачке, которую модель вернула в неожиданном виде.
+      if (data.processed === 0) {
+        emptyStreak++;
+        offset += limit;
+        if (emptyStreak >= 3) {
+          box.textContent = `Stopped after ${done} recipes: three batches in a row produced nothing.`
+            + (data.firstFailure ? ` Last reason: ${data.firstFailure}` : '');
+          break;
+        }
+      } else {
+        emptyStreak = 0;
+        offset = 0;   // строки обработаны, выборка сама сдвинется
+      }
     } while (!enrichStop);
 
     box.style.background = '#EAF1E7';
