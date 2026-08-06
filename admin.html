@@ -253,6 +253,7 @@
       <button class="nav-btn" data-tab="site" onclick="showTab('site')">Website</button>
       <button class="nav-btn" data-tab="recipes" onclick="showTab('recipes')">Recipes</button>
       <button class="nav-btn" data-tab="health" onclick="showTab('health')">Catalogue health</button>
+      <button class="nav-btn" data-tab="ingredients" onclick="showTab('ingredients')">Ingredients</button>
       <button class="nav-btn" data-tab="moderation" onclick="showTab('moderation')">Moderation<span id="mod-badge" class="nav-badge"></span></button>
       <button class="nav-btn" data-tab="reports" onclick="showTab('reports')">Reports<span id="rep-badge" class="nav-badge"></span></button>
       <button class="nav-btn" data-tab="users" onclick="showTab('users')">Users</button>
@@ -394,6 +395,15 @@
         <p class="page-sub">What is missing from published recipes. The app hides shelves it cannot fill honestly, so these gaps are why the catalogue looks smaller than it is.</p>
         <div class="help">What is missing from published recipes. The app hides a shelf it cannot fill honestly, so these gaps are why the catalogue looks smaller than it is. Every row jumps to the affected recipes.</div>
         <div id="health-body"><div class="empty">Loading…</div></div>
+      </section>
+
+      <!-- ИНГРЕДИЕНТЫ -->
+      <section id="tab-ingredients" style="display:none">
+        <h1 class="page-title">Ingredients</h1>
+        <p class="page-sub">The product dictionary behind search suggestions</p>
+        <div class="help">Built automatically from every ingredient line in the catalogue. The app uses it for autocomplete in the recipe editor and the fridge search. "Uses" is how many recipes mention the product — the top of this list is what your catalogue is actually made of.</div>
+        <input id="ing-q" placeholder="Search product…" oninput="debounceIngredients()" style="max-width:300px;margin-bottom:14px">
+        <div id="ing-body"><div class="empty">Loading…</div></div>
       </section>
 
       <!-- МОДЕРАЦИЯ -->
@@ -1033,6 +1043,17 @@ const RU = {
   'Photo not verified by a worker': 'Фото не подтверждено работником',
   'of published': 'от опубликованных',
 
+  // Ингредиенты
+  'The product dictionary behind search suggestions':
+    'Справочник продуктов, на котором работают подсказки',
+  'Built automatically from every ingredient line in the catalogue. The app uses it for autocomplete in the recipe editor and the fridge search. "Uses" is how many recipes mention the product — the top of this list is what your catalogue is actually made of.':
+    'Собран автоматически из всех строк ингредиентов каталога. Приложение использует его для подсказок в редакторе рецептов и поиске по холодильнику. Верх этого списка — то, из чего ваш каталог состоит на самом деле.',
+  'Search product…': 'Поиск продукта…',
+  'Products': 'Продуктов', 'Product': 'Продукт', 'Key': 'Ключ',
+  'Category': 'Категория', 'Recipes using it': 'Рецептов с ним',
+  'Nothing matches.': 'Ничего не подходит.',
+  'Tracking №': 'Трек-№',
+
   // Модерация и жалобы
   'Recipes creators sent for review — approve to publish, or send back with a reason':
     'Рецепты, отправленные авторами на проверку — принять или вернуть с причиной',
@@ -1340,7 +1361,7 @@ async function call(fn, args, into, cols) {
 // ---------- ВКЛАДКИ ----------
 const LOADERS = {
   dashboard: loadDashboard, analytics: loadAnalytics, recipes: loadRecipes,
-  health: loadHealth, moderation: loadModeration, users: loadUsers,
+  health: loadHealth, ingredients: loadIngredients, moderation: loadModeration, users: loadUsers,
   creators: loadCreators, production: loadProduction, orders: loadOrders,
   warehouses: loadWarehouses, partners: loadPartners, banners: loadBanners,
   settings: loadSettings, comments: loadComments, reports: loadReports,
@@ -1702,7 +1723,42 @@ async function loadSite() {
     </div>`;
 }
 
+// ---------- ИНГРЕДИЕНТЫ ----------
+async function loadIngredients() {
+  const q = document.getElementById('ing-q')?.value || '';
+  const d = await call('admin_ingredients', { p_q: q, p_limit: 200 }, 'ing-body');
+  if (!d) return;
+
+  const cats = (d.by_category || []).slice(0, 7);
+  const rows = (d.rows || []).map(r => `
+    <tr>
+      <td><b>${esc(r.name)}</b></td>
+      <td style="color:var(--muted)">${esc(r.key)}</td>
+      <td>${esc(r.category || '—')}</td>
+      <td class="num-cell">${num(r.uses)}</td>
+    </tr>`).join('');
+
+  document.getElementById('ing-body').innerHTML = `
+    <div class="stats-row">
+      <div class="stat-card"><div class="num">${num(d.total)}</div><div class="lbl">Products</div></div>
+      ${cats.map(c => `<div class="stat-card"><div class="num">${num(c.n)}</div><div class="lbl">${esc(c.name || '—')}</div></div>`).join('')}
+    </div>
+    <div class="panel">
+      <table>
+        <thead><tr><th>Product</th><th>Key</th><th>Category</th><th class="num-cell">Recipes using it</th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="4" class="empty">Nothing matches.</td></tr>'}</tbody>
+      </table>
+    </div>`;
+}
+
+function debounceIngredients() {
+  clearTimeout(window._ingTimer);
+  window._ingTimer = setTimeout(loadIngredients, 350);
+}
+
 // ---------- ЗАКАЗЫ ----------
+const SHIP_STATUSES = ['planned', 'packed', 'sent', 'delivered', 'cancelled'];
+
 async function loadOrders() {
   const d = await call('admin_orders', {}, 'or-body');
   if (!d) return;
@@ -1714,10 +1770,13 @@ async function loadOrders() {
       <td>${esc(s.warehouse || '—')}</td>
       <td>${s.week_start ? dayShort(s.week_start) : '—'}</td>
       <td class="num-cell">${s.dishes || '—'}</td>
-      <td><span class="badge ${s.status === 'delivered' ? '' : s.status === 'cancelled' ? 'rejected' : 'pending'}">${esc(s.status)}</span></td>
-      <td>${esc(s.tracking || '—')}</td>
+      <td><select id="sh-st-${s.id}" style="width:auto;padding:5px 8px;font-size:12.5px">
+        ${SHIP_STATUSES.map(x => `<option value="${x}" ${x === s.status ? 'selected' : ''}>${x}</option>`).join('')}
+      </select></td>
+      <td><input id="sh-tr-${s.id}" value="${esc(s.tracking || '')}" placeholder="Tracking №" style="width:140px;padding:5px 8px;font-size:12.5px"></td>
       <td>${dayShort(s.created_at)}</td>
       <td>${s.delivered_at ? dayShort(s.delivered_at) : '—'}</td>
+      <td><button class="btn-ghost" onclick="saveShipment(${s.id})">Save</button></td>
     </tr>`).join('');
 
   const houses = (d.warehouses || []).map(w => `
@@ -1734,8 +1793,8 @@ async function loadOrders() {
     <h2 class="sub-head">Shipments</h2>
     <div class="panel">
       <table>
-        <thead><tr><th style="width:44px"></th><th>To</th><th>Warehouse</th><th>Week</th><th class="num-cell">Dishes</th><th>Status</th><th>Tracking</th><th>Created</th><th>Delivered</th></tr></thead>
-        <tbody>${rows || '<tr><td colspan="9" class="empty">Nothing has been shipped yet. Shipments appear when a worker orders the products for their week.</td></tr>'}</tbody>
+        <thead><tr><th style="width:44px"></th><th>To</th><th>Warehouse</th><th>Week</th><th class="num-cell">Dishes</th><th>Status</th><th>Tracking</th><th>Created</th><th>Delivered</th><th></th></tr></thead>
+        <tbody>${rows || '<tr><td colspan="10" class="empty">Nothing has been shipped yet. Shipments appear when a worker orders the products for their week.</td></tr>'}</tbody>
       </table>
     </div>
 
@@ -1746,6 +1805,17 @@ async function loadOrders() {
         <tbody>${houses || '<tr><td colspan="3" class="empty">No warehouses set up yet.</td></tr>'}</tbody>
       </table>
     </div>`;
+}
+
+// Поставка двигается по этапам здесь; доставленная сама переводит
+// неделю работника в delivered — его экран перестаёт ждать коробку
+async function saveShipment(id) {
+  const status = document.getElementById('sh-st-' + id).value;
+  const tracking = document.getElementById('sh-tr-' + id).value.trim();
+  const { error } = await db.rpc('admin_update_shipment',
+    { p_id: id, p_status: status, p_tracking: tracking });
+  if (error) { alert(error.message); return; }
+  loadOrders();
 }
 
 // ---------- ЖАЛОБЫ ----------
