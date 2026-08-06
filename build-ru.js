@@ -75,7 +75,8 @@ const RU = {
     'CookFusion фотографирует то, что у вас уже есть, распознаёт продукты и превращает их в рецепт ресторанного уровня — с учётом диет, аллергий и вкусов вашей семьи.',
   'DOWNLOAD ON THE': 'СКАЧАТЬ В',
   'Explore the app ↓': 'Посмотреть возможности ↓',
-  'Free to download · iPhone &amp; iPad · English': 'Бесплатно · iPhone и iPad · английский интерфейс',
+  'Free to download &middot; iPhone &amp; iPad &middot; English and Russian':
+    'Бесплатно · iPhone и iPad · русский и английский',
 
   // Цифры
   'recipes, every one with real steps and amounts': 'рецептов, у каждого настоящие шаги и граммовки',
