@@ -202,10 +202,10 @@ const SCREEN = {
   'uzhin-bystro.html': '2-feed', 'dinner-tonight.html': '2-feed',
 };
 const LW = {
-  ru: { kicker: 'Разбор', side: 'Попробуйте на своем холодильнике', sideText: 'Бесплатно, без подписки и рекламы. Первый рецепт до регистрации.',
-        final: 'Сегодняшний ужин <em>уже в вашем холодильнике</em>', finalLead: 'Скачайте CookFusion бесплатно и добавьте семью один раз.' },
-  en: { kicker: 'Guide', side: 'Try it on your own fridge', sideText: 'Free, no subscription and no ads.',
-        final: 'Tonight’s dinner is <em>already in your fridge.</em>', finalLead: 'Download CookFusion free and add your family once.' },
+  ru: { side: 'Попробуйте на своем холодильнике', sideText: 'Бесплатно, без подписки и рекламы. Первый рецепт до регистрации.',
+        final: 'Сегодняшний ужин уже в вашем холодильнике', finalLead: 'Скачайте CookFusion бесплатно и добавьте семью один раз.' },
+  en: { side: 'Try it on your own fridge', sideText: 'Free, no subscription and no ads.',
+        final: 'Tonight’s dinner is already in your fridge.', finalLead: 'Download CookFusion free and add your family once.' },
 };
 
 function render(page) {
@@ -264,7 +264,6 @@ ${S.header(page.lang)}
   <div class="wrap hero-grid">
     <div>
       <a class="crumb rise" href="${home}">${I.back}${esc(ui.back)}</a>
-      <p class="kicker rise">${lw.kicker}</p>
       <h1 class="h1 rise d1">${esc(page.h1)}</h1>
       <p class="lead rise d2">${esc(page.lead)}</p>
       <div class="cta-row rise d3" id="hero-cta">
@@ -297,7 +296,7 @@ ${page.faq.map(([q, a], i) => `        <details class="qa"${i === 0 ? ' open' : 
 
 <section class="sec" style="padding-top:0">
   <div class="wrap">
-    <div class="sec-head"><p class="kicker">${esc(ui.also)}</p></div>
+    <h2 class="h3 also-title">${esc(ui.also)}</h2>
     <div class="guides">
 ${page.links.map(l => `      <a class="guide" href="${l}"><div><b>${esc(titleOf(l))}</b><span>${esc(leadOf(l))}</span></div><i>${esc(ui.read)}${I.arrow}</i></a>`).join('\n')}
     </div>
@@ -342,8 +341,11 @@ const urls = [
   { loc: BASE, alt: true, pri: '1.0' },
   { loc: BASE + 'ru.html', alt: true, pri: '1.0' },
   ...PAGES.map(p => ({ loc: BASE + p.file, pri: '0.8' })),
-  { loc: BASE + 'privacy.html', pri: '0.3' },
-  { loc: BASE + 'terms.html', pri: '0.3' },
+  // Юридические страницы на двух языках
+  ...['privacy', 'terms', 'cookies'].flatMap((n) => [
+    { loc: BASE + n + '.html', pri: '0.3' },
+    { loc: BASE + n + '-ru.html', pri: '0.3' },
+  ]),
 ];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"

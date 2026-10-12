@@ -53,7 +53,27 @@
     <priority>0.3</priority>
   </url>
   <url>
+    <loc>https://cookfusion.dilami.pro/privacy-ru.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
     <loc>https://cookfusion.dilami.pro/terms.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://cookfusion.dilami.pro/terms-ru.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://cookfusion.dilami.pro/cookies.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://cookfusion.dilami.pro/cookies-ru.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.3</priority>
   </url>

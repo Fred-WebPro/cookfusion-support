@@ -40,11 +40,10 @@ const C = {
     ogDesc: 'Photograph your fridge. Get a recipe that suits every diet and allergy in your family. Free on iPhone and iPad.',
     ogAlt: 'CookFusion app on iPhone: fridge scanner and family profiles',
     hero: {
-      pill: 'Free on iPhone and iPad',
       h1: 'Dinner for everyone at the table. <em>From one photo.</em>',
       lead: 'Photograph your fridge. CookFusion turns what you already have into dinner and quietly removes anything someone at your table can’t eat.',
       more: 'See how it works',
-      trust: ['13,501 recipes with real steps', 'No ads, no subscription', 'Allergies checked for each person'],
+      facts: 'Free on iPhone and iPad. 13,501 recipes, no ads, no subscription.',
       f1: ['6 ingredients found', 'Eggs, spinach, parmesan, garlic'],
       f2: ['No peanuts for Alina', 'Removed before you see it'],
       f3: ['Suits all 4 at the table', 'Miso butter chicken, 55 min'],
@@ -59,7 +58,7 @@ const C = {
     ],
     table: {
       kicker: 'Made for families',
-      h2: 'Four people. Three restrictions. <em>One dinner.</em>',
+      h2: 'Four people. Three restrictions. One dinner.',
       lead: 'Most recipe apps cook for one person. CookFusion cooks for the whole table: add everyone once, and every recipe is checked against every plate before it reaches you.',
       points: [
         ['family', 'A profile for each person', 'Diet, allergies, dislikes and portion size. Set it once and it works every time.'],
@@ -71,7 +70,7 @@ const C = {
     },
     how: {
       kicker: 'How it works',
-      h2: 'From fridge to dinner <em>in three steps</em>',
+      h2: 'From fridge to dinner in three steps',
       steps: [
         ['1-scan', 'Snap', 'Point the camera at an open fridge or a shelf. The app recognises what is there, and you can correct the list.'],
         ['2-feed', 'Pick', 'See only dishes that suit everyone and can be made from what you have. Ingredients are shown before you start.'],
@@ -80,7 +79,7 @@ const C = {
     },
     feat: {
       kicker: 'Everything in one app',
-      h2: 'A whole kitchen, <em>not another recipe list</em>',
+      h2: 'A whole kitchen, not another recipe list',
       lead: 'Planning, shopping and cooking live in one place, so dinner stops being a daily decision.',
       plan: ['Two weeks planned ahead', 'Breakfast, lunch and dinner for 14 days, built around your table and synced across your devices.'],
       chef: ['A chef who answers', 'Substitutions, techniques, what to do with leftover rice. Ask in plain words, get an answer in seconds.'],
@@ -94,7 +93,7 @@ const C = {
     },
     priv: {
       kicker: 'Privacy',
-      h2: 'Your kitchen. <em>Your data.</em>',
+      h2: 'Your kitchen. Your data.',
       lead: 'We built CookFusion the way we would want an app to treat our own family’s data.',
       items: [
         ['lock', 'Photos stay yours', 'Fridge photos are used only to recognise ingredients. Never for advertising, never sold.'],
@@ -134,7 +133,7 @@ const C = {
       help: ['Still need help?', EMAIL + ' · we reply within 24 hours', 'Email support'],
     },
     final: {
-      h2: 'Tonight’s dinner is <em>already in your fridge.</em>',
+      h2: 'Tonight’s dinner is already in your fridge.',
       lead: 'Download CookFusion free, add your family once and let the app take the daily question off your hands.',
       qr: 'Point your phone camera here to open the App Store',
       alt: 'A bowl of pasta on a kitchen table',
@@ -155,11 +154,10 @@ const C = {
     ogDesc: 'Сфотографируйте холодильник и получите рецепт, который подойдет всем за столом. Бесплатно для iPhone и iPad.',
     ogAlt: 'Приложение CookFusion на iPhone: сканер холодильника и профили семьи',
     hero: {
-      pill: 'Бесплатно для iPhone и iPad',
       h1: 'Ужин на всю семью, <em>за одно фото</em>',
       lead: 'Сфотографируйте холодильник. CookFusion подберет блюдо из того, что уже есть дома, и уберет все, что кому-то за столом нельзя.',
       more: 'Как это работает',
-      trust: ['13 501 рецепт с шагами', 'Без рекламы и подписки', 'Аллергии учтены для каждого'],
+      facts: 'Бесплатно для iPhone и iPad. 13 501 рецепт, без рекламы и подписки.',
       f1: ['Нашли 6 продуктов', 'Яйца, шпинат, пармезан, чеснок'],
       f2: ['Без арахиса для Алины', 'Убрано до того, как вы увидели'],
       f3: ['Подходит всем четверым', 'Курица в мисо-масле, 55 мин'],
@@ -174,7 +172,7 @@ const C = {
     ],
     table: {
       kicker: 'Для семьи',
-      h2: 'Четыре человека. Три ограничения. <em>Один ужин.</em>',
+      h2: 'Четыре человека. Три ограничения. Один ужин.',
       lead: 'Большинство приложений с рецептами готовят для одного. CookFusion готовит для всего стола: заведите всех один раз, и каждый рецепт проверяется по каждой тарелке еще до того, как вы его увидите.',
       points: [
         ['family', 'Профиль на каждого', 'Диета, аллергии, нелюбимые продукты и размер порции. Заполняется один раз и работает всегда.'],
@@ -186,7 +184,7 @@ const C = {
     },
     how: {
       kicker: 'Как это работает',
-      h2: 'От холодильника до ужина <em>за три шага</em>',
+      h2: 'От холодильника до ужина за три шага',
       steps: [
         ['1-scan', 'Снимите', 'Наведите камеру на открытый холодильник или полку. Приложение распознает продукты, список можно поправить.'],
         ['2-feed', 'Выберите', 'Только блюда, которые подходят всем и готовятся из того, что есть. Состав виден до начала готовки.'],
@@ -195,7 +193,7 @@ const C = {
     },
     feat: {
       kicker: 'Все в одном приложении',
-      h2: 'Целая кухня, <em>а не сборник рецептов</em>',
+      h2: 'Целая кухня, а не сборник рецептов',
       lead: 'План, покупки и готовка в одном месте, и ужин перестает быть ежедневной задачей.',
       plan: ['План на две недели', 'Завтрак, обед и ужин на 14 дней вперед с учетом всех за столом. Синхронизируется между устройствами.'],
       chef: ['Повар, который отвечает', 'Чем заменить, как приготовить, что сделать с остатками риса. Спросите своими словами, ответ через секунды.'],
@@ -209,12 +207,12 @@ const C = {
     },
     priv: {
       kicker: 'Приватность',
-      h2: 'Ваша кухня. <em>Ваши данные.</em>',
+      h2: 'Ваша кухня. Ваши данные.',
       lead: 'Мы сделали CookFusion так, как хотели бы, чтобы приложение обращалось с данными нашей собственной семьи.',
       items: [
         ['lock', 'Фото остаются вашими', 'Снимки холодильника нужны только чтобы распознать продукты. Не для рекламы и не на продажу.'],
         ['allergy', 'Без слежки и рекламы', 'Никаких рекламных сетей, отслеживания между приложениями и продажи данных. Приложение делает одно: помогает готовить.'],
-        ['trash', 'Удалить все в любой момент', 'Одно нажатие в настройках навсегда удаляет аккаунт и все данные. Подробнее в <a href="privacy.html">политике конфиденциальности</a>.'],
+        ['trash', 'Удалить все в любой момент', 'Одно нажатие в настройках навсегда удаляет аккаунт и все данные. Подробнее в <a href="privacy-ru.html">политике конфиденциальности</a>.'],
       ],
     },
     guides: {
@@ -249,7 +247,7 @@ const C = {
       help: ['Нужна помощь?', EMAIL + ' · отвечаем в течение суток', 'Написать в поддержку'],
     },
     final: {
-      h2: 'Сегодняшний ужин <em>уже в вашем холодильнике</em>',
+      h2: 'Сегодняшний ужин уже в вашем холодильнике',
       lead: 'Скачайте CookFusion бесплатно, добавьте семью один раз, и вопрос «что приготовить» приложение возьмет на себя.',
       qr: 'Наведите камеру телефона, чтобы открыть App Store',
       alt: 'Тарелка пасты на кухонном столе',
@@ -330,14 +328,13 @@ ${S.header(L.lang, { isHome: true })}
 <section class="hero">
   <div class="wrap hero-grid">
     <div>
-      <div class="pill rise"><i></i>${H.pill}</div>
       <h1 class="h1 rise d1">${H.h1}</h1>
       <p class="lead rise d2">${H.lead}</p>
       <div class="cta-row rise d3" id="hero-cta">
         ${storeBtn(L)}
         <a class="link-arrow" href="#how">${H.more}${I.arrow}</a>
       </div>
-      <ul class="trust rise d3">${H.trust.map((t) => `<li>${I.check}${t}</li>`).join('')}</ul>
+      <p class="facts rise d3">${H.facts}</p>
     </div>
     <div class="stage rise d2">
       <div class="phone ph-back">${shot('2-feed', L, '(min-width: 1024px) 260px, 46vw', H.altBack)}</div>
@@ -361,7 +358,7 @@ ${S.header(L.lang, { isHome: true })}
       <div class="tag ok t3">${I.check}${T.tags[2]}</div>
     </div>
     <div>
-      <p class="kicker rv">${T.kicker}</p>
+      
       <h2 class="h2 rv d1">${T.h2}</h2>
       <p class="lead rv d2" style="margin-top:22px">${T.lead}</p>
       <ul class="points">${T.points.map(([ic, b, s], i) =>
@@ -372,7 +369,7 @@ ${S.header(L.lang, { isHome: true })}
 
 <section class="sec" id="how" style="padding-top:0">
   <div class="wrap">
-    <div class="sec-head center"><p class="kicker rv">${L.how.kicker}</p><h2 class="h2 rv d1">${L.how.h2}</h2></div>
+    <div class="sec-head center"><h2 class="h2 rv d1">${L.how.h2}</h2></div>
     <div class="steps">${L.how.steps.map(([img, t, d], i) => `
       <article class="step rv d${i + 1}">
         <div class="step-img">${shot(img, L, '(min-width: 900px) 240px, 62vw', t)}</div>
@@ -384,30 +381,30 @@ ${S.header(L.lang, { isHome: true })}
 
 <section class="sec" id="features" style="padding-top:0">
   <div class="wrap">
-    <div class="sec-head"><p class="kicker rv">${F.kicker}</p><h2 class="h2 rv d1">${F.h2}</h2><p class="lead rv d2">${F.lead}</p></div>
+    <div class="sec-head"><h2 class="h2 rv d1">${F.h2}</h2><p class="lead rv d2">${F.lead}</p></div>
     <div class="bento">
       <article class="tile b-plan rv">
-        <span class="ic">${I.plan}</span><h3 class="h3">${F.plan[0]}</h3><p>${F.plan[1]}</p>
+        <h3 class="h3">${F.plan[0]}</h3><p>${F.plan[1]}</p>
         <div class="shot">${shot('4-plan', L, '(min-width: 900px) 330px, 78vw', F.altPlan)}</div>
       </article>
       <article class="tile b-chef rv d1">
-        <span class="ic">${I.chat}</span><h3 class="h3">${F.chef[0]}</h3><p>${F.chef[1]}</p>
+        <h3 class="h3">${F.chef[0]}</h3><p>${F.chef[1]}</p>
         <div class="chat"><div class="bubble me">${F.chat[0]}</div><div class="bubble ai">${F.chat[1]}</div></div>
       </article>
       <article class="tile b-score rv d2">
-        <span class="ic">${I.diet}</span><h3 class="h3">${F.score[0]}</h3><p>${F.score[1]}</p>
+        <h3 class="h3">${F.score[0]}</h3><p>${F.score[1]}</p>
         <div class="grades" aria-hidden="true"><span style="background:#4B7349">A</span><span class="on" style="background:#7BA878">B</span><span style="background:#E89D5E">C</span><span style="background:#C06321">D</span><span style="background:#A24734">E</span></div>
       </article>
       <article class="tile b-list rv">
-        <span class="ic">${I.list}</span><h3 class="h3">${F.list[0]}</h3><p>${F.list[1]}</p>
+        <h3 class="h3">${F.list[0]}</h3><p>${F.list[1]}</p>
         <div class="shot">${shot('5-shop', L, '(min-width: 900px) 360px, 90vw', F.altList)}</div>
       </article>
       <article class="tile b-cook rv d1">
-        <span class="ic">${I.timer}</span><h3 class="h3">${F.cook[0]}</h3><p>${F.cook[1]}</p>
+        <h3 class="h3">${F.cook[0]}</h3><p>${F.cook[1]}</p>
         <div class="timer" aria-hidden="true">08:30</div>
       </article>
       <article class="tile b-auth rv d2">
-        <span class="ic">${I.recipe}</span><h3 class="h3">${F.auth[0]}</h3><p>${F.auth[1]}</p>
+        <h3 class="h3">${F.auth[0]}</h3><p>${F.auth[1]}</p>
         <div class="author" aria-hidden="true"><span class="av">${I.profile}</span><span><b>${F.authCard[0]}</b><small>${F.authCard[1]}</small></span><span class="go">${I.share}</span></div>
       </article>
     </div>
@@ -416,15 +413,15 @@ ${S.header(L.lang, { isHome: true })}
 
 <section class="sec dark on-dark" id="privacy">
   <div class="wrap">
-    <div class="sec-head"><p class="kicker rv">${L.priv.kicker}</p><h2 class="h2 rv d1">${L.priv.h2}</h2><p class="lead rv d2">${L.priv.lead}</p></div>
+    <div class="sec-head"><h2 class="h2 rv d1">${L.priv.h2}</h2><p class="lead rv d2">${L.priv.lead}</p></div>
     <div class="trio">${L.priv.items.map(([ic, b, s], i) =>
-      `<div class="rv d${i + 1}"><span class="ic">${I[ic]}</span><b>${b}</b><span>${s}</span></div>`).join('')}</div>
+      `<div class="rv d${i + 1}"><b>${b}</b><span>${s}</span></div>`).join('')}</div>
   </div>
 </section>
 
 <section class="sec" id="guides">
   <div class="wrap">
-    <div class="sec-head"><p class="kicker rv">${L.guides.kicker}</p><h2 class="h2 rv d1">${L.guides.h2}</h2></div>
+    <div class="sec-head"><h2 class="h2 rv d1">${L.guides.h2}</h2></div>
     <div class="guides">${L.guides.items.map(([href, b, s], i) =>
       `<a class="guide rv d${i + 1}" href="${href}"><div><b>${b}</b><span>${s}</span></div><i>${L.guides.open}${I.arrow}</i></a>`).join('')}</div>
   </div>
@@ -433,7 +430,7 @@ ${S.header(L.lang, { isHome: true })}
 <section class="sec" id="faq" style="padding-top:0">
   <div class="wrap faq-grid">
     <div class="faq-side">
-      <p class="kicker rv">${L.faq.kicker}</p><h2 class="h2 rv d1">${L.faq.h2}</h2>
+      <h2 class="h2 rv d1">${L.faq.h2}</h2>
       <p class="lead rv d2" style="margin-top:20px">${L.faq.lead}</p>
       <div class="help rv d3" id="support">
         <b>${L.faq.help[0]}</b><span>${L.faq.help[1]}</span>

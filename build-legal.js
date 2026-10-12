@@ -1,67 +1,69 @@
 /**
- * Переводит политику конфиденциальности и условия использования на общий
- * вид сайта. Текст документов не трогается: он юридический и правится
- * руками. Скрипт только оборачивает его в общие шапку, подвал и стили.
+ * Собирает юридические страницы на двух языках из legal-content.js:
+ * политику конфиденциальности, условия использования и политику cookie.
  *   node support-site/build-legal.js
  *
- * Содержимое лежит между метками <!-- content --> и <!-- /content -->.
- * При первом запуске их еще нет, тогда берется все внутри <main>.
- * Править документ нужно между метками, а потом запускать скрипт.
+ * Текст правится в legal-content.js, страницы здесь только собираются.
+ * Английская политика остается по адресу privacy.html: на него ведет
+ * ссылка в App Store Connect и в самом приложении.
  */
 const fs = require('fs');
 const path = require('path');
 const S = require('./site-chrome');
 const { I, BASE } = S;
+const { UPDATED, DOCS } = require('./legal-content');
 
-const DOCS = [
-  { file: 'privacy.html', desc: 'How CookFusion collects, uses and protects your information.' },
-  { file: 'terms.html', desc: 'The terms that apply when you use the CookFusion app.' },
-];
+const BACK = { en: 'Back to home', ru: 'На главную' };
 
-for (const d of DOCS) {
-  const src = fs.readFileSync(path.join(S.DIR, d.file), 'utf8');
+// Блок документа: строка это абзац, массив это список
+const block = (b) => Array.isArray(b)
+  ? `<ul>${b.map((li) => `<li>${li}</li>`).join('')}</ul>`
+  : `<p>${b}</p>`;
 
-  let body;
-  const a = src.indexOf('<!-- content -->'), z = src.indexOf('<!-- /content -->');
-  if (a >= 0 && z > a) body = src.slice(a + '<!-- content -->'.length, z);
-  else body = src.slice(src.indexOf('<main>') + 6, src.indexOf('</main>'));
-  if (!body.trim()) throw new Error(d.file + ': не нашлось содержимого');
+let bad = 0;
+for (const doc of DOCS) bad += S.checkText(doc, doc.en.file);
+if (bad) { console.error('Длинные тире или е с двумя точками в юридических текстах: ' + bad); process.exit(1); }
 
-  const h1 = (src.match(/<h1[^>]*>([^<]+)<\/h1>/) || [])[1] || 'CookFusion';
-  const title = 'CookFusion: ' + h1;
-
-  const html = `<!DOCTYPE html>
-<html lang="en">
+for (const doc of DOCS) {
+  for (const lang of ['en', 'ru']) {
+    const d = doc[lang];
+    const pair = { en: doc.en.file, ru: doc.ru.file };
+    const html = `<!DOCTYPE html>
+<html lang="${lang}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>${S.esc(title)}</title>
+<title>CookFusion: ${S.esc(d.title)}</title>
 <meta name="description" content="${S.attr(d.desc)}">
 <link rel="canonical" href="${BASE}${d.file}">
+<link rel="alternate" hreflang="en" href="${BASE}${pair.en}">
+<link rel="alternate" hreflang="ru" href="${BASE}${pair.ru}">
 <meta name="robots" content="index, follow">
-${S.headCommon('en')}
+${S.headCommon(lang)}
 </head>
 <body>
 
-${S.header('en')}
+${S.header(lang, { langLinks: pair })}
 
 <main class="page">
   <div class="wrap">
-    <a class="crumb" href="./">${I.back}Back to home</a>
-    <p class="kicker" style="margin-top:26px">Legal</p>
-    <h1 class="h1">${S.esc(h1)}</h1>
+    <a class="crumb" href="${S.UI[lang].home}">${I.back}${BACK[lang]}</a>
+    <h1 class="h1">${S.esc(d.title)}</h1>
     <div class="prose legal">
-<!-- content -->${body}<!-- /content -->
+      <p class="updated">${UPDATED[lang]}</p>
+      ${d.intro.map(block).join('\n      ')}
+${d.sections.map(([h, blocks]) => `      <h2>${h}</h2>\n      ${blocks.map(block).join('\n      ')}`).join('\n')}
     </div>
   </div>
 </main>
 
-${S.footer('en')}
+${S.footer(lang)}
 
 ${S.scriptTag()}
 </body>
 </html>
 `;
-  fs.writeFileSync(path.join(S.DIR, d.file), html);
-  console.log('  ' + d.file + ': ' + h1);
+    fs.writeFileSync(path.join(S.DIR, d.file), html);
+    console.log('  ' + d.file + ': ' + d.title);
+  }
 }
