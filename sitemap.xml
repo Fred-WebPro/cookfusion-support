@@ -2,58 +2,58 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://fred-webpro.github.io/cookfusion-support/</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fred-webpro.github.io/cookfusion-support/"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://fred-webpro.github.io/cookfusion-support/ru.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fred-webpro.github.io/cookfusion-support/"/>
+    <loc>https://cookfusion.dilami.pro/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://cookfusion.dilami.pro/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://cookfusion.dilami.pro/ru.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cookfusion.dilami.pro/"/>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://fred-webpro.github.io/cookfusion-support/ru.html</loc>
-    <xhtml:link rel="alternate" hreflang="en" href="https://fred-webpro.github.io/cookfusion-support/"/>
-    <xhtml:link rel="alternate" hreflang="ru" href="https://fred-webpro.github.io/cookfusion-support/ru.html"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://fred-webpro.github.io/cookfusion-support/"/>
+    <loc>https://cookfusion.dilami.pro/ru.html</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://cookfusion.dilami.pro/"/>
+    <xhtml:link rel="alternate" hreflang="ru" href="https://cookfusion.dilami.pro/ru.html"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://cookfusion.dilami.pro/"/>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://fred-webpro.github.io/cookfusion-support/iz-togo-chto-est.html</loc>
+    <loc>https://cookfusion.dilami.pro/iz-togo-chto-est.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fred-webpro.github.io/cookfusion-support/uzhin-bystro.html</loc>
+    <loc>https://cookfusion.dilami.pro/uzhin-bystro.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fred-webpro.github.io/cookfusion-support/menu-na-nedelyu.html</loc>
+    <loc>https://cookfusion.dilami.pro/menu-na-nedelyu.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fred-webpro.github.io/cookfusion-support/meal-planner.html</loc>
+    <loc>https://cookfusion.dilami.pro/meal-planner.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fred-webpro.github.io/cookfusion-support/cook-with-what-you-have.html</loc>
+    <loc>https://cookfusion.dilami.pro/cook-with-what-you-have.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fred-webpro.github.io/cookfusion-support/dinner-tonight.html</loc>
+    <loc>https://cookfusion.dilami.pro/dinner-tonight.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://fred-webpro.github.io/cookfusion-support/privacy.html</loc>
+    <loc>https://cookfusion.dilami.pro/privacy.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://fred-webpro.github.io/cookfusion-support/terms.html</loc>
+    <loc>https://cookfusion.dilami.pro/terms.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.3</priority>
   </url>

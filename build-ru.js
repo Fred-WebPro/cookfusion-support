@@ -12,7 +12,7 @@ const fs = require('fs');
 const path = require('path');
 
 const DIR = path.join(__dirname);
-const BASE = 'https://fred-webpro.github.io/cookfusion-support/';
+const BASE = 'https://cookfusion.dilami.pro/';
 
 // Ключ — точная английская строка из разметки. Порядок важен: длинные
 // фразы заменяются раньше коротких, иначе «Support» съест «Support URL».
@@ -235,8 +235,8 @@ html = html.replace(`<link rel="canonical" href="${BASE}">`, `<link rel="canonic
 html = html.replace('<meta property="og:locale" content="en_US">', '<meta property="og:locale" content="ru_RU">');
 html = html.replace('<meta property="og:locale:alternate" content="ru_RU">', '<meta property="og:locale:alternate" content="en_US">');
 html = html.replace(`<meta property="og:url" content="${BASE}">`, `<meta property="og:url" content="${BASE}ru.html">`);
-html = html.replace('<a href="/cookfusion-support/" class="on" hreflang="en">EN</a><a href="/cookfusion-support/ru.html" hreflang="ru">RU</a>',
-                    '<a href="/cookfusion-support/" hreflang="en">EN</a><a href="/cookfusion-support/ru.html" class="on" hreflang="ru">RU</a>');
+html = html.replace('<a href="/" class="on" hreflang="en">EN</a><a href="/ru.html" hreflang="ru">RU</a>',
+                    '<a href="/" hreflang="en">EN</a><a href="/ru.html" class="on" hreflang="ru">RU</a>');
 
 // Пометка о происхождении: чтобы никто не правил ru.html руками
 html = html.replace('<head>', '<head>\n<!-- Собрано из index.html: node support-site/build-ru.js. Правки вносите в index.html и в словарь build-ru.js. -->');

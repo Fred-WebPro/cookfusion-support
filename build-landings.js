@@ -15,7 +15,7 @@ const fs = require('fs');
 const path = require('path');
 
 const DIR = __dirname;
-const BASE = 'https://fred-webpro.github.io/cookfusion-support/';
+const BASE = 'https://cookfusion.dilami.pro/';
 const APP = 'https://apps.apple.com/app/id6760546998';
 
 const UI = {
