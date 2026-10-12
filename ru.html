@@ -1,804 +1,220 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<!-- Собрано из index.html: node support-site/build-ru.js. Правки вносите в index.html и в словарь build-ru.js. -->
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CookFusion — сфотографируйте холодильник и получите рецепт | Бесплатный ИИ-планировщик питания</title>
-<meta name="description" content="Бесплатное приложение для iPhone: сфотографируйте холодильник и получите рецепт из того, что уже есть. Более 13 500 рецептов, планирование питания на всю семью, аллергии и диеты учитываются в каждой тарелке.">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>CookFusion: ужин на всю семью по фото холодильника | Бесплатный планировщик питания</title>
+<meta name="description" content="Бесплатное приложение для iPhone и iPad. Сфотографируйте холодильник и получите рецепт из того, что уже есть, с учетом диет и аллергий каждого за столом. 13 501 рецепт, план на 14 дней и список покупок, который составляется сам.">
 <link rel="canonical" href="https://cookfusion.dilami.pro/ru.html">
 <link rel="alternate" hreflang="en" href="https://cookfusion.dilami.pro/">
 <link rel="alternate" hreflang="ru" href="https://cookfusion.dilami.pro/ru.html">
 <link rel="alternate" hreflang="x-default" href="https://cookfusion.dilami.pro/">
 <meta name="robots" content="index, follow, max-image-preview:large">
-
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://cookfusion.dilami.pro/ru.html">
 <meta property="og:site_name" content="CookFusion">
-<meta property="og:title" content="CookFusion — сфотографируйте холодильник и получите рецепт">
-<meta property="og:description" content="Бесплатное приложение для iPhone: превращает содержимое холодильника в рецепт и планирует неделю с учётом диет и аллергий вашей семьи.">
+<meta property="og:title" content="CookFusion: ужин на всю семью, за одно фото">
+<meta property="og:description" content="Сфотографируйте холодильник и получите рецепт, который подойдет всем за столом. Бесплатно для iPhone и iPad.">
+<meta property="og:image" content="https://cookfusion.dilami.pro/img/og-ru.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Приложение CookFusion на iPhone: сканер холодильника и профили семьи">
 <meta property="og:locale" content="ru_RU">
 <meta property="og:locale:alternate" content="en_US">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="CookFusion — сфотографируйте холодильник и получите рецепт">
-<meta name="twitter:description" content="Бесплатное приложение, которое готовит из того, что у вас уже есть.">
+<meta name="twitter:title" content="CookFusion: ужин на всю семью, за одно фото">
+<meta name="twitter:description" content="Сфотографируйте холодильник и получите рецепт, который подойдет всем за столом. Бесплатно для iPhone и iPad.">
+<meta name="twitter:image" content="https://cookfusion.dilami.pro/img/og-ru.jpg">
+<link rel="preload" as="image" href="img/1-scan-ru-800.webp" imagesrcset="img/1-scan-ru-400.webp 400w, img/1-scan-ru-800.webp 800w" imagesizes="(min-width: 1024px) 320px, 56vw">
+<meta name="theme-color" content="#F6F3EC">
 <meta name="apple-itunes-app" content="app-id=6760546998">
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "CookFusion: AI Meal Planner",
-  "operatingSystem": "iOS 15.1+",
-  "applicationCategory": "LifestyleApplication",
-  "url": "https://apps.apple.com/app/id6760546998",
-  "description": "Photograph your fridge and get a recipe from what you already have. Meal planning for the whole family with allergies and diets respected on every plate.",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-  "featureList": [
-    "Fridge photo to recipe",
-    "13,500+ recipes",
-    "Two-week meal planner",
-    "Per-person allergies and diets",
-    "Automatic shopping list",
-    "Hands-free cooking mode"
-  ],
-  "publisher": { "@type": "Organization", "name": "CookFusion" }
-}
-</script>
-<link rel="preload" href="fonts/fraunces-normal-700.woff2" as="font" type="font/woff2" crossorigin>
-<style>
-  /* Шрифты лежат у нас, а не на серверах Google.
-     Каждая загрузка страницы с fonts.gstatic.com отправляла IP
-     посетителя в Google без его ведома и согласия — в Германии за это
-     уже присуждали компенсацию. Заодно это противоречило обещанию
-     «no tracking» на этой же странице.
-
-     Inter заменён на системный шрифт: он и так почти неотличим, зато
-     рисуется мгновенно и ничего не тянет извне. У Fraunces кириллицы
-     нет, поэтому русские заголовки и раньше рисовались Georgia. */
-@font-face{font-family:'Fraunces';font-style:italic;font-weight:500;font-display:swap;src:url(fonts/fraunces-italic-500.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
-@font-face{font-family:'Fraunces';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/fraunces-normal-400.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
-@font-face{font-family:'Fraunces';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/fraunces-normal-600.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
-@font-face{font-family:'Fraunces';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/fraunces-normal-700.woff2) format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}
-
-  :root {
-    --ink: #0D1F16;         /* глубокий зелёный, почти чёрный */
-    --ink-2: #14291D;
-    --cream: #F7F5EF;
-    --paper: #FFFFFF;
-    --sage: #7A9A75;
-    --sage-soft: #A9BFA0;
-    --orange: #E89D5E;
-    --orange-hot: #E2792F;
-    --text: #182119;
-    --muted: #5F6B60;
-    --line: #E5E4DB;
-    --line-dark: rgba(255,255,255,.10);
-    --radius: 22px;
-  }
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background: var(--cream); color: var(--text); line-height: 1.65; -webkit-font-smoothing: antialiased; }
-  h1,h2,h3,.serif { font-family: 'Fraunces', Georgia, serif; }
-  a { color: inherit; }
-  .container { max-width: 1140px; margin: 0 auto; padding: 0 28px; }
-
-  /* reveal on scroll */
-  .rv { opacity: 0; transform: translateY(26px); transition: opacity .7s cubic-bezier(.2,.7,.2,1), transform .7s cubic-bezier(.2,.7,.2,1); }
-  .rv.in { opacity: 1; transform: none; }
-  .d1 { transition-delay: .08s } .d2 { transition-delay: .16s } .d3 { transition-delay: .24s } .d4 { transition-delay: .32s }
-
-  /* ===== NAV ===== */
-  nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; transition: background .3s, box-shadow .3s; }
-  nav.scrolled { background: rgba(13,31,22,.82); backdrop-filter: blur(16px); box-shadow: 0 1px 0 var(--line-dark); }
-  .nav-inner { display: flex; align-items: center; justify-content: space-between; gap: 12px; height: 72px; }
-  .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: #fff; min-width: 0; }
-  .logo-mark { width: 36px; height: 36px; border-radius: 11px; background: linear-gradient(135deg, var(--orange) 0%, var(--orange-hot) 100%); display: grid; place-items: center; box-shadow: 0 4px 14px rgba(226,121,47,.35); }
-  .logo-mark svg { width: 20px; height: 20px; }
-  .logo-name { font-family: 'Fraunces', serif; font-size: 21px; font-weight: 700; letter-spacing: .2px; }
-  .nav-links { display: flex; align-items: center; gap: 30px; }
-  .nav-links a { color: rgba(255,255,255,.72); font-size: 14.5px; font-weight: 500; text-decoration: none; transition: color .2s; }
-  .nav-links a:hover { color: #fff; }
-  .nav-cta { background: #fff; color: var(--ink) !important; padding: 10px 20px; border-radius: 100px; font-weight: 600; white-space: nowrap; }
-  .nav-cta:hover { background: var(--cream); }
-  @media (max-width: 760px) {
-    .nav-links > a:not(.nav-cta) { display: none; }
-    .nav-links { gap: 10px; }
-    .nav-cta { padding: 9px 15px; font-size: 13.5px; }
-    .logo { gap: 8px; }
-    .logo-mark { width: 30px; height: 30px; border-radius: 9px; }
-    .logo-mark svg { width: 17px; height: 17px; }
-    .logo-name { font-size: 18px; }
-    .lang-pick a { padding: 6px 9px; font-size: 11.5px; }
-  }
-  /* Узкие телефоны. На 360–390 px три элемента шапки перестают влезать
-     в строку: логотип занимает половину ширины, и кнопке остаётся
-     столько места, что она ломается по словам. Ужимаем всё разом. */
-  @media (max-width: 420px) {
-    .container { padding: 0 16px; }
-    .logo-name { font-size: 16.5px; }
-    .nav-cta { padding: 9px 13px; font-size: 12.5px; }
-    .lang-pick { padding: 2px; }
-    .lang-pick a { padding: 6px 8px; font-size: 11px; }
-    .nav-links { gap: 8px; }
-  }
-
-  /* ===== HERO ===== */
-  .hero { position: relative; background: var(--ink); color: #fff; padding: 160px 0 0; overflow: hidden; }
-  .hero::before { content:''; position:absolute; width: 720px; height: 720px; border-radius: 50%; top: -320px; right: -180px; background: radial-gradient(circle, rgba(232,157,94,.28), transparent 62%); pointer-events:none; }
-  .hero::after { content:''; position:absolute; width: 640px; height: 640px; border-radius: 50%; bottom: -260px; left: -220px; background: radial-gradient(circle, rgba(122,154,117,.30), transparent 62%); pointer-events:none; }
-  .hero-grid { position: relative; z-index: 2; display: grid; grid-template-columns: 1.05fr .95fr; gap: 30px; align-items: center; }
-  /* Без этого колонка держит ширину по самому длинному содержимому:
-     на 320 px кнопка со ссылкой рядом требовали 325 px, и заголовок
-     с текстом уезжали за правый край экрана. */
-  .hero-grid > * { min-width: 0; }
-  @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; text-align: center; } }
-  .eyebrow { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--line-dark); background: rgba(255,255,255,.05); padding: 7px 16px; border-radius: 100px; font-size: 13px; font-weight: 500; color: var(--sage-soft); margin-bottom: 26px; }
-  .eyebrow .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--orange); box-shadow: 0 0 10px var(--orange); animation: pulse 2s infinite; }
-  @keyframes pulse { 50% { opacity: .4 } }
-  .hero h1 { font-size: clamp(40px, 5.6vw, 66px); line-height: 1.06; font-weight: 600; letter-spacing: -.5px; margin-bottom: 24px; }
-  .hero h1 em { font-style: italic; font-weight: 500; color: var(--orange); }
-  .hero .lead { font-size: 18.5px; color: rgba(255,255,255,.68); max-width: 500px; margin-bottom: 36px; }
-  @media (max-width: 900px) { .hero .lead { margin-left: auto; margin-right: auto; } }
-  .cta-row { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
-  @media (max-width: 900px) { .cta-row { justify-content: center; } }
-  .store-badge { display: inline-flex; align-items: center; gap: 11px; background: #fff; color: var(--ink); border-radius: 14px; padding: 11px 22px; text-decoration: none; transition: transform .2s, box-shadow .2s; box-shadow: 0 10px 30px rgba(0,0,0,.35); }
-  .store-badge:hover { transform: translateY(-2px); box-shadow: 0 16px 40px rgba(0,0,0,.4); }
-  .store-badge .apple { font-size: 27px; line-height: 1; }
-  .store-badge small { display: block; font-size: 10px; font-weight: 600; letter-spacing: .6px; color: var(--muted); }
-  .store-badge strong { font-size: 17.5px; font-weight: 700; }
-  .link-soft { color: rgba(255,255,255,.75); font-size: 15px; font-weight: 500; text-decoration: none; border-bottom: 1px solid rgba(255,255,255,.25); padding-bottom: 2px; }
-  .link-soft:hover { color: #fff; border-color: #fff; }
-  .hero-foot { font-size: 13px; color: rgba(255,255,255,.42); margin-bottom: 40px; }
-
-  /* phone composition */
-  .stage { position: relative; height: 620px; perspective: 1200px; }
-  @media (max-width: 900px) { .stage { height: 560px; margin-top: 10px; } }
-  .ph { position: absolute; width: 268px; border-radius: 42px; background: #060a07; padding: 10px; box-shadow: 0 40px 80px rgba(0,0,0,.5), inset 0 0 0 1.5px rgba(255,255,255,.09); transition: transform .15s ease-out; }
-  .ph .scr { border-radius: 33px; overflow: hidden; background: var(--cream); }
-  .ph-a { left: 6%; top: 40px; transform: rotate(-6deg); z-index: 2; }
-  .ph-b { right: 4%; top: 130px; transform: rotate(5deg); z-index: 3; }
-  @media (max-width: 900px) { .ph-a { left: calc(50% - 250px); } .ph-b { right: calc(50% - 250px); } }
-  @media (max-width: 560px) { .ph { width: 230px; } .ph-a { left: calc(50% - 215px); top: 20px } .ph-b { right: calc(50% - 215px); top: 120px } }
-
-  /* screen A: feed */
-  .sA-head { padding: 20px 18px 6px; }
-  .sA-greet { font-size: 10.5px; color: var(--muted); }
-  .sA-name { font-family: 'Fraunces', serif; font-size: 19px; font-weight: 700; color: var(--text); }
-  .sA-chips { display: flex; gap: 8px; padding: 10px 16px 4px; }
-  .sA-chip { flex: 1; border-radius: 13px; padding: 11px 10px; color: #fff; font-size: 10.5px; font-weight: 700; line-height: 1.35; }
-  .sA-c1 { background: var(--sage); } .sA-c2 { background: var(--ink-2); }
-  .sA-card { margin: 10px 16px; background: #fff; border: 1px solid var(--line); border-radius: 17px; overflow: hidden; }
-  .sA-img { height: 104px; background: linear-gradient(120deg,#E89D5E,#c96f2e 60%,#8fae86); display: grid; place-items: center; font-size: 46px; }
-  .sA-body { padding: 10px 13px 12px; }
-  .sA-title { font-size: 13.5px; font-weight: 700; }
-  .sA-meta { font-size: 10px; color: var(--muted); margin-top: 3px; }
-  .sA-tag { display: inline-block; margin-top: 8px; background: #EAF1E7; color: #3E5C43; font-size: 9.5px; font-weight: 700; border-radius: 7px; padding: 3px 8px; }
-  .sA-tab { display: flex; justify-content: space-around; background: #fff; border-top: 1px solid var(--line); padding: 11px 0 16px; font-size: 15px; }
-  .sA-tab span { opacity: .3 } .sA-tab .on { opacity: 1 }
-
-  /* screen B: scanner */
-  .sB { background: #0b0f0c !important; }
-  .sB-cam { position: relative; height: 300px; background: linear-gradient(160deg, #22301f 0%, #101a12 70%); }
-  .sB-frame { position: absolute; inset: 34px 26px; border-radius: 18px; }
-  .sB-frame i { position: absolute; width: 30px; height: 30px; border: 3px solid #fff; opacity: .9; }
-  .sB-frame i:nth-child(1){ top:0; left:0; border-right:0; border-bottom:0; border-radius: 8px 0 0 0 }
-  .sB-frame i:nth-child(2){ top:0; right:0; border-left:0; border-bottom:0; border-radius: 0 8px 0 0 }
-  .sB-frame i:nth-child(3){ bottom:0; left:0; border-right:0; border-top:0; border-radius: 0 0 0 8px }
-  .sB-frame i:nth-child(4){ bottom:0; right:0; border-left:0; border-top:0; border-radius: 0 0 8px 0 }
-  .sB-line { position: absolute; left: 34px; right: 34px; height: 2px; background: var(--orange); box-shadow: 0 0 14px var(--orange); animation: scan 2.6s ease-in-out infinite; }
-  @keyframes scan { 0%,100% { top: 44px } 50% { top: 310px } }
-  .sB-food { position: absolute; inset: 0; display: grid; place-items: center; font-size: 52px; opacity: .95; }
-  .sB-res { background: #fff; margin: -26px 14px 12px; position: relative; z-index: 2; border-radius: 15px; padding: 12px 14px; box-shadow: 0 10px 26px rgba(0,0,0,.35); }
-  .sB-res-t { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--sage); }
-  .sB-item { display: flex; justify-content: space-between; font-size: 11.5px; padding: 5px 0; border-bottom: 1px dashed var(--line); color: var(--text); font-weight: 500; }
-  .sB-item:last-child { border: 0 }
-  .sB-item b { color: #3E5C43; font-weight: 700 }
-  .sB-btn { margin: 0 14px 16px; background: var(--orange); color: #fff; text-align: center; border-radius: 12px; padding: 10px; font-size: 12px; font-weight: 700; }
-
-  /* floating chips */
-  .float { position: absolute; z-index: 4; background: rgba(255,255,255,.96); color: var(--text); border-radius: 14px; padding: 10px 14px; font-size: 12px; font-weight: 600; box-shadow: 0 14px 34px rgba(0,0,0,.35); display: flex; align-items: center; gap: 8px; animation: bob 5s ease-in-out infinite; }
-  .float .ic { font-size: 16px }
-  .f1 { top: 16px; right: 26%; animation-delay: .4s }
-  .f2 { bottom: 84px; left: 0; animation-delay: 1.3s }
-  .f3 { top: 46%; right: -6px; animation-delay: 2.1s }
-  @media (max-width: 560px) { .f2 { left: -8px } .f3 { display:none } }
-  @keyframes bob { 50% { transform: translateY(-9px) } }
-
-  /* ===== MARQUEE ===== */
-  .marquee { background: var(--ink); border-top: 1px solid var(--line-dark); padding: 18px 0; overflow: hidden; }
-  .mq-track { display: flex; gap: 48px; white-space: nowrap; animation: mq 26s linear infinite; width: max-content; }
-  .mq-track span { font-family: 'Fraunces', serif; font-style: italic; font-size: 15px; color: rgba(255,255,255,.5); letter-spacing: 1px; }
-  .mq-track b { color: var(--orange); font-weight: 400 }
-  @keyframes mq { to { transform: translateX(-50%) } }
-
-  /* ===== SECTION SHARED ===== */
-  section { padding: 96px 0; }
-  .sec-eyebrow { font-size: 12.5px; font-weight: 700; letter-spacing: 2.4px; text-transform: uppercase; color: var(--orange-hot); margin-bottom: 14px; }
-  h2.sec-title { font-size: clamp(30px, 4vw, 46px); font-weight: 600; letter-spacing: -.4px; line-height: 1.12; color: var(--ink); margin-bottom: 18px; }
-  .sec-sub { font-size: 17px; color: var(--muted); max-width: 560px; }
-  .sec-head { max-width: 680px; margin-bottom: 56px; }
-  .sec-head.center { margin-left: auto; margin-right: auto; text-align: center; }
-
-  /* ===== BENTO ===== */
-  .bento { display: grid; grid-template-columns: repeat(6, 1fr); gap: 18px; }
-  .cell { background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 30px 28px; position: relative; overflow: hidden; transition: transform .25s, box-shadow .25s; }
-  .cell:hover { transform: translateY(-5px); box-shadow: 0 24px 48px rgba(13,31,22,.10); }
-  .cell h3 { font-size: 21px; font-weight: 600; color: var(--ink); margin-bottom: 9px; }
-  .cell p { font-size: 14.5px; color: var(--muted); }
-  .cell .big-ico { font-size: 30px; margin-bottom: 16px; display: block; }
-  .c-span3 { grid-column: span 3 } .c-span2 { grid-column: span 2 } .c-span4 { grid-column: span 4 }
-  @media (max-width: 860px) { .c-span3, .c-span2, .c-span4 { grid-column: span 6 } }
-  .cell-dark { background: var(--ink); border-color: transparent; }
-  .cell-dark h3 { color: #fff } .cell-dark p { color: rgba(255,255,255,.6) }
-  .score-row { display: flex; gap: 8px; margin-top: 22px; }
-  .score { width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center; font-weight: 800; font-family: 'Fraunces'; font-size: 19px; color: #fff; opacity: .28; transform: scale(.92); transition: .3s; }
-  .cell:hover .score { opacity: 1; transform: none; }
-  .cell:hover .score:nth-child(2){ transition-delay:.05s } .cell:hover .score:nth-child(3){ transition-delay:.1s }
-  .cell:hover .score:nth-child(4){ transition-delay:.15s } .cell:hover .score:nth-child(5){ transition-delay:.2s }
-  .sc-a{background:#5B8C5A} .sc-b{background:#8FAE64} .sc-c{background:#D8A13A} .sc-d{background:#DF7B3A} .sc-e{background:#C94F35}
-  .chat-demo { margin-top: 22px; display: flex; flex-direction: column; gap: 9px; }
-  .bub { max-width: 85%; border-radius: 15px; padding: 10px 14px; font-size: 13px; line-height: 1.45; }
-  .bub.user { align-self: flex-end; background: var(--orange); color: #fff; border-bottom-right-radius: 4px; }
-  .bub.ai { align-self: flex-start; background: rgba(255,255,255,.08); color: rgba(255,255,255,.88); border-bottom-left-radius: 4px; }
-  .plan-demo { margin-top: 22px; display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; }
-  .day { text-align: center; border: 1px solid var(--line); border-radius: 10px; padding: 8px 2px; font-size: 10px; color: var(--muted); font-weight: 600; }
-  .day b { display: block; font-size: 13px; color: var(--ink); font-family: 'Fraunces'; }
-  .day.full { background: #EAF1E7; border-color: #cfdcc9; }
-  .day.full::after { content: '🥗'; display: block; font-size: 12px; margin-top: 2px; }
-  .day.today { background: var(--ink); border-color: var(--ink); }
-  .day.today b, .day.today { color: #fff; }
-  .day.today::after { content: '🍝'; display: block; font-size: 12px; margin-top: 2px; }
-  .fam-row { display: flex; margin-top: 22px; }
-  .fam { width: 44px; height: 44px; border-radius: 50%; border: 2.5px solid #fff; display: grid; place-items: center; font-size: 19px; margin-right: -10px; box-shadow: 0 4px 12px rgba(13,31,22,.15); }
-  .fam:nth-child(1){background:#F2D8BE} .fam:nth-child(2){background:#D6E3CE} .fam:nth-child(3){background:#F6E3D2} .fam:nth-child(4){background:#DCE9E2}
-  .fam-plus { width: 44px; height: 44px; border-radius: 50%; border: 1.5px dashed var(--sage); color: var(--sage); display: grid; place-items: center; font-size: 18px; margin-left: 16px; }
-
-  /* ===== HOW ===== */
-  #how { background: var(--paper); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
-  .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; position: relative; }
-  @media (max-width: 800px) { .steps { grid-template-columns: 1fr; gap: 34px } }
-  .stp { padding: 0 34px; position: relative; }
-  .stp:not(:last-child)::after { content:''; position: absolute; right: 0; top: 12px; bottom: 12px; width: 1px; background: var(--line); }
-  @media (max-width: 800px) { .stp:not(:last-child)::after { display: none } .stp { padding: 0 } }
-  .stp .n { font-family: 'Fraunces', serif; font-style: italic; font-size: 54px; color: var(--orange); line-height: 1; margin-bottom: 16px; }
-  .stp h3 { font-size: 22px; font-weight: 600; color: var(--ink); margin-bottom: 10px; }
-  .stp p { font-size: 15px; color: var(--muted); }
-
-  /* ===== TRUST ===== */
-  .trust { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
-  @media (max-width: 800px) { .trust { grid-template-columns: 1fr } }
-  .tr { border: 1px solid var(--line); background: var(--paper); border-radius: var(--radius); padding: 26px; display: flex; gap: 16px; align-items: flex-start; }
-  .tr .ic { width: 44px; height: 44px; flex-shrink: 0; border-radius: 13px; background: #EAF1E7; display: grid; place-items: center; font-size: 20px; }
-  .tr h4 { font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
-  .tr p { font-size: 13.5px; color: var(--muted); line-height: 1.55; }
-  .tr a { color: var(--sage); }
-
-  /* ===== FAQ ===== */
-  #support .faq { max-width: 760px; margin: 0 auto; }
-  details { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; margin-bottom: 12px; transition: box-shadow .2s; }
-  details[open] { box-shadow: 0 12px 30px rgba(13,31,22,.07); }
-  summary { cursor: pointer; padding: 20px 24px; font-weight: 600; font-size: 16px; color: var(--ink); list-style: none; display: flex; justify-content: space-between; align-items: center; gap: 16px; }
-  summary::-webkit-details-marker { display: none }
-  summary::after { content: '+'; font-family: 'Fraunces'; font-size: 24px; color: var(--orange); transition: transform .25s; flex-shrink: 0; }
-  details[open] summary::after { transform: rotate(45deg); }
-  details .a { padding: 0 24px 20px; color: var(--muted); font-size: 15px; max-width: 640px; }
-  .support-strip { max-width: 760px; margin: 34px auto 0; background: var(--ink); color: #fff; border-radius: var(--radius); padding: 30px 34px; display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; }
-  .support-strip h3 { font-size: 21px; font-weight: 600; margin-bottom: 4px; }
-  .support-strip p { font-size: 13.5px; color: rgba(255,255,255,.55); }
-  .support-strip a.btn { background: var(--orange); color: #fff; text-decoration: none; font-weight: 700; font-size: 14.5px; padding: 13px 26px; border-radius: 100px; transition: background .2s; white-space: nowrap; }
-  .support-strip a.btn:hover { background: var(--orange-hot); }
-
-  /* ===== FINAL CTA ===== */
-  .final { position: relative; background: var(--ink); color: #fff; text-align: center; padding: 110px 0; overflow: hidden; }
-  .final::before { content:''; position:absolute; width: 900px; height: 900px; left: 50%; top: 100%; transform: translate(-50%,-38%); border-radius: 50%; background: radial-gradient(circle, rgba(232,157,94,.22), transparent 60%); }
-  .final h2 { position: relative; font-size: clamp(32px, 4.6vw, 54px); font-weight: 600; margin-bottom: 16px; }
-  .final h2 em { font-style: italic; color: var(--orange); font-weight: 500; }
-  .final p { position: relative; color: rgba(255,255,255,.6); font-size: 17px; margin-bottom: 38px; }
-  .final .cta-row { justify-content: center; position: relative; }
-
-  /* ===== FOOTER ===== */
-  footer { background: #0A1810; color: rgba(255,255,255,.55); padding: 54px 0 40px; font-size: 14px; }
-  .foot-grid { display: flex; justify-content: space-between; gap: 40px; flex-wrap: wrap; margin-bottom: 40px; }
-  .foot-brand p { max-width: 260px; font-size: 13.5px; margin-top: 12px; color: rgba(255,255,255,.4); }
-  .foot-col h5 { color: #fff; font-size: 13px; letter-spacing: 1.4px; text-transform: uppercase; margin-bottom: 14px; font-weight: 700; }
-  .foot-col a { display: block; text-decoration: none; margin-bottom: 9px; color: rgba(255,255,255,.55); }
-  .foot-col a:hover { color: #fff; }
-  .foot-bottom { border-top: 1px solid var(--line-dark); padding-top: 22px; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; font-size: 12.5px; color: rgba(255,255,255,.35); }
-
-  /* Ссылки на разборы */
-  .guides { background: var(--paper); padding: 70px 0; }
-  .guide-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; }
-  .guide { display: block; text-decoration: none; color: inherit; background: var(--cream);
-           border: 1px solid rgba(13,31,22,.08); border-radius: 18px; padding: 24px; transition: transform .2s, box-shadow .2s; }
-  .guide:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(13,31,22,.09); }
-  .guide h3 { font-family: 'Fraunces', Georgia, serif; font-size: 19px; line-height: 1.3; color: var(--ink); margin-bottom: 9px; }
-  .guide p { font-size: 14.5px; color: #5C6B60; line-height: 1.6; }
-
-  /* Полоса с фактами */
-  .numbers { background: var(--ink); color: #fff; padding: 46px 0; }
-  .num-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 30px; }
-  .num-cell b { display: block; font-family: 'Fraunces', Georgia, serif; font-size: 38px; line-height: 1; }
-  .num-cell span { display: block; color: rgba(255,255,255,.62); font-size: 13.5px; line-height: 1.5; margin-top: 9px; }
-
-  /* Вопросы и ответы */
-  .faq { max-width: 760px; margin: 0 auto; }
-  .q { background: var(--paper); border: 1px solid rgba(13,31,22,.09); border-radius: 16px; padding: 18px 22px; margin-bottom: 10px; }
-  .q summary { font-weight: 700; font-size: 16.5px; cursor: pointer; list-style: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
-  .q summary::-webkit-details-marker { display: none; }
-  .q summary::after { content: '+'; font-size: 22px; color: var(--sage); font-weight: 400; flex-shrink: 0; }
-  .q[open] summary::after { content: '2'; }
-  .q p { margin-top: 12px; line-height: 1.65; color: #4A5850; font-size: 15px; }
-
-  /* Выбор языка */
-  /* Переключатель языка: две половинки одной таблетки, а не два
-     отдельных слова. Выбранный язык оформлен как кнопка «Установить» —
-     в меню и так две белые формы, третья манера была бы лишней. */
-  .lang-pick {
-    display: inline-flex; align-items: center; gap: 2px;
-    background: rgba(255,255,255,.10); border-radius: 100px; padding: 3px;
-    flex-shrink: 0;
-  }
-  .lang-pick a {
-    text-decoration: none; font-size: 12px; font-weight: 700; letter-spacing: .4px;
-    padding: 6px 12px; border-radius: 100px; line-height: 1; white-space: nowrap;
-    color: rgba(255,255,255,.6); transition: color .18s, background .18s;
-  }
-  .lang-pick a:hover { color: #fff; }
-  .lang-pick a.on { background: #fff; color: var(--ink); }
-</style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "CookFusion правда бесплатный?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. Every feature works without paying: the fridge scanner, the AI chef, the planner, the shopping list. No subscription, no paywall and no advertising."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Обязательно фотографировать холодильник?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "No. You can search 13,501 recipes, browse by cuisine, answer three questions and let the app pick, or ask the AI chef in plain words."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Как учитываются аллергии?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "You add each person at your table with their own allergies, diet and dislikes. Anything that clashes is filtered out before you see it. Portions scale to the number of people eating."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Что происходит с фотографиями?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "They are sent for ingredient recognition and nothing else. Not used for advertising, not sold, not shared with third parties for their own purposes."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "На каких устройствах работает?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "iPhone и iPad с iOS 15.1 и новее. Версии для Android пока нет."
-      }
-    },
-    {
-      "@type": "Question",
-      "name": "Можно публиковать свои рецепты?",
-      "acceptedAnswer": {
-        "@type": "Answer",
-        "text": "Yes. Anyone can become an author, publish under their own name and get a public page to share. Authors are paid on views."
-      }
-    }
-  ]
-}
-</script>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="site.css?v=2adb8109">
+<script>document.documentElement.classList.add('js')</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"CookFusion: планировщик питания","operatingSystem":"iOS 15.1+","applicationCategory":"LifestyleApplication","url":"https://apps.apple.com/app/id6760546998","description":"Сфотографируйте холодильник и получите рецепт из того, что уже есть. Планирование питания на всю семью с учетом диет и аллергий каждого.","inLanguage":"ru","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"featureList":["Рецепт по фото холодильника","13 501 рецепт","План питания на 14 дней","Аллергии и диеты для каждого","Чат с ИИ-поваром","Оценка продуктов от A до E","Список покупок по отделам","Режим готовки без рук"],"image":"https://cookfusion.dilami.pro/img/og-ru.jpg"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"CookFusion правда бесплатный?","acceptedAnswer":{"@type":"Answer","text":"Да. Все, что описано на этой странице, работает без оплаты: сканер холодильника, ИИ-повар, планировщик и список покупок. Подписки, платного доступа и рекламы в приложении нет."}},{"@type":"Question","name":"Обязательно фотографировать холодильник?","acceptedAnswer":{"@type":"Answer","text":"Нет. Фото только один из способов. Можно искать среди 13 501 рецепта, выбирать по кухне, ответить на три вопроса и дать приложению выбрать или просто спросить ИИ-повара своими словами."}},{"@type":"Question","name":"Как учитываются аллергии?","acceptedAnswer":{"@type":"Answer","text":"Вы добавляете каждого, кто садится за стол, с его аллергиями, диетой и нелюбимыми продуктами. Все, что не подходит, убирается еще до показа, а не помечается потом. Порции пересчитываются под число едоков."}},{"@type":"Question","name":"Что происходит с фото холодильника?","acceptedAnswer":{"@type":"Answer","text":"Они отправляются только на распознавание продуктов. Не используются для рекламы, не продаются и не передаются третьим лицам для их целей. Аккаунт и все данные можно удалить прямо в приложении."}},{"@type":"Question","name":"На каких устройствах работает?","acceptedAnswer":{"@type":"Answer","text":"iPhone и iPad с iOS 15.1 и новее. Версии для Android пока нет."}},{"@type":"Question","name":"Можно публиковать свои рецепты?","acceptedAnswer":{"@type":"Answer","text":"Да. Любой может стать автором, публиковать рецепты под своим именем и получить публичную страницу, которой можно поделиться."}},{"@type":"Question","name":"Как сбросить пароль?","acceptedAnswer":{"@type":"Answer","text":"В приложении откройте Настройки, затем Аккаунт и Сменить пароль, и мы пришлем на почту защищенную ссылку. Если войти не получается, нажмите «Забыли пароль?» на экране входа, и на почту придет код из 6 цифр."}},{"@type":"Question","name":"Как удалить аккаунт?","acceptedAnswer":{"@type":"Answer","text":"В приложении откройте Настройки, затем Аккаунт и Удалить аккаунт. Аккаунт и все связанные данные удаляются навсегда. Можно также написать нам, и мы удалим его сами."}},{"@type":"Question","name":"Приложение работает неправильно. Что делать?","acceptedAnswer":{"@type":"Answer","text":"Проверьте, что установлена последняя версия и есть интернет. Если не помогло, напишите нам, укажите модель устройства и что произошло. Обычно отвечаем в течение суток."}}]}</script>
 </head>
 <body>
 
-<nav id="nav">
-  <div class="container nav-inner">
-    <a class="logo" href="#top">
-      <span class="logo-mark">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2c1.7 0 3 1.2 3.4 2.8.4-.1.8-.2 1.2-.2A3.4 3.4 0 0 1 20 8a3.4 3.4 0 0 1-2.6 3.3V17a2 2 0 0 1-2 2H8.6a2 2 0 0 1-2-2v-5.7A3.4 3.4 0 0 1 4 8a3.4 3.4 0 0 1 3.4-3.4c.4 0 .8.1 1.2.2C9 3.2 10.3 2 12 2Z" fill="#fff"/><path d="M9 21.4h6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg>
-      </span>
-      <span class="logo-name">CookFusion</span>
-    </a>
-    <div class="nav-links">
-      <a href="#features">Возможности</a>
-      <a href="#how">Как это работает</a>
-      <a href="#privacy-trust">Приватность</a>
-      <a href="#faq">FAQ</a>
-      <a href="#support">Поддержка</a>
-      <span class="lang-pick"><a href="/" hreflang="en">EN</a><a href="/ru.html" class="on" hreflang="ru">RU</a></span>
-      <a class="nav-cta" href="#download">Установить</a>
-    </div>
-  </div>
-</nav>
-
-<header class="hero" id="top">
-  <div class="container hero-grid">
-    <div>
-      <div class="eyebrow rv"><span class="dot"></span> На основе ИИ · Уже в App Store</div>
-      <h1 class="rv d1">Откройте холодильник.<br>Познакомьтесь со своим <em>поваром.</em></h1>
-      <p class="lead rv d2">CookFusion фотографирует то, что у вас уже есть, распознаёт продукты и превращает их в рецепт ресторанного уровня — с учётом диет, аллергий и вкусов вашей семьи.</p>
-      <div class="cta-row rv d3" id="download">
-        <a class="store-badge" href="https://apps.apple.com/app/id6760546998" aria-label="Download CookFusion on the App Store">
-          <span class="apple"></span>
-          <span><small>СКАЧАТЬ В</small><strong>App Store</strong></span>
-        </a>
-        <a class="link-soft" href="#features">Посмотреть возможности ↓</a>
-      </div>
-      <div class="hero-foot rv d4">Бесплатно · iPhone и iPad · русский и английский</div>
-    </div>
-
-    <div class="stage" id="stage" aria-hidden="true">
-      <div class="float f1"><span class="ic">🧠</span> GPT-4o Vision распознал 9 продуктов</div>
-      <div class="float f2"><span class="ic">✅</span> Подходит Анне: без глютена</div>
-      <div class="float f3"><span class="ic">📅</span> Добавлено в ужин на вторник</div>
-
-      <div class="ph ph-a"><div class="scr">
-        <div class="sA-head"><div class="sA-greet">Добрый вечер,</div><div class="sA-name">Chef 👋</div></div>
-        <div class="sA-chips">
-          <div class="sA-chip sA-c1">✨ Что приготовить, когда ничего нет?</div>
-          <div class="sA-chip sA-c2">📷 Фото холодильника</div>
-        </div>
-        <div class="sA-card">
-          <div class="sA-img">🍝</div>
-          <div class="sA-body">
-            <div class="sA-title">Тосканская паста со сливками</div>
-            <div class="sA-meta">⏱ 25 min &nbsp;·&nbsp; 🔥 520 kcal &nbsp;·&nbsp; Easy</div>
-            <div class="sA-tag">FOR YOU</div>
-          </div>
-        </div>
-        <div class="sA-tab"><span class="on">🏠</span><span>📅</span><span>🧠</span><span>📷</span><span>👤</span></div>
-      </div></div>
-
-      <div class="ph ph-b"><div class="scr sB">
-        <div class="sB-cam">
-          <div class="sB-food">🥦🥚🍅</div>
-          <div class="sB-frame"><i></i><i></i><i></i><i></i></div>
-          <div class="sB-line"></div>
-        </div>
-        <div class="sB-res">
-          <div class="sB-res-t">НАЙДЕННЫЕ ПРОДУКТЫ</div>
-          <div class="sB-item">Брокколи <b>✓</b></div>
-          <div class="sB-item">Яйца · 6 <b>✓</b></div>
-          <div class="sB-item">Черри <b>✓</b></div>
-        </div>
-        <div class="sB-btn">Подобрать рецепт →</div>
-      </div></div>
-    </div>
-  </div>
-
-  <div class="marquee">
-    <div class="mq-track">
-      <span>СКАНЕР ХОЛОДИЛЬНИКА <b>✦</b></span><span>ИИ-РЕЦЕПТЫ <b>✦</b></span><span>ПЛАНИРОВЩИК ПИТАНИЯ <b>✦</b></span><span>CHEF CHAT <b>✦</b></span><span>ОЦЕНКА ПРОДУКТОВ <b>✦</b></span><span>ДИЕТЫ СЕМЬИ <b>✦</b></span><span>СПИСОК ПОКУПОК <b>✦</b></span><span>РЕЖИМ ГОТОВКИ <b>✦</b></span>
-      <span>СКАНЕР ХОЛОДИЛЬНИКА <b>✦</b></span><span>ИИ-РЕЦЕПТЫ <b>✦</b></span><span>ПЛАНИРОВЩИК ПИТАНИЯ <b>✦</b></span><span>CHEF CHAT <b>✦</b></span><span>ОЦЕНКА ПРОДУКТОВ <b>✦</b></span><span>ДИЕТЫ СЕМЬИ <b>✦</b></span><span>СПИСОК ПОКУПОК <b>✦</b></span><span>РЕЖИМ ГОТОВКИ <b>✦</b></span>
+<header class="top" id="top">
+  <div class="wrap">
+    <a class="logo" href="ru.html" aria-label="CookFusion"><svg role="img" aria-label="CookFusion" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 318.03 64">
+  
+<path d="M 38.212 55.182 A 24 24 0 1 1 55.996 32.419" fill="none" stroke="#DF7B31" stroke-width="6.4" stroke-linecap="round"/><circle cx="32" cy="32" r="9" fill="#DF7B31"/><path transform="translate(85.760 46.255)" d="M27.022-7.658Q27.022-6.170 26.228-4.682Q25.435-3.194 23.937-1.954Q22.439-0.714 20.326 0.030Q18.213 0.774 15.555 0.774Q11.190 0.774 8.005-1.081Q4.821-2.936 3.095-6.210Q1.369-9.484 1.369-13.729Q1.369-16.924 2.401-19.622Q3.432-22.320 5.287-24.314Q7.142-26.308 9.622-27.409Q12.102-28.510 15.019-28.510Q16.924-28.510 18.124-28.163Q19.324-27.816 20.028-27.449Q20.733-27.082 21.169-27.082Q21.705-27.082 22.022-27.409Q22.340-27.736 22.677-28.054Q23.014-28.371 23.550-28.371Q23.987-28.371 24.264-28.103Q24.542-27.836 24.721-27.201L26.784-20.237Q26.943-19.721 26.665-19.304Q26.387-18.888 25.852-18.749Q25.296-18.630 24.840-18.848Q24.383-19.066 24.125-19.642Q23.074-22.022 21.814-23.391Q20.554-24.760 19.146-25.336Q17.737-25.911 16.170-25.911Q14.563-25.911 13.253-25.157Q11.944-24.403 11.011-23.004Q10.079-21.606 9.583-19.632Q9.087-17.658 9.087-15.197Q9.087-11.289 10.208-8.640Q11.329-5.992 13.303-4.643Q15.277-3.293 17.836-3.293Q20.197-3.293 22.032-4.464Q23.868-5.635 24.979-7.817Q25.256-8.372 25.584-8.541Q25.911-8.710 26.308-8.630Q26.685-8.571 26.853-8.323Q27.022-8.075 27.022-7.658" fill="#1E3A2B"/><path transform="translate(113.536 46.255)" d="M12.182-19.463Q15.396-19.463 17.816-18.193Q20.237-16.924 21.576-14.662Q22.915-12.400 22.915-9.404Q22.915-6.607 21.516-4.355Q20.118-2.103 17.648-0.794Q15.178 0.516 11.924 0.516Q8.730 0.516 6.309-0.764Q3.889-2.044 2.540-4.305Q1.190-6.567 1.190-9.523Q1.190-12.380 2.589-14.622Q3.988-16.864 6.458-18.164Q8.928-19.463 12.182-19.463M13.610-1.924Q14.662-2.123 15.277-3.075Q15.892-4.028 15.981-5.773Q16.070-7.519 15.555-10.099Q15.059-12.618 14.305-14.225Q13.551-15.832 12.579-16.537Q11.606-17.241 10.515-17.023Q9.464-16.824 8.849-15.872Q8.234-14.920 8.154-13.174Q8.075-11.428 8.571-8.849Q9.047-6.349 9.811-4.732Q10.575-3.115 11.537-2.420Q12.499-1.726 13.610-1.924" fill="#1E3A2B"/><path transform="translate(137.205 46.255)" d="M12.182-19.463Q15.396-19.463 17.816-18.193Q20.237-16.924 21.576-14.662Q22.915-12.400 22.915-9.404Q22.915-6.607 21.516-4.355Q20.118-2.103 17.648-0.794Q15.178 0.516 11.924 0.516Q8.730 0.516 6.309-0.764Q3.889-2.044 2.540-4.305Q1.190-6.567 1.190-9.523Q1.190-12.380 2.589-14.622Q3.988-16.864 6.458-18.164Q8.928-19.463 12.182-19.463M13.610-1.924Q14.662-2.123 15.277-3.075Q15.892-4.028 15.981-5.773Q16.070-7.519 15.555-10.099Q15.059-12.618 14.305-14.225Q13.551-15.832 12.579-16.537Q11.606-17.241 10.515-17.023Q9.464-16.824 8.849-15.872Q8.234-14.920 8.154-13.174Q8.075-11.428 8.571-8.849Q9.047-6.349 9.811-4.732Q10.575-3.115 11.537-2.420Q12.499-1.726 13.610-1.924" fill="#1E3A2B"/><path transform="translate(160.874 46.255)" d="M10.872 0L2.599 0Q1.924 0 1.637-0.268Q1.349-0.536 1.349-0.992Q1.349-1.329 1.538-1.587Q1.726-1.845 2.123-2.004L2.738-2.202Q3.075-2.321 3.214-2.629Q3.353-2.936 3.353-3.631L3.353-24.364Q3.353-24.919 3.194-25.157Q3.036-25.395 2.698-25.475L1.964-25.594Q1.567-25.693 1.399-25.911Q1.230-26.129 1.230-26.467Q1.230-26.863 1.458-27.101Q1.686-27.340 2.282-27.558L6.388-29.105Q7.242-29.423 7.787-29.572Q8.333-29.720 8.809-29.720Q9.563-29.720 9.950-29.304Q10.337-28.887 10.337-28.212L10.337-3.631Q10.337-2.936 10.485-2.639Q10.634-2.341 10.952-2.202L11.527-1.984Q12.162-1.667 12.162-1.052Q12.162 0 10.872 0M9.107-6.726L8.293-8.611L16.110-14.940Q16.785-15.495 16.715-16.031Q16.646-16.566 15.892-16.824L15.277-17.023Q14.900-17.181 14.761-17.390Q14.622-17.598 14.622-17.955Q14.622-18.412 14.949-18.679Q15.277-18.947 15.832-18.947L23.193-18.947Q23.768-18.947 24.096-18.689Q24.423-18.431 24.423-17.995Q24.423-17.558 24.155-17.261Q23.887-16.963 23.014-16.745Q21.963-16.487 21.100-16.011Q20.237-15.535 18.967-14.523L9.107-6.726M11.289-9.761L15.872-13.888L22.975-3.412Q23.372-2.857 23.679-2.589Q23.987-2.321 24.502-2.103Q24.939-1.845 25.167-1.557Q25.395-1.270 25.395-0.913Q25.395-0.496 25.068-0.248Q24.740 0 24.185 0L15.455 0Q14.959 0 14.662-0.268Q14.364-0.536 14.364-0.972Q14.364-1.270 14.493-1.468Q14.622-1.667 14.940-1.845L15.455-2.024Q15.892-2.202 15.932-2.520Q15.971-2.837 15.475-3.571" fill="#1E3A2B"/><path transform="translate(185.714 46.255)" d="M3.353-27.776L17.638-27.776Q18.471-27.776 19.036-27.945Q19.602-28.113 20.058-28.282Q20.515-28.451 20.971-28.451Q21.745-28.451 22.141-28.064Q22.538-27.677 22.796-26.764L24.483-20.792Q24.641-20.276 24.334-19.909Q24.026-19.542 23.491-19.463Q23.034-19.384 22.598-19.552Q22.161-19.721 21.884-20.296Q20.852-22.419 19.919-23.510Q18.987-24.602 17.975-24.998Q16.963-25.395 15.674-25.395L12.440-25.395L12.440-3.809Q12.440-3.353 12.678-3.026Q12.916-2.698 13.452-2.599L14.940-2.361Q15.495-2.242 15.733-1.954Q15.971-1.667 15.971-1.111Q15.971-0.615 15.624-0.308Q15.277 0 14.543 0L3.353 0Q2.619 0 2.262-0.308Q1.905-0.615 1.905-1.111Q1.905-2.004 2.837-2.341L3.789-2.599Q4.285-2.778 4.533-3.065Q4.781-3.353 4.781-3.809L4.781-23.967Q4.781-24.423 4.533-24.711Q4.285-24.998 3.789-25.177L2.837-25.435Q1.905-25.772 1.905-26.665Q1.905-27.181 2.262-27.478Q2.619-27.776 3.353-27.776M9.583-12.102L9.583-14.444L15.436-14.444Q16.705-14.444 17.231-14.940Q17.757-15.436 18.154-16.904Q18.312-17.420 18.610-17.638Q18.908-17.856 19.304-17.856Q20.276-17.896 20.515-16.924L22.022-10.793Q22.181-10.178 21.993-9.841Q21.804-9.503 21.368-9.345Q20.911-9.186 20.495-9.335Q20.078-9.484 19.721-9.980Q19.165-10.813 18.689-11.279Q18.213-11.745 17.598-11.924Q16.983-12.102 16.011-12.102" fill="#1E3A2B"/><path transform="translate(210.296 46.255)" d="M15.793-3.412L15.793-4.067L15.555-4.107L15.555-14.047Q15.555-14.602 15.396-14.840Q15.237-15.078 14.900-15.158L14.166-15.277Q13.769-15.376 13.600-15.594Q13.432-15.812 13.432-16.150Q13.432-16.547 13.650-16.785Q13.868-17.023 14.483-17.241L18.570-18.788Q19.443-19.106 19.979-19.255Q20.515-19.404 21.011-19.404Q21.764-19.404 22.151-18.987Q22.538-18.570 22.538-17.916L22.538-3.631Q22.538-2.936 22.687-2.629Q22.836-2.321 23.153-2.202L23.748-2.004Q24.165-1.845 24.354-1.587Q24.542-1.329 24.542-0.992Q24.542-0.536 24.235-0.268Q23.927 0 23.252 0L18.808 0Q17.578 0 16.685-0.992Q15.793-1.984 15.793-3.412M2.916-5.635L2.916-14.047Q2.916-14.602 2.758-14.840Q2.599-15.078 2.262-15.158L1.508-15.277Q1.131-15.376 0.952-15.594Q0.774-15.812 0.774-16.150Q0.774-16.547 1.002-16.785Q1.230-17.023 1.845-17.241L5.932-18.788Q6.845-19.126 7.371-19.265Q7.896-19.404 8.313-19.404Q9.107-19.404 9.503-18.987Q9.900-18.570 9.900-17.916L9.900-6.627Q9.900-5.119 10.604-4.375Q11.309-3.631 12.539-3.631Q13.313-3.631 14.166-3.968Q15.019-4.305 15.812-5L16.566-5.654L17.598-4.563L16.904-3.948Q14.265-1.468 12.311-0.476Q10.356 0.516 8.670 0.516Q6.091 0.516 4.504-1.171Q2.916-2.857 2.916-5.635" fill="#1E3A2B"/><path transform="translate(235.612 46.255)" d="M10.337-1.607Q11.587-1.607 12.231-2.202Q12.876-2.797 12.876-3.670Q12.876-4.206 12.648-4.652Q12.420-5.099 11.725-5.476Q11.031-5.853 9.622-6.150Q6.250-6.765 4.454-7.757Q2.659-8.749 1.994-10.069Q1.329-11.388 1.329-13.015Q1.329-16.011 3.422-17.737Q5.516-19.463 9.543-19.463Q10.972-19.463 11.835-19.235Q12.698-19.007 13.243-18.769Q13.789-18.531 14.205-18.531Q14.662-18.531 14.920-18.769Q15.178-19.007 15.445-19.235Q15.713-19.463 16.170-19.463Q16.527-19.463 16.814-19.235Q17.102-19.007 17.281-18.372L18.451-14.582Q18.729-13.729 18.620-13.204Q18.511-12.678 17.975-12.479Q17.439-12.281 17.043-12.469Q16.646-12.658 16.269-13.213Q15.376-14.662 14.364-15.574Q13.352-16.487 12.261-16.914Q11.170-17.340 9.980-17.340Q8.472-17.340 7.708-16.745Q6.944-16.150 6.944-15.138Q6.944-14.543 7.261-14.067Q7.579-13.590 8.492-13.204Q9.404-12.817 11.130-12.440Q13.868-11.904 15.465-10.981Q17.062-10.059 17.757-8.740Q18.451-7.420 18.451-5.635Q18.451-3.789 17.479-2.401Q16.507-1.012 14.791-0.248Q13.075 0.516 10.852 0.516Q9.484 0.516 8.670 0.268Q7.857 0.020 7.331-0.228Q6.805-0.476 6.329-0.476Q5.853-0.476 5.516-0.228Q5.178 0.020 4.871 0.268Q4.563 0.516 4.127 0.516Q3.770 0.516 3.522 0.258Q3.274 0 3.155-0.635L2.460-4.266Q2.301-5.158 2.430-5.595Q2.559-6.031 3.016-6.230Q3.551-6.448 3.948-6.210Q4.345-5.972 4.762-5.357Q6.071-3.313 7.490-2.460Q8.908-1.607 10.337-1.607" fill="#1E3A2B"/><path transform="translate(255.372 46.255)" d="M10.337-17.916L10.337-3.631Q10.337-2.936 10.485-2.629Q10.634-2.321 10.972-2.202L11.567-2.004Q11.983-1.845 12.162-1.587Q12.340-1.329 12.340-0.992Q12.340-0.536 12.033-0.268Q11.725 0 11.071 0L2.619 0Q1.964 0 1.657-0.268Q1.349-0.536 1.349-0.992Q1.349-1.329 1.538-1.577Q1.726-1.825 2.123-2.004L2.738-2.202Q3.075-2.321 3.224-2.629Q3.373-2.936 3.373-3.631L3.373-14.047Q3.373-14.602 3.204-14.850Q3.036-15.098 2.698-15.178L1.964-15.277Q1.567-15.396 1.399-15.604Q1.230-15.812 1.230-16.150Q1.230-16.547 1.458-16.785Q1.686-17.023 2.301-17.261L6.388-18.788Q7.301-19.126 7.827-19.275Q8.353-19.423 8.749-19.423Q9.543-19.423 9.940-18.997Q10.337-18.570 10.337-17.916M6.428-21.804Q4.524-21.804 3.403-22.727Q2.282-23.649 2.282-25.217Q2.282-26.764 3.403-27.667Q4.524-28.570 6.428-28.570Q8.333-28.570 9.454-27.667Q10.575-26.764 10.575-25.217Q10.575-23.649 9.454-22.727Q8.333-21.804 6.428-21.804" fill="#1E3A2B"/><path transform="translate(268.129 46.255)" d="M12.182-19.463Q15.396-19.463 17.816-18.193Q20.237-16.924 21.576-14.662Q22.915-12.400 22.915-9.404Q22.915-6.607 21.516-4.355Q20.118-2.103 17.648-0.794Q15.178 0.516 11.924 0.516Q8.730 0.516 6.309-0.764Q3.889-2.044 2.540-4.305Q1.190-6.567 1.190-9.523Q1.190-12.380 2.589-14.622Q3.988-16.864 6.458-18.164Q8.928-19.463 12.182-19.463M13.610-1.924Q14.662-2.123 15.277-3.075Q15.892-4.028 15.981-5.773Q16.070-7.519 15.555-10.099Q15.059-12.618 14.305-14.225Q13.551-15.832 12.579-16.537Q11.606-17.241 10.515-17.023Q9.464-16.824 8.849-15.872Q8.234-14.920 8.154-13.174Q8.075-11.428 8.571-8.849Q9.047-6.349 9.811-4.732Q10.575-3.115 11.537-2.420Q12.499-1.726 13.610-1.924" fill="#1E3A2B"/><path transform="translate(291.798 46.255)" d="M10.337-17.916L10.337-3.631Q10.337-2.936 10.485-2.639Q10.634-2.341 10.952-2.202L11.527-1.984Q12.162-1.667 12.162-1.052Q12.162 0 10.872 0L2.619 0Q1.964 0 1.657-0.268Q1.349-0.536 1.349-0.992Q1.349-1.329 1.538-1.577Q1.726-1.825 2.123-2.004L2.738-2.202Q3.075-2.321 3.214-2.629Q3.353-2.936 3.353-3.631L3.353-14.047Q3.353-14.602 3.194-14.850Q3.036-15.098 2.698-15.178L1.964-15.277Q1.567-15.396 1.399-15.604Q1.230-15.812 1.230-16.150Q1.230-16.547 1.458-16.785Q1.686-17.023 2.282-17.261L6.388-18.788Q7.242-19.126 7.787-19.275Q8.333-19.423 8.809-19.423Q9.563-19.423 9.950-18.997Q10.337-18.570 10.337-17.916M10.436-13.948L9.682-13.293L8.650-14.384L9.325-14.999Q11.964-17.420 13.848-18.441Q15.733-19.463 17.360-19.463Q19.860-19.463 21.268-17.777Q22.677-16.090 22.935-13.313L23.947-3.651Q24.026-2.956 24.145-2.639Q24.264-2.321 24.602-2.202L25.177-2.004Q25.574-1.825 25.762-1.577Q25.951-1.329 25.951-0.992Q25.951-0.536 25.643-0.268Q25.336 0 24.681 0L16.348 0Q15.039 0 15.039-1.052Q15.039-1.667 15.674-1.984L16.269-2.202Q16.606-2.341 16.785-2.649Q16.963-2.956 16.884-3.651L15.991-12.321Q15.832-13.828 15.247-14.572Q14.662-15.316 13.491-15.316Q12.777-15.316 11.993-14.969Q11.210-14.622 10.436-13.948" fill="#1E3A2B"/>
+</svg>
+</a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#how">Как это работает</a><a href="#family">Для семьи</a><a href="#features">Возможности</a><a href="#faq">Вопросы</a>
+    </nav>
+    <div class="top-right">
+      <div class="lang"><a href="./" hreflang="en">EN</a><a href="ru.html" hreflang="ru" class="on" aria-current="page">RU</a></div>
+      <a class="btn-top" href="https://apps.apple.com/app/id6760546998">Скачать бесплатно</a>
     </div>
   </div>
 </header>
 
-<section id="numbers" class="numbers">
-  <div class="container">
-    <div class="num-row">
-      <div class="num-cell rv"><b>13,501</b><span>рецептов, у каждого настоящие шаги и граммовки</span></div>
-      <div class="num-cell rv d1"><b>14 дней</b><span>завтраков, обедов и ужинов спланировано вперёд</span></div>
-      <div class="num-cell rv d2"><b>Бесплатно</b><span>без подписки, без платного доступа, без рекламы</span></div>
-      <div class="num-cell rv d3"><b>0</b><span>рекламных сетей и продавцов данных, с кем мы делимся</span></div>
+<main>
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="pill rise"><i></i>Бесплатно для iPhone и iPad</div>
+      <h1 class="h1 rise d1">Ужин на всю семью, <em>за одно фото</em></h1>
+      <p class="lead rise d2">Сфотографируйте холодильник. CookFusion подберет блюдо из того, что уже есть дома, и уберет все, что кому-то за столом нельзя.</p>
+      <div class="cta-row rise d3" id="hero-cta">
+        <a class="store " href="https://apps.apple.com/app/id6760546998" aria-label="Загрузить CookFusion в App Store"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Загрузите в</small><b>App Store</b></span></a>
+        <a class="link-arrow" href="#how">Как это работает<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></a>
+      </div>
+      <ul class="trust rise d3"><li><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg>13 501 рецепт с шагами</li><li><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg>Без рекламы и подписки</li><li><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg>Аллергии учтены для каждого</li></ul>
+    </div>
+    <div class="stage rise d2">
+      <div class="phone ph-back"><img src="img/2-feed-ru-400.webp" srcset="img/2-feed-ru-400.webp 400w, img/2-feed-ru-800.webp 800w" sizes="(min-width: 1024px) 260px, 46vw" width="400" height="844" alt="Главный экран CookFusion с рецептом на вечер" loading="lazy" decoding="async"></div>
+      <div class="phone ph-main"><img src="img/1-scan-ru-400.webp" srcset="img/1-scan-ru-400.webp 400w, img/1-scan-ru-800.webp 800w" sizes="(min-width: 1024px) 320px, 56vw" width="400" height="844" alt="Сканер холодильника CookFusion распознает продукты" fetchpriority="high" decoding="async"></div>
+      <div class="float f1"><span class="ic"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M2.6 8.5V5.6A3 3 0 0 1 5.6 2.6H8.5"/><path d="M15.5 2.6h2.9a3 3 0 0 1 3 3v2.9"/><path d="M21.4 15.5v2.9a3 3 0 0 1-3 3h-2.9"/><path d="M8.5 21.4H5.6a3 3 0 0 1-3-3v-2.9"/><circle cx="12" cy="12" r="3.4"/></svg></span><span><b>Нашли 6 продуктов</b><small>Яйца, шпинат, пармезан, чеснок</small></span></div>
+      <div class="float f2"><span class="ic warm"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M6 18L18 6"/></svg></span><span><b>Без арахиса для Алины</b><small>Убрано до того, как вы увидели</small></span></div>
+      <div class="float f3"><span class="avatars"><span style="background:#7A9A75">Ф</span><span style="background:#5B8C5A">Т</span><span style="background:#E89D5E">А</span><span style="background:#8E7AB5">М</span></span><span><b>Подходит всем четверым</b><small>Курица в мисо-масле, 55 мин</small></span></div>
+    </div>
+  </div>
+  <div class="wrap" style="margin-top:56px">
+    <div class="stats rv"><div class="stat"><b>13 501</b><span>рецепт, у каждого шаги и граммовки</span></div><div class="stat"><b>14 дней</b><span>завтраков, обедов и ужинов наперед</span></div><div class="stat"><b>0</b><span>рекламы, трекеров и продажи данных</span></div><div class="stat"><b>2</b><span>языка: русский и английский</span></div></div>
+  </div>
+</section>
+
+<section class="sec" id="family">
+  <div class="wrap split">
+    <div class="table-visual rv">
+      <div class="phone"><img src="img/3-family-ru-400.webp" srcset="img/3-family-ru-400.webp 400w, img/3-family-ru-800.webp 800w" sizes="(min-width: 1024px) 320px, 70vw" width="400" height="844" alt="Экран семьи в CookFusion: четыре человека и их ограничения" loading="lazy" decoding="async"></div>
+      <div class="tag t1"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M6 18L18 6"/></svg>Тимуру без морепродуктов</div>
+      <div class="tag t2"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M6 18L18 6"/></svg>Алине без арахиса</div>
+      <div class="tag ok t3"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.2 4.2L19 7"/></svg>Подходит всем</div>
+    </div>
+    <div>
+      <p class="kicker rv">Для семьи</p>
+      <h2 class="h2 rv d1">Четыре человека. Три ограничения. <em>Один ужин.</em></h2>
+      <p class="lead rv d2" style="margin-top:22px">Большинство приложений с рецептами готовят для одного. CookFusion готовит для всего стола: заведите всех один раз, и каждый рецепт проверяется по каждой тарелке еще до того, как вы его увидите.</p>
+      <ul class="points"><li class="rv d1"><span class="ic"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.4" r="3.2"/><circle cx="17.2" cy="10" r="2.4"/><path d="M2.8 19.8c0-3.6 2.8-5.7 6.2-5.7s6.2 2.1 6.2 5.7"/><path d="M16.4 15.4c2.9.2 4.8 2 4.8 4.4"/></svg></span><div><b>Профиль на каждого</b><span>Диета, аллергии, нелюбимые продукты и размер порции. Заполняется один раз и работает всегда.</span></div></li><li class="rv d2"><span class="ic"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M6 18L18 6"/></svg></span><div><b>Убрано, а не помечено</b><span>Блюдо с запрещенным продуктом исчезает из выдачи. Никаких предупреждений и тихих замен.</span></div></li><li class="rv d3"><span class="ic"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.4" cy="12" r="4.4"/><circle cx="17.8" cy="12" r="3.2"/></svg></span><div><b>Порции по числу едоков</b><span>Количества пересчитываются под всех, кто сядет за стол, поэтому и список покупок точный.</span></div></li></ul>
     </div>
   </div>
 </section>
 
-<section id="features">
-  <div class="container">
-    <div class="sec-head rv">
-      <div class="sec-eyebrow">Продукт</div>
-      <h2 class="sec-title">Кухонный мозг целиком,<br>а не ещё один список рецептов</h2>
-      <p class="sec-sub">Приложения с рецептами показывают, что готовили другие. CookFusion смотрит на <strong>ваш</strong> холодильник, <strong>вашу</strong> семью и <strong>вашу</strong> неделю — и готовит вокруг них.</p>
-    </div>
-
-    <div class="bento">
-      <div class="cell c-span4 cell-dark rv">
-        <span class="big-ico">🧠</span>
-        <h3>ИИ-повар, который не спит</h3>
-        <p>Чем заменить, как приготовить, какое вино подать, «что делать с оставшимся рисом» — спросите что угодно и получите ответ за секунды. Работает на GPT-4o.</p>
-        <div class="chat-demo">
-          <div class="bub user">У меня только курица, рис и грустный лимон 🍋</div>
-          <div class="bub ai">Отлично — получится курица с рисом, лимоном и чесноком. Показать рецепт на 25 минут по шагам?</div>
-        </div>
-      </div>
-      <div class="cell c-span2 rv d1">
-        <span class="big-ico">📷</span>
-        <h3>Сканер холодильника</h3>
-        <p>Одно фото. ИИ распознаёт все продукты, которые видит, и пишет рецепт, который можно готовить прямо сейчас.</p>
-      </div>
-
-      <div class="cell c-span2 rv">
-        <span class="big-ico">🥗</span>
-        <h3>Проверка продукта</h3>
-        <p>Отсканируйте любой упакованный продукт и получите честную оценку от A до E с объяснением — сахар, добавки, всё сразу.</p>
-        <div class="score-row"><div class="score sc-a">A</div><div class="score sc-b">B</div><div class="score sc-c">C</div><div class="score sc-d">D</div><div class="score sc-e">E</div></div>
-      </div>
-      <div class="cell c-span2 rv d1">
-        <span class="big-ico">📅</span>
-        <h3>Планировщик на две недели</h3>
-        <p>Завтрак, обед и ужин спланированы заранее — всё в вашем аккаунте и не теряется между устройствами.</p>
-        <div class="plan-demo">
-          <div class="day"><b>21</b>Mon</div><div class="day full"><b>22</b>Tue</div><div class="day today"><b>23</b>Wed</div><div class="day full"><b>24</b>Thu</div><div class="day"><b>25</b>Fri</div><div class="day full"><b>26</b>Sat</div><div class="day"><b>27</b>Sun</div>
-        </div>
-      </div>
-      <div class="cell c-span2 rv d2">
-        <span class="big-ico">👨‍👩‍👧‍👦</span>
-        <h3>Готовит на всю семью</h3>
-        <p>Диета, аллергии и нелюбимые продукты у каждого. Любой рецепт учитывает каждую тарелку за столом.</p>
-        <div class="fam-row"><div class="fam">👨</div><div class="fam">👩</div><div class="fam">👧</div><div class="fam">👶</div><div class="fam-plus">+</div></div>
-      </div>
-
-      <div class="cell c-span3 rv">
-        <span class="big-ico">🍲</span>
-        <h3>Режим готовки без рук</h3>
-        <p>Крупные шаги, экран, который не гаснет, и текущий шаг в шторке уведомлений, когда вы переключились на другое приложение. Руки в муке — не помеха.</p>
-      </div>
-      <div class="cell c-span3 rv d1">
-        <span class="big-ico">🛒</span>
-        <h3>Список покупок, который пишет себя сам</h3>
-        <p>Недостающие продукты попадают из любого рецепта в умный список — разложенный по отделам магазина, пересчитанный под ваши порции и сохранённый в аккаунте.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="how">
-  <div class="container">
-    <div class="sec-head center rv">
-      <div class="sec-eyebrow">Как это работает</div>
-      <h2 class="sec-title">От холодильника до тарелки за минуты</h2>
-    </div>
+<section class="sec" id="how" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head center"><p class="kicker rv">Как это работает</p><h2 class="h2 rv d1">От холодильника до ужина <em>за три шага</em></h2></div>
     <div class="steps">
-      <div class="stp rv"><div class="n">01</div><h3>Снимок</h3><p>Наведите камеру на холодильник, полку или один продукт — на что угодно.</p></div>
-      <div class="stp rv d1"><div class="n">02</div><h3>Подбор</h3><p>ИИ распознаёт продукты, а модель-повар пишет рецепт под диеты и вкусы вашей семьи.</p></div>
-      <div class="stp rv d2"><div class="n">03</div><h3>Готовка</h3><p>Идите по крупным понятным шагам в режиме готовки. Чего не хватает — уже в списке покупок.</p></div>
+      <article class="step rv d1">
+        <div class="step-img"><img src="img/1-scan-ru-400.webp" srcset="img/1-scan-ru-400.webp 400w, img/1-scan-ru-800.webp 800w" sizes="(min-width: 900px) 240px, 62vw" width="400" height="844" alt="Снимите" loading="lazy" decoding="async"></div>
+        <div class="step-body"><span class="num">1</span><h3 class="h3">Снимите</h3><p>Наведите камеру на открытый холодильник или полку. Приложение распознает продукты, список можно поправить.</p></div>
+      </article>
+      <article class="step rv d2">
+        <div class="step-img"><img src="img/2-feed-ru-400.webp" srcset="img/2-feed-ru-400.webp 400w, img/2-feed-ru-800.webp 800w" sizes="(min-width: 900px) 240px, 62vw" width="400" height="844" alt="Выберите" loading="lazy" decoding="async"></div>
+        <div class="step-body"><span class="num">2</span><h3 class="h3">Выберите</h3><p>Только блюда, которые подходят всем и готовятся из того, что есть. Состав виден до начала готовки.</p></div>
+      </article>
+      <article class="step rv d3">
+        <div class="step-img"><img src="img/6-cook-ru-400.webp" srcset="img/6-cook-ru-400.webp 400w, img/6-cook-ru-800.webp 800w" sizes="(min-width: 900px) 240px, 62vw" width="400" height="844" alt="Готовьте" loading="lazy" decoding="async"></div>
+        <div class="step-body"><span class="num">3</span><h3 class="h3">Готовьте</h3><p>Крупные понятные шаги с таймерами. Экран не гаснет, а недостающее уже в списке покупок.</p></div>
+      </article>
     </div>
   </div>
 </section>
 
-<section id="privacy-trust">
-  <div class="container">
-    <div class="sec-head rv">
-      <div class="sec-eyebrow">Доверие и приватность</div>
-      <h2 class="sec-title">Ваша кухня. Ваши данные.</h2>
-      <p class="sec-sub">Мы сделали CookFusion так, как хотели бы, чтобы обращались с данными нашей собственной семьи.</p>
-    </div>
-    <div class="trust">
-      <div class="tr rv"><div class="ic">🔒</div><div><h4>Фото остаются вашими</h4><p>Фото холодильника используются только для распознавания продуктов — никогда для рекламы, никогда не продаются и не передаются третьим лицам для их целей.</p></div></div>
-      <div class="tr rv d1"><div class="ic">🚫</div><div><h4>Без слежки и рекламы</h4><p>Ни рекламных сетей, ни слежки между приложениями, ни продавцов данных. Приложение делает одно: помогает готовить.</p></div></div>
-      <div class="tr rv d2"><div class="ic">🗑️</div><div><h4>Удалить всё в любой момент</h4><p>Одно нажатие в настройках навсегда удаляет аккаунт и все связанные данные. Подробности в <a href="privacy.html">Политика конфиденциальности</a>.</p></div></div>
-    </div>
-  </div>
-</section>
-
-<section id="guides" class="guides">
-  <div class="container">
-    <div class="sec-head center rv">
-      <div class="sec-eyebrow">Разборы</div>
-      <h2 class="sec-title">Ответы на обычные вопросы</h2>
-    </div>
-    <div class="guide-row">
-      <a class="guide rv" href="iz-togo-chto-est.html">
-        <h3>Что приготовить из того, что есть дома</h3>
-        <p>Сфотографируйте полку или перечислите продукты. Без похода в магазин.</p>
-      </a>
-      <a class="guide rv d1" href="menu-na-nedelyu.html">
-        <h3>Меню на неделю для семьи</h3>
-        <p>Четырнадцать дней с учётом аллергий каждого и списком покупок.</p>
-      </a>
-      <a class="guide rv d2" href="uzhin-bystro.html">
-        <h3>Что приготовить на ужин быстро</h3>
-        <p>За двадцать минут, и время в рецептах настоящее.</p>
-      </a>
+<section class="sec" id="features" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head"><p class="kicker rv">Все в одном приложении</p><h2 class="h2 rv d1">Целая кухня, <em>а не сборник рецептов</em></h2><p class="lead rv d2">План, покупки и готовка в одном месте, и ужин перестает быть ежедневной задачей.</p></div>
+    <div class="bento">
+      <article class="tile b-plan rv">
+        <span class="ic"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.4" y="5" width="17.2" height="15.6" rx="3"/><path d="M3.4 10.2h17.2"/><path d="M8 2.6v4"/><path d="M16 2.6v4"/><path d="M9 14.8l2.2 2.2 4-4.4"/></svg></span><h3 class="h3">План на две недели</h3><p>Завтрак, обед и ужин на 14 дней вперед с учетом всех за столом. Синхронизируется между устройствами.</p>
+        <div class="shot"><img src="img/4-plan-ru-400.webp" srcset="img/4-plan-ru-400.webp 400w, img/4-plan-ru-800.webp 800w" sizes="(min-width: 900px) 330px, 78vw" width="400" height="844" alt="План питания на неделю в CookFusion" loading="lazy" decoding="async"></div>
+      </article>
+      <article class="tile b-chef rv d1">
+        <span class="ic"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5.5h14a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-7l-4.5 3.5v-3.5H5a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2z"/></svg></span><h3 class="h3">Повар, который отвечает</h3><p>Чем заменить, как приготовить, что сделать с остатками риса. Спросите своими словами, ответ через секунды.</p>
+        <div class="chat"><div class="bubble me">Есть только курица, рис и грустный лимон</div><div class="bubble ai">Получится курица с лимоном и чесноком на рисе. Показать рецепт на 25 минут?</div></div>
+      </article>
+      <article class="tile b-score rv d2">
+        <span class="ic"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M19.6 4.4C19.6 13.9 13.1 20 4.4 20 4.4 10.5 10.9 4.4 19.6 4.4Z"/><path d="M4.4 20L13.8 10.6"/></svg></span><h3 class="h3">Что внутри упаковки</h3><p>Отсканируйте продукт в упаковке и получите честную оценку от A до E с объяснением: сахар, добавки и остальное.</p>
+        <div class="grades" aria-hidden="true"><span style="background:#4B7349">A</span><span class="on" style="background:#7BA878">B</span><span style="background:#E89D5E">C</span><span style="background:#C06321">D</span><span style="background:#A24734">E</span></div>
+      </article>
+      <article class="tile b-list rv">
+        <span class="ic"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3.4 7l1.9 1.9L8.8 5.4"/><path d="M3.4 15.4l1.9 1.9 3.5-3.5"/><path d="M12.4 7.6h8.2"/><path d="M12.4 16h8.2"/></svg></span><h3 class="h3">Список покупок пишется сам</h3><p>Недостающие продукты сразу попадают в список, разложенный по отделам магазина и пересчитанный под порции.</p>
+        <div class="shot"><img src="img/5-shop-ru-400.webp" srcset="img/5-shop-ru-400.webp 400w, img/5-shop-ru-800.webp 800w" sizes="(min-width: 900px) 360px, 90vw" width="400" height="844" alt="Список покупок в CookFusion по отделам магазина" loading="lazy" decoding="async"></div>
+      </article>
+      <article class="tile b-cook rv d1">
+        <span class="ic"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13.2" r="7.9"/><path d="M12 8.6v4.6h3.4"/><path d="M9.4 2.6h5.2"/></svg></span><h3 class="h3">Готовка без рук</h3><p>Крупные шаги, встроенные таймеры и экран, который не гаснет.</p>
+        <div class="timer" aria-hidden="true">08:30</div>
+      </article>
+      <article class="tile b-auth rv d2">
+        <span class="ic"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M8 8.6h8"/><path d="M8 12.6h8"/><path d="M8 16.6h5"/></svg></span><h3 class="h3">Рецепты настоящих поваров</h3><p>Любой может стать автором, публиковать рецепты под своим именем и получить свою страницу.</p>
+        <div class="author" aria-hidden="true"><span class="av"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4.4 20.6c0-4.2 3.4-6.6 7.6-6.6s7.6 2.4 7.6 6.6"/></svg></span><span><b>Ваше имя</b><small>Публичная страница автора</small></span><span class="go"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.6" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="18.4" r="2.6"/><path d="M8.3 10.7l7.4-3.9"/><path d="M8.3 13.3l7.4 3.9"/></svg></span></div>
+      </article>
     </div>
   </div>
 </section>
 
-<section id="faq">
-  <div class="container">
-    <div class="sec-head center rv">
-      <div class="sec-eyebrow">Вопросы</div>
-      <h2 class="sec-title">Прямые ответы</h2>
-    </div>
-    <div class="faq">
-      <details class="q rv" open>
-        <summary>CookFusion правда бесплатный?</summary>
-        <p>Да. Всё, что описано на этой странице, работает без оплаты: сканер холодильника, ИИ-повар, планировщик, список покупок. Ни подписки, ни платного доступа, ни рекламы в приложении нет.</p>
-      </details>
-      <details class="q rv">
-        <summary>Обязательно фотографировать холодильник?</summary>
-        <p>Нет, фото — только один из путей. Можно искать среди 13 501 рецепта, смотреть по кухням, ответить на три вопроса и позволить приложению выбрать, или просто спросить ИИ-повара словами.</p>
-      </details>
-      <details class="q rv">
-        <summary>Как учитываются аллергии?</summary>
-        <p>Вы добавляете каждого за вашим столом с его аллергиями, диетой и нелюбимыми продуктами. Всё, что конфликтует, отсеивается до того, как вы это увидите, а не помечается потом. Порции пересчитываются под число едоков.</p>
-      </details>
-      <details class="q rv">
-        <summary>Что происходит с фотографиями?</summary>
-        <p>Они отправляются только для распознавания продуктов. Не используются для рекламы, не продаются, не передаются третьим лицам для их целей. Аккаунт и всё его содержимое удаляется прямо из приложения.</p>
-      </details>
-      <details class="q rv">
-        <summary>На каких устройствах работает?</summary>
-        <p>iPhone и iPad с iOS 15.1 и новее. Версии для Android пока нет.</p>
-      </details>
-      <details class="q rv">
-        <summary>Можно публиковать свои рецепты?</summary>
-        <p>Да. Автором может стать любой: публиковать рецепты под своим именем и получить публичную страницу, которой можно делиться. Авторам платят за просмотры.</p>
-      </details>
-    </div>
+<section class="sec dark on-dark" id="privacy">
+  <div class="wrap">
+    <div class="sec-head"><p class="kicker rv">Приватность</p><h2 class="h2 rv d1">Ваша кухня. <em>Ваши данные.</em></h2><p class="lead rv d2">Мы сделали CookFusion так, как хотели бы, чтобы приложение обращалось с данными нашей собственной семьи.</p></div>
+    <div class="trio"><div class="rv d1"><span class="ic"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="10" rx="3"/><path d="M8.5 10.5V8a3.5 3.5 0 0 1 7 0v2.5"/></svg></span><b>Фото остаются вашими</b><span>Снимки холодильника нужны только чтобы распознать продукты. Не для рекламы и не на продажу.</span></div><div class="rv d2"><span class="ic"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.6"/><path d="M6 18L18 6"/></svg></span><b>Без слежки и рекламы</b><span>Никаких рекламных сетей, отслеживания между приложениями и продажи данных. Приложение делает одно: помогает готовить.</span></div><div class="rv d3"><span class="ic"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 7h15"/><path d="M9.5 7V4.8h5V7"/><path d="M6.5 7l.9 12.2a2 2 0 0 0 2 1.8h5.2a2 2 0 0 0 2-1.8L17.5 7"/></svg></span><b>Удалить все в любой момент</b><span>Одно нажатие в настройках навсегда удаляет аккаунт и все данные. Подробнее в <a href="privacy.html">политике конфиденциальности</a>.</span></div></div>
   </div>
 </section>
 
-<section id="support">
-  <div class="container">
-    <div class="sec-head center rv">
-      <div class="sec-eyebrow">Поддержка</div>
-      <h2 class="sec-title">Есть вопросы? Мы на связи.</h2>
-    </div>
-    <div class="faq rv">
-      <details>
-        <summary>How do I reset my password?</summary>
-        <div class="a">Откройте приложение → Настройки → Аккаунт → Сменить пароль, и мы пришлём на почту защищённую ссылку. If you can't sign in, use "Forgot Password?" on the login screen — you'll receive a 6-digit code by email.</div>
-      </details>
-      <details>
-        <summary>Что происходит со снимками, которые я делаю?</summary>
-        <div class="a">Снимки холодильника и продуктов обрабатываются только чтобы распознать ингредиенты и предложить рецепт. Они никогда не используются для рекламы и не передаются третьим лицам для их целей. Подробности в <a href="privacy.html">Политика конфиденциальности</a>.</div>
-      </details>
-      <details>
-        <summary>Как работает подбор рецептов?</summary>
-        <div class="a">CookFusion разбирает продукты, которые вы перечислили или сфотографировали, и составляет рецепты под ваш режим питания и предпочтения домашних — включая аллергии и нелюбимое.</div>
-      </details>
-      <details>
-        <summary>How do I delete my account?</summary>
-        <div class="a">В приложении: Настройки → Аккаунт → Удалить аккаунт. Аккаунт и все связанные данные удаляются навсегда. You can also email us and we'll delete it for you.</div>
-      </details>
-      <details>
-        <summary>Приложение работает неправильно. Что делать?</summary>
-        <div class="a">Убедитесь, что установлена последняя версия и есть интернет. Если не помогло — напишите нам и укажите модель устройства и что именно произошло. Обычно отвечаем в течение суток.</div>
-      </details>
-    </div>
-    <div class="support-strip rv">
-      <div>
-        <h3>Нужна помощь?</h3>
-        <p>web.pro.farid@gmail.com · отвечаем в течение суток</p>
+<section class="sec" id="guides">
+  <div class="wrap">
+    <div class="sec-head"><p class="kicker rv">Разборы</p><h2 class="h2 rv d1">Ответы на обычные вопросы про ужин</h2></div>
+    <div class="guides"><a class="guide rv d1" href="iz-togo-chto-est.html"><div><b>Что приготовить из того, что есть дома</b><span>Сфотографируйте полку или перечислите продукты. Без похода в магазин.</span></div><i>Читать разбор<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></i></a><a class="guide rv d2" href="menu-na-nedelyu.html"><div><b>Меню на неделю для семьи</b><span>Четырнадцать дней с учетом аллергий каждого и списком покупок.</span></div><i>Читать разбор<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></i></a><a class="guide rv d3" href="uzhin-bystro.html"><div><b>Что приготовить на ужин быстро</b><span>За двадцать минут, и время в рецептах настоящее.</span></div><i>Читать разбор<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></i></a></div>
+  </div>
+</section>
+
+<section class="sec" id="faq" style="padding-top:0">
+  <div class="wrap faq-grid">
+    <div class="faq-side">
+      <p class="kicker rv">Вопросы</p><h2 class="h2 rv d1">Прямые ответы</h2>
+      <p class="lead rv d2" style="margin-top:20px">Не нашли свой вопрос? Напишите нам, отвечаем в течение суток.</p>
+      <div class="help rv d3" id="support">
+        <b>Нужна помощь?</b><span>web.pro.farid@gmail.com · отвечаем в течение суток</span>
+        <a class="btn" href="mailto:web.pro.farid@gmail.com?subject=CookFusion%20Support"><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="3"/><path d="M4 7.5l8 5.5 8-5.5"/></svg>Написать в поддержку</a>
       </div>
-      <a class="btn" href="mailto:web.pro.farid@gmail.com?subject=CookFusion%20Поддержка">Contact Поддержка</a>
+    </div>
+    <div>
+      <div class="faq-group"><h3>О приложении</h3><details class="qa" open><summary>CookFusion правда бесплатный?<i><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></i></summary><p>Да. Все, что описано на этой странице, работает без оплаты: сканер холодильника, ИИ-повар, планировщик и список покупок. Подписки, платного доступа и рекламы в приложении нет.</p></details><details class="qa"><summary>Обязательно фотографировать холодильник?<i><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></i></summary><p>Нет. Фото только один из способов. Можно искать среди 13 501 рецепта, выбирать по кухне, ответить на три вопроса и дать приложению выбрать или просто спросить ИИ-повара своими словами.</p></details><details class="qa"><summary>Как учитываются аллергии?<i><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></i></summary><p>Вы добавляете каждого, кто садится за стол, с его аллергиями, диетой и нелюбимыми продуктами. Все, что не подходит, убирается еще до показа, а не помечается потом. Порции пересчитываются под число едоков.</p></details><details class="qa"><summary>Что происходит с фото холодильника?<i><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></i></summary><p>Они отправляются только на распознавание продуктов. Не используются для рекламы, не продаются и не передаются третьим лицам для их целей. Аккаунт и все данные можно удалить прямо в приложении.</p></details><details class="qa"><summary>На каких устройствах работает?<i><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></i></summary><p>iPhone и iPad с iOS 15.1 и новее. Версии для Android пока нет.</p></details><details class="qa"><summary>Можно публиковать свои рецепты?<i><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></i></summary><p>Да. Любой может стать автором, публиковать рецепты под своим именем и получить публичную страницу, которой можно поделиться.</p></details></div>
+      <div class="faq-group"><h3>Поддержка</h3><details class="qa"><summary>Как сбросить пароль?<i><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></i></summary><p>В приложении откройте Настройки, затем Аккаунт и Сменить пароль, и мы пришлем на почту защищенную ссылку. Если войти не получается, нажмите «Забыли пароль?» на экране входа, и на почту придет код из 6 цифр.</p></details><details class="qa"><summary>Как удалить аккаунт?<i><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></i></summary><p>В приложении откройте Настройки, затем Аккаунт и Удалить аккаунт. Аккаунт и все связанные данные удаляются навсегда. Можно также написать нам, и мы удалим его сами.</p></details><details class="qa"><summary>Приложение работает неправильно. Что делать?<i><svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg></i></summary><p>Проверьте, что установлена последняя версия и есть интернет. Если не помогло, напишите нам, укажите модель устройства и что произошло. Обычно отвечаем в течение суток.</p></details></div>
     </div>
   </div>
 </section>
 
-<div class="final">
-  <div class="container">
-    <h2 class="rv">Сегодняшний ужин уже<br>лежит в вашем <em>холодильнике.</em></h2>
-    <p class="rv d1">Бесплатно в App Store. iPhone и iPad, без подписки.</p>
-    <div class="cta-row rv d2">
-      <a class="store-badge" href="https://apps.apple.com/app/id6760546998" aria-label="Download CookFusion on the App Store">
-        <span class="apple"></span>
-        <span><small>СКАЧАТЬ В</small><strong>App Store</strong></span>
-      </a>
+<section class="sec" style="padding-top:0" id="download">
+  <div class="wrap">
+    <div class="final on-dark rv">
+      <div class="final-body">
+        <h2 class="h2">Сегодняшний ужин <em>уже в вашем холодильнике</em></h2>
+        <p class="lead">Скачайте CookFusion бесплатно, добавьте семью один раз, и вопрос «что приготовить» приложение возьмет на себя.</p>
+        <div class="final-cta"><a class="store " href="https://apps.apple.com/app/id6760546998" aria-label="Загрузить CookFusion в App Store"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Загрузите в</small><b>App Store</b></span></a><div class="qr"><svg aria-hidden="true" viewBox="0 0 33 33" shape-rendering="crispEdges"><path d="M2 2h1v1h-1zM3 2h1v1h-1zM4 2h1v1h-1zM5 2h1v1h-1zM6 2h1v1h-1zM7 2h1v1h-1zM8 2h1v1h-1zM10 2h1v1h-1zM12 2h1v1h-1zM14 2h1v1h-1zM15 2h1v1h-1zM16 2h1v1h-1zM19 2h1v1h-1zM20 2h1v1h-1zM21 2h1v1h-1zM24 2h1v1h-1zM25 2h1v1h-1zM26 2h1v1h-1zM27 2h1v1h-1zM28 2h1v1h-1zM29 2h1v1h-1zM30 2h1v1h-1zM2 3h1v1h-1zM8 3h1v1h-1zM10 3h1v1h-1zM12 3h1v1h-1zM13 3h1v1h-1zM16 3h1v1h-1zM20 3h1v1h-1zM24 3h1v1h-1zM30 3h1v1h-1zM2 4h1v1h-1zM4 4h1v1h-1zM5 4h1v1h-1zM6 4h1v1h-1zM8 4h1v1h-1zM13 4h1v1h-1zM15 4h1v1h-1zM16 4h1v1h-1zM17 4h1v1h-1zM20 4h1v1h-1zM21 4h1v1h-1zM22 4h1v1h-1zM24 4h1v1h-1zM26 4h1v1h-1zM27 4h1v1h-1zM28 4h1v1h-1zM30 4h1v1h-1zM2 5h1v1h-1zM4 5h1v1h-1zM5 5h1v1h-1zM6 5h1v1h-1zM8 5h1v1h-1zM10 5h1v1h-1zM11 5h1v1h-1zM12 5h1v1h-1zM13 5h1v1h-1zM14 5h1v1h-1zM15 5h1v1h-1zM17 5h1v1h-1zM18 5h1v1h-1zM19 5h1v1h-1zM21 5h1v1h-1zM24 5h1v1h-1zM26 5h1v1h-1zM27 5h1v1h-1zM28 5h1v1h-1zM30 5h1v1h-1zM2 6h1v1h-1zM4 6h1v1h-1zM5 6h1v1h-1zM6 6h1v1h-1zM8 6h1v1h-1zM11 6h1v1h-1zM13 6h1v1h-1zM15 6h1v1h-1zM17 6h1v1h-1zM19 6h1v1h-1zM21 6h1v1h-1zM24 6h1v1h-1zM26 6h1v1h-1zM27 6h1v1h-1zM28 6h1v1h-1zM30 6h1v1h-1zM2 7h1v1h-1zM8 7h1v1h-1zM15 7h1v1h-1zM18 7h1v1h-1zM21 7h1v1h-1zM22 7h1v1h-1zM24 7h1v1h-1zM30 7h1v1h-1zM2 8h1v1h-1zM3 8h1v1h-1zM4 8h1v1h-1zM5 8h1v1h-1zM6 8h1v1h-1zM7 8h1v1h-1zM8 8h1v1h-1zM10 8h1v1h-1zM12 8h1v1h-1zM14 8h1v1h-1zM16 8h1v1h-1zM18 8h1v1h-1zM20 8h1v1h-1zM22 8h1v1h-1zM24 8h1v1h-1zM25 8h1v1h-1zM26 8h1v1h-1zM27 8h1v1h-1zM28 8h1v1h-1zM29 8h1v1h-1zM30 8h1v1h-1zM10 9h1v1h-1zM12 9h1v1h-1zM14 9h1v1h-1zM18 9h1v1h-1zM19 9h1v1h-1zM20 9h1v1h-1zM21 9h1v1h-1zM2 10h1v1h-1zM4 10h1v1h-1zM5 10h1v1h-1zM7 10h1v1h-1zM8 10h1v1h-1zM9 10h1v1h-1zM14 10h1v1h-1zM19 10h1v1h-1zM20 10h1v1h-1zM24 10h1v1h-1zM27 10h1v1h-1zM29 10h1v1h-1zM30 10h1v1h-1zM2 11h1v1h-1zM4 11h1v1h-1zM6 11h1v1h-1zM7 11h1v1h-1zM10 11h1v1h-1zM11 11h1v1h-1zM12 11h1v1h-1zM14 11h1v1h-1zM15 11h1v1h-1zM16 11h1v1h-1zM21 11h1v1h-1zM22 11h1v1h-1zM23 11h1v1h-1zM24 11h1v1h-1zM26 11h1v1h-1zM30 11h1v1h-1zM2 12h1v1h-1zM3 12h1v1h-1zM4 12h1v1h-1zM7 12h1v1h-1zM8 12h1v1h-1zM9 12h1v1h-1zM11 12h1v1h-1zM12 12h1v1h-1zM16 12h1v1h-1zM18 12h1v1h-1zM19 12h1v1h-1zM23 12h1v1h-1zM24 12h1v1h-1zM26 12h1v1h-1zM28 12h1v1h-1zM29 12h1v1h-1zM2 13h1v1h-1zM3 13h1v1h-1zM4 13h1v1h-1zM6 13h1v1h-1zM7 13h1v1h-1zM11 13h1v1h-1zM13 13h1v1h-1zM14 13h1v1h-1zM15 13h1v1h-1zM30 13h1v1h-1zM2 14h1v1h-1zM3 14h1v1h-1zM5 14h1v1h-1zM6 14h1v1h-1zM8 14h1v1h-1zM12 14h1v1h-1zM14 14h1v1h-1zM17 14h1v1h-1zM18 14h1v1h-1zM19 14h1v1h-1zM25 14h1v1h-1zM27 14h1v1h-1zM28 14h1v1h-1zM2 15h1v1h-1zM3 15h1v1h-1zM4 15h1v1h-1zM5 15h1v1h-1zM7 15h1v1h-1zM10 15h1v1h-1zM11 15h1v1h-1zM12 15h1v1h-1zM13 15h1v1h-1zM15 15h1v1h-1zM16 15h1v1h-1zM17 15h1v1h-1zM19 15h1v1h-1zM20 15h1v1h-1zM21 15h1v1h-1zM24 15h1v1h-1zM28 15h1v1h-1zM29 15h1v1h-1zM30 15h1v1h-1zM5 16h1v1h-1zM6 16h1v1h-1zM8 16h1v1h-1zM9 16h1v1h-1zM11 16h1v1h-1zM16 16h1v1h-1zM18 16h1v1h-1zM21 16h1v1h-1zM24 16h1v1h-1zM28 16h1v1h-1zM29 16h1v1h-1zM30 16h1v1h-1zM2 17h1v1h-1zM6 17h1v1h-1zM7 17h1v1h-1zM9 17h1v1h-1zM10 17h1v1h-1zM15 17h1v1h-1zM17 17h1v1h-1zM20 17h1v1h-1zM21 17h1v1h-1zM22 17h1v1h-1zM26 17h1v1h-1zM29 17h1v1h-1zM3 18h1v1h-1zM4 18h1v1h-1zM8 18h1v1h-1zM12 18h1v1h-1zM18 18h1v1h-1zM21 18h1v1h-1zM22 18h1v1h-1zM23 18h1v1h-1zM26 18h1v1h-1zM27 18h1v1h-1zM29 18h1v1h-1zM3 19h1v1h-1zM4 19h1v1h-1zM5 19h1v1h-1zM6 19h1v1h-1zM7 19h1v1h-1zM11 19h1v1h-1zM13 19h1v1h-1zM14 19h1v1h-1zM15 19h1v1h-1zM17 19h1v1h-1zM18 19h1v1h-1zM19 19h1v1h-1zM23 19h1v1h-1zM25 19h1v1h-1zM27 19h1v1h-1zM28 19h1v1h-1zM29 19h1v1h-1zM2 20h1v1h-1zM5 20h1v1h-1zM6 20h1v1h-1zM7 20h1v1h-1zM8 20h1v1h-1zM10 20h1v1h-1zM11 20h1v1h-1zM14 20h1v1h-1zM17 20h1v1h-1zM19 20h1v1h-1zM22 20h1v1h-1zM23 20h1v1h-1zM26 20h1v1h-1zM28 20h1v1h-1zM4 21h1v1h-1zM5 21h1v1h-1zM7 21h1v1h-1zM9 21h1v1h-1zM10 21h1v1h-1zM12 21h1v1h-1zM14 21h1v1h-1zM17 21h1v1h-1zM18 21h1v1h-1zM19 21h1v1h-1zM20 21h1v1h-1zM25 21h1v1h-1zM28 21h1v1h-1zM3 22h1v1h-1zM5 22h1v1h-1zM8 22h1v1h-1zM9 22h1v1h-1zM12 22h1v1h-1zM14 22h1v1h-1zM15 22h1v1h-1zM19 22h1v1h-1zM20 22h1v1h-1zM21 22h1v1h-1zM22 22h1v1h-1zM23 22h1v1h-1zM24 22h1v1h-1zM25 22h1v1h-1zM26 22h1v1h-1zM27 22h1v1h-1zM28 22h1v1h-1zM10 23h1v1h-1zM14 23h1v1h-1zM15 23h1v1h-1zM16 23h1v1h-1zM19 23h1v1h-1zM20 23h1v1h-1zM22 23h1v1h-1zM26 23h1v1h-1zM27 23h1v1h-1zM28 23h1v1h-1zM29 23h1v1h-1zM30 23h1v1h-1zM2 24h1v1h-1zM3 24h1v1h-1zM4 24h1v1h-1zM5 24h1v1h-1zM6 24h1v1h-1zM7 24h1v1h-1zM8 24h1v1h-1zM10 24h1v1h-1zM12 24h1v1h-1zM13 24h1v1h-1zM15 24h1v1h-1zM18 24h1v1h-1zM19 24h1v1h-1zM21 24h1v1h-1zM22 24h1v1h-1zM24 24h1v1h-1zM26 24h1v1h-1zM27 24h1v1h-1zM29 24h1v1h-1zM2 25h1v1h-1zM8 25h1v1h-1zM10 25h1v1h-1zM12 25h1v1h-1zM14 25h1v1h-1zM17 25h1v1h-1zM20 25h1v1h-1zM22 25h1v1h-1zM26 25h1v1h-1zM27 25h1v1h-1zM29 25h1v1h-1zM2 26h1v1h-1zM4 26h1v1h-1zM5 26h1v1h-1zM6 26h1v1h-1zM8 26h1v1h-1zM11 26h1v1h-1zM13 26h1v1h-1zM14 26h1v1h-1zM16 26h1v1h-1zM17 26h1v1h-1zM18 26h1v1h-1zM19 26h1v1h-1zM22 26h1v1h-1zM23 26h1v1h-1zM24 26h1v1h-1zM25 26h1v1h-1zM26 26h1v1h-1zM28 26h1v1h-1zM2 27h1v1h-1zM4 27h1v1h-1zM5 27h1v1h-1zM6 27h1v1h-1zM8 27h1v1h-1zM10 27h1v1h-1zM11 27h1v1h-1zM14 27h1v1h-1zM15 27h1v1h-1zM16 27h1v1h-1zM17 27h1v1h-1zM19 27h1v1h-1zM22 27h1v1h-1zM23 27h1v1h-1zM26 27h1v1h-1zM27 27h1v1h-1zM30 27h1v1h-1zM2 28h1v1h-1zM4 28h1v1h-1zM5 28h1v1h-1zM6 28h1v1h-1zM8 28h1v1h-1zM10 28h1v1h-1zM12 28h1v1h-1zM13 28h1v1h-1zM14 28h1v1h-1zM15 28h1v1h-1zM16 28h1v1h-1zM18 28h1v1h-1zM20 28h1v1h-1zM22 28h1v1h-1zM23 28h1v1h-1zM25 28h1v1h-1zM28 28h1v1h-1zM30 28h1v1h-1zM2 29h1v1h-1zM8 29h1v1h-1zM14 29h1v1h-1zM18 29h1v1h-1zM20 29h1v1h-1zM22 29h1v1h-1zM23 29h1v1h-1zM25 29h1v1h-1zM26 29h1v1h-1zM27 29h1v1h-1zM29 29h1v1h-1zM2 30h1v1h-1zM3 30h1v1h-1zM4 30h1v1h-1zM5 30h1v1h-1zM6 30h1v1h-1zM7 30h1v1h-1zM8 30h1v1h-1zM10 30h1v1h-1zM11 30h1v1h-1zM12 30h1v1h-1zM15 30h1v1h-1zM16 30h1v1h-1zM18 30h1v1h-1zM21 30h1v1h-1zM22 30h1v1h-1zM25 30h1v1h-1zM29 30h1v1h-1z" fill="#14261B"/></svg><span>Наведите камеру телефона, чтобы открыть App Store</span></div></div>
+      </div>
+      <div class="final-img"><img src="img/pasta-900.webp" width="900" height="1350" alt="Тарелка пасты на кухонном столе" loading="lazy" decoding="async"></div>
     </div>
   </div>
-</div>
+</section>
+</main>
 
-<footer>
-  <div class="container">
+<footer class="foot">
+  <div class="wrap">
     <div class="foot-grid">
-      <div class="foot-brand">
-        <a class="logo" href="#top">
-          <span class="logo-mark"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2c1.7 0 3 1.2 3.4 2.8.4-.1.8-.2 1.2-.2A3.4 3.4 0 0 1 20 8a3.4 3.4 0 0 1-2.6 3.3V17a2 2 0 0 1-2 2H8.6a2 2 0 0 1-2-2v-5.7A3.4 3.4 0 0 1 4 8a3.4 3.4 0 0 1 3.4-3.4c.4 0 .8.1 1.2.2C9 3.2 10.3 2 12 2Z" fill="#fff"/><path d="M9 21.4h6" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/></svg></span>
-          <span class="logo-name">CookFusion</span>
-        </a>
-        <p>ИИ-помощник на кухне: планирует еду под вашу семью и под то, что у вас уже есть.</p>
-      </div>
-      <div class="foot-col">
-        <h5>Product</h5>
-        <a href="#features">Возможности</a>
-        <a href="#how">Как это работает</a>
-        <a href="#privacy-trust">Приватность &amp; Trust</a>
-      </div>
-      <div class="foot-col">
-        <h5>Legal</h5>
-        <a href="privacy.html">Политика конфиденциальности</a>
-        <a href="terms.html">Условия использования</a>
-      </div>
-      <div class="foot-col">
-        <h5>Contact</h5>
-        <a href="#support">Поддержка Center</a>
-        <a href="mailto:web.pro.farid@gmail.com">web.pro.farid@gmail.com</a>
-      </div>
+      <div><a class="logo" href="ru.html" aria-label="CookFusion"><svg role="img" aria-label="CookFusion" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 318.03 64">
+  
+<path d="M 38.212 55.182 A 24 24 0 1 1 55.996 32.419" fill="none" stroke="#DF7B31" stroke-width="6.4" stroke-linecap="round"/><circle cx="32" cy="32" r="9" fill="#DF7B31"/><path transform="translate(85.760 46.255)" d="M27.022-7.658Q27.022-6.170 26.228-4.682Q25.435-3.194 23.937-1.954Q22.439-0.714 20.326 0.030Q18.213 0.774 15.555 0.774Q11.190 0.774 8.005-1.081Q4.821-2.936 3.095-6.210Q1.369-9.484 1.369-13.729Q1.369-16.924 2.401-19.622Q3.432-22.320 5.287-24.314Q7.142-26.308 9.622-27.409Q12.102-28.510 15.019-28.510Q16.924-28.510 18.124-28.163Q19.324-27.816 20.028-27.449Q20.733-27.082 21.169-27.082Q21.705-27.082 22.022-27.409Q22.340-27.736 22.677-28.054Q23.014-28.371 23.550-28.371Q23.987-28.371 24.264-28.103Q24.542-27.836 24.721-27.201L26.784-20.237Q26.943-19.721 26.665-19.304Q26.387-18.888 25.852-18.749Q25.296-18.630 24.840-18.848Q24.383-19.066 24.125-19.642Q23.074-22.022 21.814-23.391Q20.554-24.760 19.146-25.336Q17.737-25.911 16.170-25.911Q14.563-25.911 13.253-25.157Q11.944-24.403 11.011-23.004Q10.079-21.606 9.583-19.632Q9.087-17.658 9.087-15.197Q9.087-11.289 10.208-8.640Q11.329-5.992 13.303-4.643Q15.277-3.293 17.836-3.293Q20.197-3.293 22.032-4.464Q23.868-5.635 24.979-7.817Q25.256-8.372 25.584-8.541Q25.911-8.710 26.308-8.630Q26.685-8.571 26.853-8.323Q27.022-8.075 27.022-7.658" fill="#1E3A2B"/><path transform="translate(113.536 46.255)" d="M12.182-19.463Q15.396-19.463 17.816-18.193Q20.237-16.924 21.576-14.662Q22.915-12.400 22.915-9.404Q22.915-6.607 21.516-4.355Q20.118-2.103 17.648-0.794Q15.178 0.516 11.924 0.516Q8.730 0.516 6.309-0.764Q3.889-2.044 2.540-4.305Q1.190-6.567 1.190-9.523Q1.190-12.380 2.589-14.622Q3.988-16.864 6.458-18.164Q8.928-19.463 12.182-19.463M13.610-1.924Q14.662-2.123 15.277-3.075Q15.892-4.028 15.981-5.773Q16.070-7.519 15.555-10.099Q15.059-12.618 14.305-14.225Q13.551-15.832 12.579-16.537Q11.606-17.241 10.515-17.023Q9.464-16.824 8.849-15.872Q8.234-14.920 8.154-13.174Q8.075-11.428 8.571-8.849Q9.047-6.349 9.811-4.732Q10.575-3.115 11.537-2.420Q12.499-1.726 13.610-1.924" fill="#1E3A2B"/><path transform="translate(137.205 46.255)" d="M12.182-19.463Q15.396-19.463 17.816-18.193Q20.237-16.924 21.576-14.662Q22.915-12.400 22.915-9.404Q22.915-6.607 21.516-4.355Q20.118-2.103 17.648-0.794Q15.178 0.516 11.924 0.516Q8.730 0.516 6.309-0.764Q3.889-2.044 2.540-4.305Q1.190-6.567 1.190-9.523Q1.190-12.380 2.589-14.622Q3.988-16.864 6.458-18.164Q8.928-19.463 12.182-19.463M13.610-1.924Q14.662-2.123 15.277-3.075Q15.892-4.028 15.981-5.773Q16.070-7.519 15.555-10.099Q15.059-12.618 14.305-14.225Q13.551-15.832 12.579-16.537Q11.606-17.241 10.515-17.023Q9.464-16.824 8.849-15.872Q8.234-14.920 8.154-13.174Q8.075-11.428 8.571-8.849Q9.047-6.349 9.811-4.732Q10.575-3.115 11.537-2.420Q12.499-1.726 13.610-1.924" fill="#1E3A2B"/><path transform="translate(160.874 46.255)" d="M10.872 0L2.599 0Q1.924 0 1.637-0.268Q1.349-0.536 1.349-0.992Q1.349-1.329 1.538-1.587Q1.726-1.845 2.123-2.004L2.738-2.202Q3.075-2.321 3.214-2.629Q3.353-2.936 3.353-3.631L3.353-24.364Q3.353-24.919 3.194-25.157Q3.036-25.395 2.698-25.475L1.964-25.594Q1.567-25.693 1.399-25.911Q1.230-26.129 1.230-26.467Q1.230-26.863 1.458-27.101Q1.686-27.340 2.282-27.558L6.388-29.105Q7.242-29.423 7.787-29.572Q8.333-29.720 8.809-29.720Q9.563-29.720 9.950-29.304Q10.337-28.887 10.337-28.212L10.337-3.631Q10.337-2.936 10.485-2.639Q10.634-2.341 10.952-2.202L11.527-1.984Q12.162-1.667 12.162-1.052Q12.162 0 10.872 0M9.107-6.726L8.293-8.611L16.110-14.940Q16.785-15.495 16.715-16.031Q16.646-16.566 15.892-16.824L15.277-17.023Q14.900-17.181 14.761-17.390Q14.622-17.598 14.622-17.955Q14.622-18.412 14.949-18.679Q15.277-18.947 15.832-18.947L23.193-18.947Q23.768-18.947 24.096-18.689Q24.423-18.431 24.423-17.995Q24.423-17.558 24.155-17.261Q23.887-16.963 23.014-16.745Q21.963-16.487 21.100-16.011Q20.237-15.535 18.967-14.523L9.107-6.726M11.289-9.761L15.872-13.888L22.975-3.412Q23.372-2.857 23.679-2.589Q23.987-2.321 24.502-2.103Q24.939-1.845 25.167-1.557Q25.395-1.270 25.395-0.913Q25.395-0.496 25.068-0.248Q24.740 0 24.185 0L15.455 0Q14.959 0 14.662-0.268Q14.364-0.536 14.364-0.972Q14.364-1.270 14.493-1.468Q14.622-1.667 14.940-1.845L15.455-2.024Q15.892-2.202 15.932-2.520Q15.971-2.837 15.475-3.571" fill="#1E3A2B"/><path transform="translate(185.714 46.255)" d="M3.353-27.776L17.638-27.776Q18.471-27.776 19.036-27.945Q19.602-28.113 20.058-28.282Q20.515-28.451 20.971-28.451Q21.745-28.451 22.141-28.064Q22.538-27.677 22.796-26.764L24.483-20.792Q24.641-20.276 24.334-19.909Q24.026-19.542 23.491-19.463Q23.034-19.384 22.598-19.552Q22.161-19.721 21.884-20.296Q20.852-22.419 19.919-23.510Q18.987-24.602 17.975-24.998Q16.963-25.395 15.674-25.395L12.440-25.395L12.440-3.809Q12.440-3.353 12.678-3.026Q12.916-2.698 13.452-2.599L14.940-2.361Q15.495-2.242 15.733-1.954Q15.971-1.667 15.971-1.111Q15.971-0.615 15.624-0.308Q15.277 0 14.543 0L3.353 0Q2.619 0 2.262-0.308Q1.905-0.615 1.905-1.111Q1.905-2.004 2.837-2.341L3.789-2.599Q4.285-2.778 4.533-3.065Q4.781-3.353 4.781-3.809L4.781-23.967Q4.781-24.423 4.533-24.711Q4.285-24.998 3.789-25.177L2.837-25.435Q1.905-25.772 1.905-26.665Q1.905-27.181 2.262-27.478Q2.619-27.776 3.353-27.776M9.583-12.102L9.583-14.444L15.436-14.444Q16.705-14.444 17.231-14.940Q17.757-15.436 18.154-16.904Q18.312-17.420 18.610-17.638Q18.908-17.856 19.304-17.856Q20.276-17.896 20.515-16.924L22.022-10.793Q22.181-10.178 21.993-9.841Q21.804-9.503 21.368-9.345Q20.911-9.186 20.495-9.335Q20.078-9.484 19.721-9.980Q19.165-10.813 18.689-11.279Q18.213-11.745 17.598-11.924Q16.983-12.102 16.011-12.102" fill="#1E3A2B"/><path transform="translate(210.296 46.255)" d="M15.793-3.412L15.793-4.067L15.555-4.107L15.555-14.047Q15.555-14.602 15.396-14.840Q15.237-15.078 14.900-15.158L14.166-15.277Q13.769-15.376 13.600-15.594Q13.432-15.812 13.432-16.150Q13.432-16.547 13.650-16.785Q13.868-17.023 14.483-17.241L18.570-18.788Q19.443-19.106 19.979-19.255Q20.515-19.404 21.011-19.404Q21.764-19.404 22.151-18.987Q22.538-18.570 22.538-17.916L22.538-3.631Q22.538-2.936 22.687-2.629Q22.836-2.321 23.153-2.202L23.748-2.004Q24.165-1.845 24.354-1.587Q24.542-1.329 24.542-0.992Q24.542-0.536 24.235-0.268Q23.927 0 23.252 0L18.808 0Q17.578 0 16.685-0.992Q15.793-1.984 15.793-3.412M2.916-5.635L2.916-14.047Q2.916-14.602 2.758-14.840Q2.599-15.078 2.262-15.158L1.508-15.277Q1.131-15.376 0.952-15.594Q0.774-15.812 0.774-16.150Q0.774-16.547 1.002-16.785Q1.230-17.023 1.845-17.241L5.932-18.788Q6.845-19.126 7.371-19.265Q7.896-19.404 8.313-19.404Q9.107-19.404 9.503-18.987Q9.900-18.570 9.900-17.916L9.900-6.627Q9.900-5.119 10.604-4.375Q11.309-3.631 12.539-3.631Q13.313-3.631 14.166-3.968Q15.019-4.305 15.812-5L16.566-5.654L17.598-4.563L16.904-3.948Q14.265-1.468 12.311-0.476Q10.356 0.516 8.670 0.516Q6.091 0.516 4.504-1.171Q2.916-2.857 2.916-5.635" fill="#1E3A2B"/><path transform="translate(235.612 46.255)" d="M10.337-1.607Q11.587-1.607 12.231-2.202Q12.876-2.797 12.876-3.670Q12.876-4.206 12.648-4.652Q12.420-5.099 11.725-5.476Q11.031-5.853 9.622-6.150Q6.250-6.765 4.454-7.757Q2.659-8.749 1.994-10.069Q1.329-11.388 1.329-13.015Q1.329-16.011 3.422-17.737Q5.516-19.463 9.543-19.463Q10.972-19.463 11.835-19.235Q12.698-19.007 13.243-18.769Q13.789-18.531 14.205-18.531Q14.662-18.531 14.920-18.769Q15.178-19.007 15.445-19.235Q15.713-19.463 16.170-19.463Q16.527-19.463 16.814-19.235Q17.102-19.007 17.281-18.372L18.451-14.582Q18.729-13.729 18.620-13.204Q18.511-12.678 17.975-12.479Q17.439-12.281 17.043-12.469Q16.646-12.658 16.269-13.213Q15.376-14.662 14.364-15.574Q13.352-16.487 12.261-16.914Q11.170-17.340 9.980-17.340Q8.472-17.340 7.708-16.745Q6.944-16.150 6.944-15.138Q6.944-14.543 7.261-14.067Q7.579-13.590 8.492-13.204Q9.404-12.817 11.130-12.440Q13.868-11.904 15.465-10.981Q17.062-10.059 17.757-8.740Q18.451-7.420 18.451-5.635Q18.451-3.789 17.479-2.401Q16.507-1.012 14.791-0.248Q13.075 0.516 10.852 0.516Q9.484 0.516 8.670 0.268Q7.857 0.020 7.331-0.228Q6.805-0.476 6.329-0.476Q5.853-0.476 5.516-0.228Q5.178 0.020 4.871 0.268Q4.563 0.516 4.127 0.516Q3.770 0.516 3.522 0.258Q3.274 0 3.155-0.635L2.460-4.266Q2.301-5.158 2.430-5.595Q2.559-6.031 3.016-6.230Q3.551-6.448 3.948-6.210Q4.345-5.972 4.762-5.357Q6.071-3.313 7.490-2.460Q8.908-1.607 10.337-1.607" fill="#1E3A2B"/><path transform="translate(255.372 46.255)" d="M10.337-17.916L10.337-3.631Q10.337-2.936 10.485-2.629Q10.634-2.321 10.972-2.202L11.567-2.004Q11.983-1.845 12.162-1.587Q12.340-1.329 12.340-0.992Q12.340-0.536 12.033-0.268Q11.725 0 11.071 0L2.619 0Q1.964 0 1.657-0.268Q1.349-0.536 1.349-0.992Q1.349-1.329 1.538-1.577Q1.726-1.825 2.123-2.004L2.738-2.202Q3.075-2.321 3.224-2.629Q3.373-2.936 3.373-3.631L3.373-14.047Q3.373-14.602 3.204-14.850Q3.036-15.098 2.698-15.178L1.964-15.277Q1.567-15.396 1.399-15.604Q1.230-15.812 1.230-16.150Q1.230-16.547 1.458-16.785Q1.686-17.023 2.301-17.261L6.388-18.788Q7.301-19.126 7.827-19.275Q8.353-19.423 8.749-19.423Q9.543-19.423 9.940-18.997Q10.337-18.570 10.337-17.916M6.428-21.804Q4.524-21.804 3.403-22.727Q2.282-23.649 2.282-25.217Q2.282-26.764 3.403-27.667Q4.524-28.570 6.428-28.570Q8.333-28.570 9.454-27.667Q10.575-26.764 10.575-25.217Q10.575-23.649 9.454-22.727Q8.333-21.804 6.428-21.804" fill="#1E3A2B"/><path transform="translate(268.129 46.255)" d="M12.182-19.463Q15.396-19.463 17.816-18.193Q20.237-16.924 21.576-14.662Q22.915-12.400 22.915-9.404Q22.915-6.607 21.516-4.355Q20.118-2.103 17.648-0.794Q15.178 0.516 11.924 0.516Q8.730 0.516 6.309-0.764Q3.889-2.044 2.540-4.305Q1.190-6.567 1.190-9.523Q1.190-12.380 2.589-14.622Q3.988-16.864 6.458-18.164Q8.928-19.463 12.182-19.463M13.610-1.924Q14.662-2.123 15.277-3.075Q15.892-4.028 15.981-5.773Q16.070-7.519 15.555-10.099Q15.059-12.618 14.305-14.225Q13.551-15.832 12.579-16.537Q11.606-17.241 10.515-17.023Q9.464-16.824 8.849-15.872Q8.234-14.920 8.154-13.174Q8.075-11.428 8.571-8.849Q9.047-6.349 9.811-4.732Q10.575-3.115 11.537-2.420Q12.499-1.726 13.610-1.924" fill="#1E3A2B"/><path transform="translate(291.798 46.255)" d="M10.337-17.916L10.337-3.631Q10.337-2.936 10.485-2.639Q10.634-2.341 10.952-2.202L11.527-1.984Q12.162-1.667 12.162-1.052Q12.162 0 10.872 0L2.619 0Q1.964 0 1.657-0.268Q1.349-0.536 1.349-0.992Q1.349-1.329 1.538-1.577Q1.726-1.825 2.123-2.004L2.738-2.202Q3.075-2.321 3.214-2.629Q3.353-2.936 3.353-3.631L3.353-14.047Q3.353-14.602 3.194-14.850Q3.036-15.098 2.698-15.178L1.964-15.277Q1.567-15.396 1.399-15.604Q1.230-15.812 1.230-16.150Q1.230-16.547 1.458-16.785Q1.686-17.023 2.282-17.261L6.388-18.788Q7.242-19.126 7.787-19.275Q8.333-19.423 8.809-19.423Q9.563-19.423 9.950-18.997Q10.337-18.570 10.337-17.916M10.436-13.948L9.682-13.293L8.650-14.384L9.325-14.999Q11.964-17.420 13.848-18.441Q15.733-19.463 17.360-19.463Q19.860-19.463 21.268-17.777Q22.677-16.090 22.935-13.313L23.947-3.651Q24.026-2.956 24.145-2.639Q24.264-2.321 24.602-2.202L25.177-2.004Q25.574-1.825 25.762-1.577Q25.951-1.329 25.951-0.992Q25.951-0.536 25.643-0.268Q25.336 0 24.681 0L16.348 0Q15.039 0 15.039-1.052Q15.039-1.667 15.674-1.984L16.269-2.202Q16.606-2.341 16.785-2.649Q16.963-2.956 16.884-3.651L15.991-12.321Q15.832-13.828 15.247-14.572Q14.662-15.316 13.491-15.316Q12.777-15.316 11.993-14.969Q11.210-14.622 10.436-13.948" fill="#1E3A2B"/>
+</svg>
+</a><p>Ужин на всю семью, за одно фото. Бесплатно для iPhone и iPad.</p></div>
+      <div><h4>Приложение</h4><ul><li><a href="#how">Как это работает</a></li><li><a href="#features">Возможности</a></li><li><a href="#faq">Вопросы</a></li></ul></div>
+      <div><h4>Помощь</h4><ul><li><a href="mailto:web.pro.farid@gmail.com?subject=CookFusion%20%D0%9F%D0%BE%D0%B4%D0%B4%D0%B5%D1%80%D0%B6%D0%BA%D0%B0">Поддержка</a></li><li><a href="privacy.html">Политика конфиденциальности</a></li><li><a href="terms.html">Условия использования</a></li></ul></div>
     </div>
-    <div class="foot-bottom">
-      <span>© <span id="yr">2026</span> CookFusion. All rights reserved.</span>
-      <span>Сделано с 🍳 для домашних поваров по всему миру</span>
-    </div>
+    <div class="foot-bottom"><span>&copy; <span id="yr">2026</span> CookFusion. Все права защищены.</span><span>cookfusion.dilami.pro</span></div>
   </div>
 </footer>
 
-<script>
-  // липкая навигация
-  const nav = document.getElementById('nav');
-  addEventListener('scroll', () => nav.classList.toggle('scrolled', scrollY > 24), { passive: true });
+<div class="sticky" id="sticky" aria-hidden="true">
+  <div><b>CookFusion</b><small>Бесплатно для iPhone и iPad</small></div>
+  <a class="store sm" href="https://apps.apple.com/app/id6760546998" aria-label="Загрузить CookFusion в App Store"><svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></svg><span><small>Загрузите в</small><b>App Store</b></span></a>
+</div>
 
-  // появление блоков при скролле
-  const io = new IntersectionObserver((entries) => {
-    for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-  }, { threshold: 0.12 });
-  document.querySelectorAll('.rv').forEach(el => io.observe(el));
-
-  // лёгкий параллакс телефонов за курсором
-  const stage = document.getElementById('stage');
-  if (stage && matchMedia('(pointer:fine)').matches) {
-    const a = stage.querySelector('.ph-a'), b = stage.querySelector('.ph-b');
-    stage.closest('.hero').addEventListener('mousemove', (ev) => {
-      const r = stage.getBoundingClientRect();
-      const x = (ev.clientX - r.left - r.width/2) / r.width, y = (ev.clientY - r.top - r.height/2) / r.height;
-      a.style.transform = `rotate(-6deg) translate(${x*10}px, ${y*8}px)`;
-      b.style.transform = `rotate(5deg) translate(${x*-14}px, ${y*-10}px)`;
-    });
-  }
-
-  document.getElementById('yr').textContent = new Date().getFullYear();
-</script>
-
-<script>
-/* Свой счётчик посещений. Что именно считается и чего не считается —
-   написано в политике конфиденциальности, раздел 8.
-
-   Ни куки, ни localStorage, ни отпечатков браузера. Из-за этого
-   уникальных посетителей не посчитать — и мы их не считаем, а не
-   притворяемся, что можем. Сбой счётчика не должен ломать страницу,
-   поэтому всё внутри try и без await. */
-(function () {
-  var URL = 'https://vimdtngoecdhkliixgit.supabase.co/rest/v1/rpc/track_site';
-  var KEY = 'sb_publishable_gPDI3LlWFukfehmKPcIYTw_nYsv5xVU';
-
-  function device() {
-    var w = window.innerWidth || 1024;
-    return w < 768 ? 'mobile' : w < 1024 ? 'tablet' : 'desktop';
-  }
-
-  function send(kind) {
-    try {
-      fetch(URL, {
-        method: 'POST',
-        headers: { apikey: KEY, Authorization: 'Bearer ' + KEY, 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          p_kind: kind,
-          p_path: location.pathname,
-          /* Только домен источника: полный адрес чужой страницы нас не касается */
-          p_ref: document.referrer || null,
-          p_lang: navigator.language || null,
-          p_device: device(),
-        }),
-        keepalive: true,
-      }).catch(function () {});
-    } catch (e) { /* счётчик не важнее страницы */ }
-  }
-
-  send('view');
-
-  document.addEventListener('click', function (e) {
-    var a = e.target.closest && e.target.closest('a[href*="apps.apple.com"]');
-    if (a) send('store_click');
-  });
-})();
-</script>
+<script src="site.js?v=54c998e9" defer></script>
 </body>
 </html>

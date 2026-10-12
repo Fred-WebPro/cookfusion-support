@@ -22,13 +22,13 @@ const UI = {
   ru: {
     home: 'Главная', back: 'На главную', install: 'Установить бесплатно',
     free: 'Бесплатно · iPhone и iPad · без подписки',
-    also: 'Смотрите также', faqTitle: 'Частые вопросы',
+    also: 'Смотрите также', faqTitle: 'Частые вопросы', read: 'Читать разбор',
     footer: 'CookFusion — ИИ-планировщик питания',
   },
   en: {
     home: 'Home', back: 'Back to home', install: 'Get it free',
     free: 'Free · iPhone and iPad · no subscription',
-    also: 'See also', faqTitle: 'Common questions',
+    also: 'See also', faqTitle: 'Common questions', read: 'Read the guide',
     footer: 'CookFusion — AI Meal Planner',
   },
 };
@@ -185,23 +185,36 @@ const PAGES = [
   },
 ];
 
-// Счётчик один на весь сайт: берём его из index.html, чтобы не держать две копии
-const COUNTER = (() => {
-  const home = fs.readFileSync(path.join(DIR, 'index.html'), 'utf8');
-  // Ищем по комментарию внутри счётчика: он там один такой
-  const a = home.indexOf('/* Свой счётчик посещений');
-  if (a < 0) return '';
-  const start = home.lastIndexOf('<script>', a);
-  return home.slice(start, home.indexOf('</' + 'script>', a) + 9);
-})();
+// Шапка, подвал, кнопки и счетчик посещений общие для всего сайта.
+// Счетчик живет в site.js: раньше его вырезали из index.html по
+// комментарию, и после переделки главной подборки молча остались бы
+// без статистики.
+const S = require('./site-chrome');
+const { I } = S;
 
 // ── Шаблон ───────────────────────────────────────────────────
 const esc = (s) => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
+// Какой экран приложения показать рядом с текстом подборки
+const SCREEN = {
+  'iz-togo-chto-est.html': '1-scan', 'cook-with-what-you-have.html': '1-scan',
+  'menu-na-nedelyu.html': '4-plan', 'meal-planner.html': '4-plan',
+  'uzhin-bystro.html': '2-feed', 'dinner-tonight.html': '2-feed',
+};
+const LW = {
+  ru: { kicker: 'Разбор', side: 'Попробуйте на своем холодильнике', sideText: 'Бесплатно, без подписки и рекламы. Первый рецепт до регистрации.',
+        final: 'Сегодняшний ужин <em>уже в вашем холодильнике</em>', finalLead: 'Скачайте CookFusion бесплатно и добавьте семью один раз.' },
+  en: { kicker: 'Guide', side: 'Try it on your own fridge', sideText: 'Free, no subscription and no ads.',
+        final: 'Tonight’s dinner is <em>already in your fridge.</em>', finalLead: 'Download CookFusion free and add your family once.' },
+};
+
 function render(page) {
   const ui = UI[page.lang];
-  const home = page.lang === 'ru' ? 'ru.html' : '';
+  const lw = LW[page.lang];
+  const home = page.lang === 'ru' ? 'ru.html' : './';
   const titleOf = (f) => (PAGES.find(p => p.file === f) || {}).h1 || f;
+  const leadOf = (f) => (PAGES.find(p => p.file === f) || {}).lead || '';
+  const screen = SCREEN[page.file] || '1-scan';
 
   const faqLd = {
     '@context': 'https://schema.org', '@type': 'FAQPage',
@@ -213,7 +226,7 @@ function render(page) {
   const crumbLd = {
     '@context': 'https://schema.org', '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: ui.home, item: BASE + home },
+      { '@type': 'ListItem', position: 1, name: ui.home, item: BASE + (page.lang === 'ru' ? 'ru.html' : '') },
       { '@type': 'ListItem', position: 2, name: page.h1, item: BASE + page.file },
     ],
   };
@@ -222,87 +235,92 @@ function render(page) {
 <html lang="${page.lang}">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(page.title)}</title>
 <meta name="description" content="${esc(page.description)}">
 <link rel="canonical" href="${BASE}${page.file}">
 <meta name="robots" content="index, follow, max-image-preview:large">
 <meta property="og:type" content="article">
 <meta property="og:url" content="${BASE}${page.file}">
+<meta property="og:site_name" content="CookFusion">
 <meta property="og:title" content="${esc(page.title)}">
 <meta property="og:description" content="${esc(page.description)}">
+<meta property="og:image" content="${BASE}img/og-${page.lang}.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:locale" content="${page.lang === 'ru' ? 'ru_RU' : 'en_US'}">
-<meta name="apple-itunes-app" content="app-id=6760546998">
-<link rel="preload" href="fonts/fraunces-normal-700.woff2" as="font" type="font/woff2" crossorigin>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="${BASE}img/og-${page.lang}.jpg">
+${S.headCommon(page.lang)}
 <script type="application/ld+json">${JSON.stringify(faqLd)}</script>
 <script type="application/ld+json">${JSON.stringify(crumbLd)}</script>
-<style>
-  @font-face{font-family:'Fraunces';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/fraunces-normal-700.woff2) format('woff2');}
-  @font-face{font-family:'Fraunces';font-style:normal;font-weight:600;font-display:swap;src:url(fonts/fraunces-normal-600.woff2) format('woff2');}
-  :root{--ink:#0D1F16;--cream:#F7F5EF;--paper:#fff;--sage:#7A9A75;--orange:#E2792F;--text:#1C1C1E;--muted:#5C6B60;--line:rgba(13,31,22,.09)}
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;background:var(--cream);color:var(--text);line-height:1.7;-webkit-font-smoothing:antialiased}
-  h1,h2{font-family:'Fraunces',Georgia,serif;line-height:1.15;color:var(--ink)}
-  a{color:var(--sage)}
-  .wrap{max-width:720px;margin:0 auto;padding:0 22px}
-  header{background:var(--ink);padding:18px 0}
-  header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px}
-  .brand{font-family:'Fraunces',serif;font-size:19px;font-weight:700;color:#fff;text-decoration:none}
-  .crumb{font-size:13px;color:rgba(255,255,255,.6);text-decoration:none}
-  .crumb:hover{color:#fff}
-  main{padding:52px 0 60px}
-  h1{font-size:clamp(30px,5.5vw,42px);margin-bottom:18px}
-  .lead{font-size:18.5px;color:var(--muted);margin-bottom:36px}
-  h2{font-size:24px;margin:38px 0 14px}
-  p{margin-bottom:15px}
-  .cta{display:block;text-align:center;background:var(--ink);color:#fff;text-decoration:none;border-radius:100px;padding:17px;font-weight:700;font-size:16px;margin:40px 0 10px}
-  .cta:hover{background:#17301F}
-  .cta-note{text-align:center;color:var(--muted);font-size:13.5px}
-  details{background:var(--paper);border:1px solid var(--line);border-radius:14px;padding:16px 20px;margin-bottom:9px}
-  summary{font-weight:700;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:14px}
-  summary::-webkit-details-marker{display:none}
-  summary::after{content:'+';color:var(--sage);font-size:21px;line-height:1}
-  details[open] summary::after{content:'\\2212'}
-  details p{margin:11px 0 0;color:var(--muted)}
-  .also{margin-top:44px;padding-top:26px;border-top:1px solid var(--line)}
-  .also h2{font-size:16px;margin:0 0 12px}
-  .also a{display:block;padding:11px 0;text-decoration:none;color:var(--ink);font-weight:600;border-bottom:1px solid var(--line)}
-  .also a:hover{color:var(--sage)}
-  footer{background:var(--ink);color:rgba(255,255,255,.55);padding:26px 0;font-size:13.5px;text-align:center}
-  footer a{color:rgba(255,255,255,.75)}
-</style>
 </head>
 <body>
 
-<header>
+${S.header(page.lang)}
+
+<main>
+<section class="hero land-hero">
+  <div class="wrap hero-grid">
+    <div>
+      <a class="crumb rise" href="${home}">${I.back}${esc(ui.back)}</a>
+      <p class="kicker rise">${lw.kicker}</p>
+      <h1 class="h1 rise d1">${esc(page.h1)}</h1>
+      <p class="lead rise d2">${esc(page.lead)}</p>
+      <div class="cta-row rise d3" id="hero-cta">
+        ${S.storeBtn(page.lang)}
+        <span class="note">${esc(ui.free)}</span>
+      </div>
+    </div>
+    <div class="land-phone rise d2"><div class="phone">${S.shot(screen, page.lang, '(min-width: 1024px) 300px, 60vw', page.h1, { eager: true })}</div></div>
+  </div>
+</section>
+
+<section class="sec land-body" style="padding-top:24px">
+  <div class="wrap land-grid">
+    <article class="prose">
+${page.sections.map(s => `      <h2>${esc(s.h)}</h2>\n` + s.p.map(x => `      <p>${esc(x)}</p>`).join('\n')).join('\n\n')}
+
+      <h2>${esc(ui.faqTitle)}</h2>
+      <div class="land-faq">
+${page.faq.map(([q, a], i) => `        <details class="qa"${i === 0 ? ' open' : ''}><summary>${esc(q)}<i>${I.plus}</i></summary><p>${esc(a)}</p></details>`).join('\n')}
+      </div>
+    </article>
+    <aside class="land-side">
+      <div class="side-card">
+        <b>${lw.side}</b><span>${lw.sideText}</span>
+        ${S.storeBtn(page.lang, 'sm')}
+      </div>
+    </aside>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
   <div class="wrap">
-    <a class="brand" href="${home || './'}">CookFusion</a>
-    <a class="crumb" href="${home || './'}">&larr; ${esc(ui.back)}</a>
+    <div class="sec-head"><p class="kicker">${esc(ui.also)}</p></div>
+    <div class="guides">
+${page.links.map(l => `      <a class="guide" href="${l}"><div><b>${esc(titleOf(l))}</b><span>${esc(leadOf(l))}</span></div><i>${esc(ui.read)}${I.arrow}</i></a>`).join('\n')}
+    </div>
   </div>
-</header>
+</section>
 
-<main class="wrap">
-  <h1>${esc(page.h1)}</h1>
-  <p class="lead">${esc(page.lead)}</p>
-
-${page.sections.map(s => `  <h2>${esc(s.h)}</h2>\n` + s.p.map(x => `  <p>${esc(x)}</p>`).join('\n')).join('\n\n')}
-
-  <a class="cta" href="${APP}">${esc(ui.install)}</a>
-  <p class="cta-note">${esc(ui.free)}</p>
-
-  <h2>${esc(ui.faqTitle)}</h2>
-${page.faq.map(([q, a]) => `  <details>\n    <summary>${esc(q)}</summary>\n    <p>${esc(a)}</p>\n  </details>`).join('\n')}
-
-  <div class="also">
-    <h2>${esc(ui.also)}</h2>
-${page.links.map(l => `    <a href="${l}">${esc(titleOf(l))}</a>`).join('\n')}
-    <a href="${home || './'}">${esc(ui.home)}</a>
+<section class="sec" style="padding-top:0" id="download">
+  <div class="wrap">
+    <div class="final on-dark">
+      <div class="final-body">
+        <h2 class="h2">${lw.final}</h2>
+        <p class="lead">${lw.finalLead}</p>
+        <div class="final-cta">${S.storeBtn(page.lang)}</div>
+      </div>
+      <div class="final-img"><img src="img/bowl-900.webp" width="900" height="600" alt="" loading="lazy" decoding="async"></div>
+    </div>
   </div>
+</section>
 </main>
 
-<footer><div class="wrap">${esc(ui.footer)} &middot; <a href="privacy.html">Privacy</a></div></footer>
+${S.footer(page.lang)}
 
-${COUNTER}
+${S.scriptTag()}
 </body>
 </html>
 `;
